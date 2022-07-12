@@ -1,0 +1,39 @@
+{
+    "name": "datatableswebutility/dwuty",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "description": "tabletools ajax",
+    "homepage": "http://datatableswebutility.com/",
+    "authors": [
+        {
+            "name": "Robin Richter",
+            "email": "info@dwuty.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Robert Katzfuss",
+            "email": "info@dwuty.de",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php" : ">=8.1",
+        "ext-mysqli": "*",
+        "twbs/bootstrap": "*",
+        "select2/select2": "*",
+        "components/jquery": "*"
+    }, 
+    "require-dev": {
+        "datatables.net/datatables.net": "dev-master",
+        "datatables.net/datatables.net-bs5": "dev-master",
+        "datatables.net/datatables.net-fixedheader": "dev-master",
+        "datatables.net/datatables.net-fixedheader-bs5": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+          "App\\":"src/"
+        }
+      }
+
+}
