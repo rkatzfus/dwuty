@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/vendor/autoload.php";
 
 use App\webutility_ssp;
 
@@ -88,4 +88,4 @@ $obj_ssp->set_Search($strSqlSearch);
 $obj_ssp->set_SearchColumn($strSqlSearchColumn);
 $obj_ssp->set_start($_POST["start"]);
 $obj_ssp->set_data_sql();
-$obj_ssp->fetch();
+$obj_ssp->read();

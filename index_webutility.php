@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<?php
-		require_once __DIR__ . '/vendor/autoload.php';
+		require_once __DIR__ . "/vendor/autoload.php";
 		use App\webutility;
 		use App\crud\read
 	?>
@@ -25,7 +25,7 @@
 			<?php
 				$pkfield_xxxTESTxxx = "root.ID";
 				$array_AJAX_xxxTESTxxx = array();
-				$array_AJAX_xxxTESTxxx["fetch"] = array(
+				$array_AJAX_xxxTESTxxx["read"] = array(
 					"url" => "/vendor/datatableswebutility/dwuty/read.php"
 					, "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
 				);
@@ -54,7 +54,7 @@
 						  , "text" => "ref.REF_DROPDOWN_MULTI"
 						)
 						, "from" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref"
-						, 'where' => 'ref.DEL<>1'
+						, "where" => "ref.DEL<>1"
 					)
 					, "SUBSELECT2" => array(
 						"columns" => array(
@@ -62,7 +62,7 @@
 						  , "text" => "dropdown_multi.TEXT"
 						)
 						, "from" => "MYSQL_DATABASE.dropdown_multi_lookup_table dropdown_multi"
-						, 'where' => 'dropdown_multi.DEL<>1'
+						, "where" => "dropdown_multi.DEL<>1"
 					  )
 				);
 				$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", VIEW, TEXT);

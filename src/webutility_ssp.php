@@ -257,7 +257,7 @@ class webutility_ssp
             echo $this->data = ($data);
         }
     }
-    public function fetch()
+    public function read()
     {
         $result["draw"] = $this->draw;
         $this->set_recordsTotal();
@@ -267,7 +267,7 @@ class webutility_ssp
         $result["data"] = $this->data;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function fetch</b><br>";
+            echo "<b>function read</b><br>";
         }
         echo json_encode($result);
     }

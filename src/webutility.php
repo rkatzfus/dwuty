@@ -6,42 +6,24 @@ define("UNSELECT", "0");
 define("VIEW", "1");
 define("EDIT", "2");
 //------------------
-define('TEXT', '0');
-define('EMAIL', '1');
-define('CHECKBOX', '2');
-define('LINK', '3');
-define('LINK_BUTTON', '4');
-define('COLOR', '5');
-define('DROPDOWN', '6');
-define('DROPDOWN_MULTI', '7');
-define('DATE', '8');
-define('DATETIME', '9');
+define("TEXT", "0");
+define("EMAIL", "1");
+define("CHECKBOX", "2");
+define("LINK", "3");
+define("LINK_BUTTON", "4");
+define("COLOR", "5");
+define("DROPDOWN", "6");
+define("DROPDOWN_MULTI", "7");
+define("DATE", "8");
+define("DATETIME", "9");
 
 
-// define('TEXT', '0');
-// define('CHECKBOX', '1');
-// define('DROPDOWN', '2');
-// define('DROPDOWN_MULTI', 'X');
-// define('LINK', '3');
-// define('LINK_BUTTON', '4');
-// define('DATE', '5');
-// define('DATETIME', '6');
-// define('COLOR', '7');
-// define('EMAIL', '9');
-
-
-
-// DEFINE('DT_EDIT_STATE_v2', '3');
-
-
-
-// DEFINE('DT_EDIT_DROPDOWN_MULTI_v2', '8');
-// DEFINE('DT_EDIT_PERCENT_v2', '9');
-// DEFINE('DT_EDIT_CURRENCY_v2', '10');
-// DEFINE('DT_EDIT_MODAL_BUTTON_v2', '11');
-// DEFINE('DT_EDIT_NUMBER_v2', '12');
-// DEFINE('DT_EDIT_FILE_v2', '14');
-// DEFINE('tel', '14');
+// DEFINE("DT_EDIT_PERCENT_v2", "9");
+// DEFINE("DT_EDIT_CURRENCY_v2", "10");
+// DEFINE("DT_EDIT_MODAL_BUTTON_v2", "11");
+// DEFINE("DT_EDIT_NUMBER_v2", "12");
+// DEFINE("DT_EDIT_FILE_v2", "14");
+// DEFINE("tel", "14");
 
 
 
@@ -57,44 +39,44 @@ class webutility
     ) {
         $this->obj_mysqli = new database_tools();
         $this->obj_ssp = new webutility_ssp($debug = false);
-        $this->ajax_fetch_where = "";
+        $this->ajax_read_where = "";
         $this->tbl_ID = $tbl_ID;
         $this->pkfield = $pkfield;
         if (isset($ajax)) {
-            $fetch = false;
+            $read = false;
             $this->button_column = false;
             foreach ($ajax as $key => $value) {
                 switch ($key) {
-                    case 'fetch':
-                        $this->ajax_fetch_url = $value['url'];
-                        $this->ajax_fetch_datasource = $this->post_encode($value['datasource']);
-                        $fetch = true;
+                    case "read":
+                        $this->ajax_read_url = $value["url"];
+                        $this->ajax_read_datasource = $this->post_encode($value["datasource"]);
+                        $read = true;
                         break;
-                    case 'insert':
-                        $this->ajax_insert_url = $value['url'];
-                        $this->ajax_insert_datasource = $this->post_encode($value['datasource']);
-                        (isset($value['fade_out'])) ? $this->ajax_insert_fade_out = $this->post_encode($value['fade_out']) : "";
-                        (isset($value['dropdown_multi'])) ? $this->ajax_insert_dropdown_multi = $this->post_encode($value['dropdown_multi']) : "";
-                        (isset($value['check'])) ? $this->ajax_insert_check = $this->post_encode($value['check']) : $this->ajax_insert_check = 'false';
+                    case "insert":
+                        $this->ajax_insert_url = $value["url"];
+                        $this->ajax_insert_datasource = $this->post_encode($value["datasource"]);
+                        (isset($value["fade_out"])) ? $this->ajax_insert_fade_out = $this->post_encode($value["fade_out"]) : "";
+                        (isset($value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->post_encode($value["dropdown_multi"]) : "";
+                        (isset($value["check"])) ? $this->ajax_insert_check = $this->post_encode($value["check"]) : $this->ajax_insert_check = "false";
                         $this->button_column = true;
                         break;
-                    case 'update':
-                        $this->ajax_update_url =  $value['url'];
-                        $this->ajax_update_datasource = $this->post_encode($value['datasource']);
-                        (isset($value['dropdown_multi'])) ? $this->ajax_update_dropdown_multi = $this->post_encode($value['dropdown_multi']) : "";
+                    case "update":
+                        $this->ajax_update_url =  $value["url"];
+                        $this->ajax_update_datasource = $this->post_encode($value["datasource"]);
+                        (isset($value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->post_encode($value["dropdown_multi"]) : "";
                         break;
-                    case 'delete':
-                        $this->ajax_delete_url = $value['url'];
-                        $this->ajax_delete_datasource = $this->post_encode($value['datasource']);
+                    case "delete":
+                        $this->ajax_delete_url = $value["url"];
+                        $this->ajax_delete_datasource = $this->post_encode($value["datasource"]);
                         $this->button_column = true;
                         break;
                     default:
-                        throw new \Exception('AJAX ERROR occured!');
+                        throw new \Exception("AJAX ERROR occured!");
                         exit();
                 }
             }
-            if ($fetch != true) {
-                throw new \Exception('no AJAX SOURCE defined');
+            if ($read != true) {
+                throw new \Exception("no AJAX SOURCE defined");
             }
         }
     }
@@ -106,7 +88,7 @@ class webutility
                 <tr>
                     <?php
                     foreach ($this->columns as $column) {
-                        echo "<th>" . $column['DISPLAYNAME'] . "</th>";
+                        echo "<th>" . $column["DISPLAYNAME"] . "</th>";
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
@@ -134,8 +116,8 @@ class webutility
     ) {
         $ary_SearchSelect2 = array();
         foreach ($this->columns as $column) {
-            if ($column['TYP'] == 6 or $column['TYP'] == 7) {
-                $ary_SearchSelect2[$column['SQLNAME']] = $column['JSON'];
+            if ($column["TYP"] == 6 or $column["TYP"] == 7) {
+                $ary_SearchSelect2[$column["SQLNAME"]] = $column["JSON"];
             }
         }
         foreach ($this->columns as $columns_key => $columns_value) {
@@ -153,7 +135,7 @@ class webutility
         <footer>
             <script type="text/javascript">
                 $(document).ready(function() {
-                    function fetch_data_<?= $this->tbl_ID; ?>() {
+                    function read_data_<?= $this->tbl_ID; ?>() {
                         var table = $("#<?= $this->tbl_ID; ?>").DataTable({
                             language: {
                                 "emptyTable": "Keine Daten in der Tabelle vorhanden",
@@ -337,7 +319,7 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    ($columns_value['ACTION'] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
+                                    ($columns_value["ACTION"] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -375,13 +357,13 @@ class webutility
                                 ?>
                             ],
                             ajax: {
-                                url: "<?= $this->ajax_fetch_url; ?>",
+                                url: "<?= $this->ajax_read_url; ?>",
                                 type: "POST",
                                 dataType: "json",
                                 data: {
                                     pkfield: <?= $this->post_encode($this->pkfield); ?>,
-                                    datasource: <?= $this->post_encode($this->ajax_fetch_datasource); ?>,
-                                    where: <?= $this->post_encode($this->ajax_fetch_where); ?>,
+                                    datasource: <?= $this->post_encode($this->ajax_read_datasource); ?>,
+                                    where: <?= $this->post_encode($this->ajax_read_where); ?>,
                                     columnsdata: <?= $this->post_encode($columnsdata); ?>
                                 }
                             },
@@ -399,13 +381,13 @@ class webutility
                                     echo "name: \"" . $column["SQLNAME"] . "\", ";
                                     echo "data: \"" . $column["NAME"] . "\", ";
                                     echo "celltype: \"" . $column["TYP"] . "\", ";
-                                    switch ($column['TYP']) {
+                                    switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<input type='text' class='form-control' style='border: none; background: transparent; box-shadow: none;' value='" + data + "' title='" + data + "'>";
+                                                    return '<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '" title="' + data + '">';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
@@ -413,26 +395,26 @@ class webutility
                                         case 1: // EMAIL
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<input type='email' class='form-control' style='border: none; background: transparent; box-shadow: none;' value='" + data + "' title='" + data + "'>";
+                                                    return '<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '" title="' + data + '">';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                is_checked = (data == true) ? 'checked' : '';
-                                                return "<div class='form-switch'><input class='form-check-input' type='checkbox' style='box-shadow: none;' " + is_checked + "></div>";
+                                                is_checked = (data == true) ? "checked" : "";
+                                                return '<div class="form-switch"><input class="form-check-input" type="checkbox" style="box-shadow: none;" ' + is_checked + '></div>';
                                             },
                                         <?php
                                             break;
                                         case 3: // LINK
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<a href='" + data + "' title='" + data + "' target='_blank' rel='noopener'><input type='url' class='form-control' style='border: none; background: transparent; box-shadow: none;' value='" + data + "'></a>";
+                                                    return '<a href="' + data + '" title="' + data + '" target="_blank" rel="noopener"><input type="url" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '"></a>';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
@@ -440,9 +422,9 @@ class webutility
                                         case 4: // LINK_BUTTON
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<a class='btn btn-outline-primary form-control' href='" + data + "' title='" + data + "' target='_blank' rel='noopener' role='button' style='box-shadow: none;'>Link</a>";
+                                                    return '<a class="btn btn-outline-primary form-control" href="' + data + '" title="' + data + '" target="_blank" rel="noopener" role="button" style="box-shadow: none;">Link</a>';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
@@ -450,17 +432,17 @@ class webutility
                                         case 5: // COLOR
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<input type='color' style='box-shadow: none;' value='" + data + "'>";
+                                                    return '<input type="color" style="box-shadow: none;" value="' + data + '">';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->post_encode($column['JSON']); ?>;
-                                                select = $('<select class="SELECT2_<?= $column['NAME']; ?>"></select>', {})
+                                                aryJson = <?= $this->post_encode($column["JSON"]); ?>;
+                                                select = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>', {})
                                                 if (data != 0 && data != null) {
                                                     option = $("<option>" + aryJson[data] + "</option>");
                                                     option.attr("selected", "selected")
@@ -475,8 +457,8 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->post_encode($column['JSON']); ?>;
-                                                select = $('<select class="SELECT2_<?= $column['NAME']; ?>" multiple></select>', {})
+                                                aryJson = <?= $this->post_encode($column["JSON"]); ?>;
+                                                select = $('<select class="SELECT2_<?= $column["NAME"]; ?>" multiple></select>', {})
                                                 if (data != 0 && data != null) {
                                                     var myData = data.split(",");
                                                     myData.forEach(function(myDataElement) {
@@ -493,9 +475,9 @@ class webutility
                                         case 8: // DATE
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<input type='date' class='form-control' style='text-align: right; box-shadow: none;' value='" + data + "'>";
+                                                    return '<input type="date" class="form-control" style="text-align: right; box-shadow: none;" value="' + data + '">';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                         <?php
@@ -503,9 +485,9 @@ class webutility
                                         case 9: // DATETIME
                                         ?> render: function(data) {
                                                 if (data !== null) {
-                                                    return "<input type='datetime-local' class='form-control' style='text-align: right; box-shadow: none;' value='" + data.replace(" ", "T") + "' step='1'>";
+                                                    return '<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" value="' + data.replace(" ", "T") + '" step="1">';
                                                 } else {
-                                                    return "";
+                                                    return '';
                                                 }
                                             }
                                     <?php
@@ -556,8 +538,8 @@ class webutility
                                                 url: "<?= $column["AJAX"]; ?>",
                                                 type: "POST",
                                                 delay: 100,
-                                                dataType: 'json',
-                                                theme: 'bootstrap-5',
+                                                dataType: "json",
+                                                theme: "bootstrap-5",
                                                 cache: false,
                                                 data: function(params) {
                                                     query = {
@@ -582,7 +564,7 @@ class webutility
                             <?= $additional_options; ?>
                         });
                     }
-                    fetch_data_<?= $this->tbl_ID; ?>();
+                    read_data_<?= $this->tbl_ID; ?>();
                 });
             </script>
         </footer>
@@ -632,8 +614,6 @@ class webutility
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     $this->columns[$column_key]["SQLNAME"] = "group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',')";
-                                    // $this->columns[$column_key]["SQLNAME"] = "group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') as " . $this->columns[$column_key]["NAME"];
-                                    // $this->columns[$column_key]["SQLNAME"] = "substring((select \',\' + cast(" . $arySetting["SELECT2"]["columns"]["text"] . " as varchar) from " . $arySetting["SELECT2"]["from"] . " where " . $this->pkfield . " = " . $arySetting["SELECT2"]["columns"]["id"] . " and " . $arySetting["SELECT2"]["where"] . " for xml path(\'\')), 2, 1000000)";
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
                                     $aryColumns = $arySetting["SUBSELECT2"]["columns"];
                                     $this->obj_ssp->set_length(-1); // remove length & paging
@@ -649,8 +629,8 @@ class webutility
                                     # code...
                                     break;
                             }
-                            $this->columns[$column_key]['AJAX'] = $arySetting['AJAX'];
-                            $this->columns[$column_key]['SELECT2'] = $arySetting['SELECT2'];
+                            $this->columns[$column_key]["AJAX"] = $arySetting["AJAX"];
+                            $this->columns[$column_key]["SELECT2"] = $arySetting["SELECT2"];
                             break;
                         default:
                             # code...
@@ -663,7 +643,7 @@ class webutility
     public function set_where(
         $strsqlwhere = ""
     ) {
-        $this->ajax_fetch_where = $strsqlwhere;
+        $this->ajax_read_where = $strsqlwhere;
     }
     public function post_encode(
         $aryIncoming = array()
@@ -681,7 +661,7 @@ class webutility
         $iv = substr(sha1(mt_rand()), 0, 16);
         $password = sha1($password);
         $salt = sha1(mt_rand());
-        $saltWithPassword = hash('sha256', $password . $salt);
+        $saltWithPassword = hash("sha256", $password . $salt);
         $encrypted = openssl_encrypt(
             $data,
             "aes-256-cbc",
@@ -697,7 +677,7 @@ class webutility
         $password = ""
     ) {
         $password = sha1($password);
-        $components = explode(':', $msg_encrypted_bundle);
+        $components = explode(":", $msg_encrypted_bundle);
         $iv            = $components[0];
         $salt          = hash("sha256", $password . $components[1]);
         $encrypted_msg = $components[2];
