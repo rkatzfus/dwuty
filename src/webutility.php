@@ -89,12 +89,12 @@ class webutility
                         $this->button_column = true;
                         break;
                     default:
-                        throw new \Exception('Es ist ein AJAX ERROR aufgetreten!');
+                        throw new \Exception('AJAX ERROR occured!');
                         exit();
                 }
             }
             if ($fetch != true) {
-                throw new \Exception('Es wurde keine AJAX Quelle eingetragen');
+                throw new \Exception('no AJAX SOURCE defined');
             }
         }
     }
@@ -478,12 +478,13 @@ class webutility
                                                 aryJson = <?= $this->post_encode($column['JSON']); ?>;
                                                 select = $('<select class="SELECT2_<?= $column['NAME']; ?>" multiple></select>', {})
                                                 if (data != 0 && data != null) {
-                                                    option = $("<option>" + aryJson[data] + "</option>");
-                                                    option.attr("selected", "selected")
-                                                    select.append(option);
-                                                    option.attr("value", data);
-                                                    select.append(option);
-                                                    select.attr("data-search", data);
+                                                    var myData = data.split(",");
+                                                    myData.forEach(function(myDataElement) {
+                                                        option = $("<option selected>" + aryJson[myDataElement] + "</option>");
+                                                        option.attr("value", myDataElement);
+                                                        select.append(option);
+                                                        select.attr("data-search", myDataElement);
+                                                    });
                                                 }
                                                 return select.prop("outerHTML");
                                             },
@@ -545,8 +546,7 @@ class webutility
                                 ?>
                                         $(".SELECT2_<?= $column["NAME"]; ?>").select2({
                                             disabled: false,
-                                            // disabled: <? #= (!isset($this->ajax_update_url))?"true":"false"; 
-                                                            ?>,
+                                            // disabled: <#?= (!isset($this->ajax_update_url))?"true":"false";?>,
                                             width: "100%",
                                             language: "de",
                                             placeholder: "Auswahl",

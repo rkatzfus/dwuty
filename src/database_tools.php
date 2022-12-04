@@ -5,7 +5,7 @@ class database_tools
     function __construct()
     {
         $this->username = get_current_user();
-        $host = 'db';
+        $host = 'dwuty-db';
         $user = 'MYSQL_USER';
         $pass = 'MYSQL_PASSWORD';
         $this->mysqli_conn = new \mysqli($host, $user, $pass);
@@ -61,4 +61,3 @@ class database_tools
         }
     }
 }
-?>
