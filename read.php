@@ -4,7 +4,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 use App\webutility_ssp;
 
 $pkfield = $_POST["pkfield"];
-$obj_ssp = new webutility_ssp($debug = false);
+$obj_ssp = new webutility_ssp(false); // debug mode
 $arySearchColumn = array();
 $strSqlSearchColumn = "";
 $aryColumns[] =
@@ -83,7 +83,7 @@ $obj_ssp->set_columns($aryColumns);
 $obj_ssp->set_select($aryColumns);
 $obj_ssp->set_from($strSqlFrom);
 $obj_ssp->set_groupBy($aryGroupBy);
-$obj_ssp->set_where(json_decode($_POST["where"], true));
+$obj_ssp->set_where($_POST["where"]);
 $obj_ssp->set_search($strSqlSearch);
 $obj_ssp->set_searchColumn($strSqlSearchColumn);
 $obj_ssp->set_start($_POST["start"]);

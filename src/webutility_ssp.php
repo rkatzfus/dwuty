@@ -31,7 +31,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_draw</b><br>";
-            echo $this->draw = intval($draw);
+            echo $this->draw;
         }
     }
     public function set_length(
@@ -41,7 +41,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_length</b><br>";
-            echo $this->intlength = intval($length);
+            echo $this->intlength;
         }
     }
     public function set_start(
@@ -51,7 +51,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_start</b><br>";
-            echo $this->intstart = intval($intstart);
+            echo $this->intstart;
         }
     }
     private function length_and_paging()
@@ -74,7 +74,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_order</b><br>";
-            echo $this->strsqlOrder = " order by " . implode(", ", $sql_order);
+            echo $this->strsqlOrder;
         }
     }
     private function set_recordsTotal()
@@ -146,11 +146,11 @@ class webutility_ssp
     public function set_from(
         $strSqlFrom = ""
     ) {
-        $this->strSqlFrom = " from " . $strSqlFrom;
+        $this->strSqlFrom = "from " . $strSqlFrom;
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_from</b><br>";
-            echo $this->strSqlFrom = " from " . $strSqlFrom;
+            echo $this->strSqlFrom;
         }
     }
     public function set_groupBy(
@@ -166,11 +166,11 @@ class webutility_ssp
     public function set_where(
         $strSqlWhere = ""
     ) {
-        $this->strSSqlWhere = json_decode($strSqlWhere, true);
+        $this->strSqlWhere = $strSqlWhere;
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_where</b><br>";
-            echo $this->strSqlWhere = $strSqlWhere;
+            echo $this->strSqlWhere;
         }
     }
     public function set_search(
@@ -180,7 +180,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_search</b><br>";
-            echo $this->strSqlSearch = $strSqlSearch;
+            echo $this->strSqlSearch;
         }
     }
     public function set_searchColumn(
@@ -190,7 +190,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_searchColumn</b><br>";
-            echo $this->strSqlSearchColumn = $strSqlSearchColumn;
+            echo $this->strSqlSearchColumn;
         }
     }
     public function set_columns(
@@ -208,28 +208,17 @@ class webutility_ssp
     }
     public function set_data_sql()
     {
-        $strWhereblock = "";
-        if (!empty($this->strSqlWhere)) {
-            $strWhereblock .= "(" . $this->strSqlWhere . ")";
-        }
-        if (!empty($this->strSqlSearch)) {
-            if (empty($strWhereblock)) {
-                $strWhereblock .= "(" . $this->strSqlSearch . ")";
-            } else {
-                $strWhereblock .= " and (" . $this->strSqlSearch . ")";
-            }
-        }
-        if (!empty($this->strSqlSearchColumn)) {
-            if (empty($strWhereblock)) {
-                $strWhereblock .= "(" . $this->strSqlSearchColumn . ")";
-            } else {
-                $strWhereblock .= " and (" . $this->strSqlSearchColumn . ")";
-            }
-        }
-        if (!empty($strWhereblock)) {
-            $strWhereblock = " where " . $strWhereblock;
-        }
-        $sql = $this->strsqlSelect . $this->strSqlFrom . $strWhereblock . $this->strGroupBy . $this->strsqlOrder . $this->length_and_paging();
+        $ary_where = array();
+        (!empty($this->strSqlWhere)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlWhere . ")" : $ary_where[] = "and (" . $this->strSqlWhere . ")") : "";
+        (!empty($this->strSqlSearch)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearch . ")" : $ary_where[] = "and (" . $this->strSqlSearch . ")") : "";
+        (!empty($this->strSqlSearchColumn)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearchColumn . ")" : $ary_where[] = "and (" . $this->strSqlSearchColumn . ")") : "";
+        $ary_sql[] = $this->strsqlSelect;
+        $ary_sql[] = $this->strSqlFrom;
+        !empty($ary_where) ? $ary_sql[] = "where " . implode(" ", $ary_where) : "";
+        $ary_sql[] = $this->strGroupBy;
+        $ary_sql[] = $this->strsqlOrder;
+        $ary_sql[] = $this->length_and_paging();
+        $sql = implode(" ", $ary_sql);
         $result = $this->obj_mysqli->sql2array($sql);
         if ($result != false && isset($this->arycolumns)) {
             foreach ($result as $value_query) {
@@ -254,7 +243,7 @@ class webutility_ssp
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_data</b><br>";
-            echo $this->data = ($data);
+            echo $this->data;
         }
     }
     public function read()

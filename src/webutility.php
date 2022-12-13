@@ -687,7 +687,7 @@ class webutility
     public function set_where(
         $strsqlwhere = ""
     ) {
-        $this->ajax_read_where = $this->post_encode($strsqlwhere);
+        $this->ajax_read_where = $strsqlwhere;
     }
     public function post_encode(
         $aryIncoming = array()
