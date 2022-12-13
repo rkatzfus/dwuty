@@ -80,7 +80,7 @@ class webutility_ssp
     private function set_recordsTotal()
     {
         if (!isset($this->recordsTotal) && $this->recordsTotal < 1) {
-            $sql = "select count(*) " . $this->strSqlFrom . $this->strGroupBy;
+            $sql = "select distinct count(*) " . $this->strSqlFrom;
             $this->recordsTotal = intval($this->obj_mysqli->sql_getfield($sql));
         }
     }
@@ -108,7 +108,7 @@ class webutility_ssp
             if (!empty($strWhereblock)) {
                 $strWhereblock = " WHERE " . $strWhereblock;
             }
-            $sql = "select count(*) " . $this->strSqlFrom . $strWhereblock . $this->strGroupBy;
+            $sql = "select distinct count(*) " . $this->strSqlFrom . $strWhereblock;
             $this->recordsFiltered = intval($this->obj_mysqli->sql_getfield($sql));
         }
     }
@@ -166,7 +166,7 @@ class webutility_ssp
     public function set_where(
         $strSqlWhere = ""
     ) {
-        $this->strSqlWhere = json_decode($strSqlWhere, true);
+        $this->strSSqlWhere = json_decode($strSqlWhere, true);
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function set_where</b><br>";
