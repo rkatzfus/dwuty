@@ -26,10 +26,21 @@ $obj_database_tools = new database_tools();
 		$array_AJAX_xxxTESTxxx["read"] = array(
 			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
 		);
+		$array_AJAX_xxxTESTxxx["delete"] = array(
+			"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "MYSQL_DATABASE.root_table root", "dropdown_multi" => array(
+				$datREF_ROOT_ID => array(
+					"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+				)
+			)
+		);
 		// $array_AJAX_xxxTESTxxx["delete"] = array(
-		// 	"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID", "dropdown_multi" => array(
+		// 	"url" => "/vendor/datatableswebutility/dwuty/delete.php"
+		// 	, "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
+		// 	, "dropdown_multi" => array(
 		// 		$datREF_ROOT_ID => array(
-		// 			"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+		// 			"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref"
+		// 			, "primarykey" => "ref.REF_ROOT"
+		// 			, "valuekey" => "ref.REF_DROPDOWN_MULTI"
 		// 		)
 		// 	)
 		// );
@@ -64,7 +75,7 @@ $obj_database_tools = new database_tools();
 		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", VIEW, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "COLOR", "column: COLOR", VIEW, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "DROPDOWN", "column: DROPDOWN", VIEW, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "DROPDOWN_MULTI", "column: DROPDOWN_MULTI", VIEW, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		// $obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "DROPDOWN_MULTI", "column: DROPDOWN_MULTI", VIEW, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
 		$obj_webutility->new_column("root.DATE", "DATE", "column: DATE", VIEW, DATE);
 		$obj_webutility->new_column("root.DATETIME", "DATETIME", "column: DATETIME", VIEW, DATETIME);
 		$defOrderby_xxxTESTxxx = 0;

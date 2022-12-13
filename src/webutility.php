@@ -45,29 +45,30 @@ class webutility
         if (isset($ajax)) {
             $read = false;
             $this->button_column = false;
-            foreach ($ajax as $key => $value) {
-                switch ($key) {
+            foreach ($ajax as $ajax_key => $ajax_value) {
+                switch ($ajax_key) {
                     case "read":
-                        $this->ajax_read_url = $value["url"];
-                        $this->ajax_read_datasource = $this->post_encode($value["datasource"]);
+                        $this->ajax_read_url = $ajax_value["url"];
+                        $this->ajax_read_datasource = $this->post_encode($ajax_value["datasource"]);
                         $read = true;
                         break;
                     case "insert":
-                        $this->ajax_insert_url = $value["url"];
-                        $this->ajax_insert_datasource = $this->post_encode($value["datasource"]);
-                        (isset($value["fade_out"])) ? $this->ajax_insert_fade_out = $this->post_encode($value["fade_out"]) : "";
-                        (isset($value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->post_encode($value["dropdown_multi"]) : "";
-                        (isset($value["check"])) ? $this->ajax_insert_check = $this->post_encode($value["check"]) : $this->ajax_insert_check = "false";
+                        $this->ajax_insert_url = $ajax_value["url"];
+                        $this->ajax_insert_datasource = $this->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["fade_out"])) ? $this->ajax_insert_fade_out = $this->post_encode($ajax_value["fade_out"]) : "";
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
+                        (isset($ajax_value["check"])) ? $this->ajax_insert_check = $this->post_encode($ajax_value["check"]) : $this->ajax_insert_check = "false";
                         $this->button_column = true;
                         break;
                     case "update":
-                        $this->ajax_update_url =  $value["url"];
-                        $this->ajax_update_datasource = $this->post_encode($value["datasource"]);
-                        (isset($value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->post_encode($value["dropdown_multi"]) : "";
+                        $this->ajax_update_url =  $ajax_value["url"];
+                        $this->ajax_update_datasource = $this->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
                         break;
                     case "delete":
-                        $this->ajax_delete_url = $value["url"];
-                        $this->ajax_delete_datasource = $this->post_encode($value["datasource"]);
+                        $this->ajax_delete_url = $ajax_value["url"];
+                        $this->ajax_delete_datasource = $this->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_delete_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
                         $this->button_column = true;
                         break;
                     default:
@@ -580,8 +581,6 @@ class webutility
                     ?>
                         $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
-                                // trid = $(this).closest('tr').attr('id').replace("row_", "");
-                                // trid = trid.replace("row_", "");
                                 $.ajax({
                                     url: "<?= $this->ajax_delete_url; ?>",
                                     type: "POST",
@@ -590,20 +589,11 @@ class webutility
                                         pkfield: <?= $this->post_encode($this->pkfield); ?>,
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
                                         datasource: <?= $this->post_encode($this->ajax_delete_datasource); ?>,
-                                        <?php
-                                        if (isset($this->ajax_delete_dropdown_multi)) {
-                                        ?>
-                                            dropdown_multi: <?= $this->post_encode($this->ajax_delete_dropdown_multi); ?>,
-
-                                        <?php
-                                        }
-                                        ?>
-                                    },
-                                    success: function(data) {
-                                        $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
-                                        read_data_<?= $this->tbl_ID; ?>();
+                                        dropdown_multi: <?= $this->post_encode($this->ajax_delete_dropdown_multi); ?>
                                     }
-                                })
+                                });
+                                $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
+                                read_data_<?= $this->tbl_ID; ?>();
                             }
                         });
                     <?php
