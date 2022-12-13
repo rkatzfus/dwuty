@@ -323,24 +323,31 @@ class webutility
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 4: // LINK_BUTTON
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 5: // COLOR
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 6: // DROPDOWN
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 8: // DATE
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         case 9: // DATETIME
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
                                             break;
                                         default:
                                             // code
@@ -504,7 +511,10 @@ class webutility
                                         orderable: false,
                                         searchable: false,
                                         className: "align-middle",
-                                        // render: delete_button_
+                                        render: function(data) {
+                                            return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
+                                            console.log(data);
+                                        }
                                     }
                                 <?php
                                 }
@@ -565,6 +575,40 @@ class webutility
                         });
                     }
                     read_data_<?= $this->tbl_ID; ?>();
+                    <?php
+                    if (isset($this->ajax_delete_url)) {
+                    ?>
+                        $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
+                            if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
+                                // trid = $(this).closest('tr').attr('id').replace("row_", "");
+                                // trid = trid.replace("row_", "");
+                                $.ajax({
+                                    url: "<?= $this->ajax_delete_url; ?>",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: {
+                                        pkfield: <?= $this->post_encode($this->pkfield); ?>,
+                                        pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
+                                        datasource: <?= $this->post_encode($this->ajax_delete_datasource); ?>,
+                                        <?php
+                                        if (isset($this->ajax_delete_dropdown_multi)) {
+                                        ?>
+                                            dropdown_multi: <?= $this->post_encode($this->ajax_delete_dropdown_multi); ?>,
+
+                                        <?php
+                                        }
+                                        ?>
+                                    },
+                                    success: function(data) {
+                                        $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
+                                        read_data_<?= $this->tbl_ID; ?>();
+                                    }
+                                })
+                            }
+                        });
+                    <?php
+                    }
+                    ?>
                 });
             </script>
         </footer>

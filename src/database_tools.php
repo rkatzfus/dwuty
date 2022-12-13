@@ -4,8 +4,9 @@ namespace App;
 
 class database_tools
 {
-    function __construct()
+    function __construct($debug = false)
     {
+        $this->debug = $debug;
         $this->username = get_current_user();
         $host = "dwuty-db";
         $user = "MYSQL_USER";
@@ -21,6 +22,15 @@ class database_tools
     {
         $this->mysqli_conn->close();
     }
+    public function post_encode(
+        $aryIncoming = array()
+    ) {
+        if (!empty($aryIncoming)) {
+            return json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+        } else {
+            return "no matching data delivered";
+        }
+    }
     public function sql_getfield(
         $sql = ""
     ) {
@@ -28,7 +38,13 @@ class database_tools
         if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
             $result = trim(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0]) ?? false;
         }
-        return $result;
+        if ($this->debug == true) {
+            echo "<b>sql_getfield</b>";
+            var_dump($result);
+            echo "<hr>";
+        } else {
+            return $result;
+        }
     }
     public function sql2array(
         $sql = ""
@@ -37,7 +53,13 @@ class database_tools
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
                 $result[] = $value;
             }
-            return $result;
+            if ($this->debug == true) {
+                echo "<b>sql2array</b>";
+                var_dump($result);
+                echo "<hr>";
+            } else {
+                return $result;
+            }
         }
     }
     public function sql2array_pk(
@@ -48,7 +70,13 @@ class database_tools
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
                 $result[$value[$pk]] = $value;
             }
-            return $result;
+            if ($this->debug == true) {
+                echo "<b>sql2array_pk</b>";
+                var_dump($result);
+                echo "<hr>";
+            } else {
+                return $result;
+            }
         }
     }
     public function sql2array_pk_value(
@@ -60,7 +88,26 @@ class database_tools
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
                 $result[$value_key[$pk]] = $value_key[$value];
             }
-            return $result;
+            if ($this->debug == true) {
+                echo "<b>sql2array_pk_value</b>";
+                var_dump($result);
+                echo "<hr>";
+            } else {
+                return $result;
+            }
+        }
+    }
+    public function sql_exec_no_result(
+        $sql = ""
+    ) {
+        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+            if ($this->debug == true) {
+                echo "<b>sql_exec_no_result</b>";
+                var_dump($sql);
+                echo "<hr>";
+            } else {
+                mysqli_query($this->mysqli_conn, $sql);
+            }
         }
     }
 }

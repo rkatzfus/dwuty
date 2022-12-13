@@ -112,7 +112,7 @@ class webutility_ssp
             $this->recordsFiltered = intval($this->obj_mysqli->sql_getfield($sql));
         }
     }
-    public function set_Select(
+    public function set_select(
         $ary_Select = array()
     ) {
         $this->strsqlSelectStart = "select ";
@@ -138,62 +138,62 @@ class webutility_ssp
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_Select</b><br>";
+            echo "<b>function set_select</b><br>";
             echo $this->strsqlSelect;
             var_dump($ary_Select);
         }
     }
-    public function set_From(
+    public function set_from(
         $strSqlFrom = ""
     ) {
         $this->strSqlFrom = " from " . $strSqlFrom;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_From</b><br>";
+            echo "<b>function set_from</b><br>";
             echo $this->strSqlFrom = " from " . $strSqlFrom;
         }
     }
-    public function set_GroupBy(
+    public function set_groupBy(
         $aryGroupBy = array()
     ) {
         $this->strGroupBy = " group by  " . implode(",", $aryGroupBy);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_GroupBy</b><br>";
+            echo "<b>function set_groupBy</b><br>";
             echo $this->strGroupBy = " group by  " . implode(",", $aryGroupBy);
         }
     }
-    public function set_Where(
+    public function set_where(
         $strSqlWhere = ""
     ) {
-        $this->strSqlWhere = $strSqlWhere;
+        $this->strSqlWhere = json_decode($strSqlWhere, true);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_Where</b><br>";
+            echo "<b>function set_where</b><br>";
             echo $this->strSqlWhere = $strSqlWhere;
         }
     }
-    public function set_Search(
+    public function set_search(
         $strSqlSearch
     ) {
         $this->strSqlSearch = $strSqlSearch;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_Search</b><br>";
+            echo "<b>function set_search</b><br>";
             echo $this->strSqlSearch = $strSqlSearch;
         }
     }
-    public function set_SearchColumn(
+    public function set_searchColumn(
         $strSqlSearchColumn
     ) {
         $this->strSqlSearchColumn = $strSqlSearchColumn;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_SearchColumn</b><br>";
+            echo "<b>function set_searchColumn</b><br>";
             echo $this->strSqlSearchColumn = $strSqlSearchColumn;
         }
     }
-    public function set_Columns(
+    public function set_columns(
         $arycolumns = array()
     ) {
         $this->arycolumns = $arycolumns;
@@ -202,7 +202,7 @@ class webutility_ssp
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_Columns</b><br>";
+            echo "<b>function set_columns</b><br>";
             var_dump($this->arycolumns_id);
         }
     }
