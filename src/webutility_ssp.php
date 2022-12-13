@@ -80,36 +80,27 @@ class webutility_ssp
     private function set_recordsTotal()
     {
         if (!isset($this->recordsTotal) && $this->recordsTotal < 1) {
-            $sql = "select distinct count(*) " . $this->strSqlFrom;
+            $sql = $this->count_records(false);
             $this->recordsTotal = intval($this->obj_mysqli->sql_getfield($sql));
+            if ($this->debug == true) {
+                echo "<hr>";
+                echo "<b>function set_recordsTotal</b><br>";
+                echo $this->recordsTotal;
+                echo "<br>" . $sql;
+            }
         }
     }
     private function set_recordsFiltered()
     {
         if (!isset($this->recordsFiltered) && $this->recordsFiltered < 1) {
-            $strWhereblock = "";
-            if (!empty($this->strSqlWhere)) {
-                $strWhereblock .= "(" . $this->strSqlWhere . ")";
-            }
-            if (!empty($this->strSqlSearch)) {
-                if (empty($strWhereblock)) {
-                    $strWhereblock .= "(" . $this->strSqlSearch . ")";
-                } else {
-                    $strWhereblock .= " and (" . $this->strSqlSearch . ")";
-                }
-            }
-            if (!empty($this->strSqlSearchColumn)) {
-                if (empty($strWhereblock)) {
-                    $strWhereblock .= "(" . $this->strSqlSearchColumn . ")";
-                } else {
-                    $strWhereblock .= " and (" . $this->strSqlSearchColumn . ")";
-                }
-            }
-            if (!empty($strWhereblock)) {
-                $strWhereblock = " WHERE " . $strWhereblock;
-            }
-            $sql = "select distinct count(*) " . $this->strSqlFrom . $strWhereblock;
+            $sql = $this->count_records(true);
             $this->recordsFiltered = intval($this->obj_mysqli->sql_getfield($sql));
+            if ($this->debug == true) {
+                echo "<hr>";
+                echo "<b>function set_recordsFiltered</b><br>";
+                echo $this->recordsFiltered;
+                echo "<br>" . $sql;
+            }
         }
     }
     public function set_select(
@@ -208,18 +199,14 @@ class webutility_ssp
     }
     public function set_data_sql()
     {
-        $ary_where = array();
-        (!empty($this->strSqlWhere)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlWhere . ")" : $ary_where[] = "and (" . $this->strSqlWhere . ")") : "";
-        (!empty($this->strSqlSearch)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearch . ")" : $ary_where[] = "and (" . $this->strSqlSearch . ")") : "";
-        (!empty($this->strSqlSearchColumn)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearchColumn . ")" : $ary_where[] = "and (" . $this->strSqlSearchColumn . ")") : "";
         $ary_sql[] = $this->strsqlSelect;
         $ary_sql[] = $this->strSqlFrom;
-        !empty($ary_where) ? $ary_sql[] = "where " . implode(" ", $ary_where) : "";
+        !empty($this->build_where()) ? $ary_sql[] = "where " . implode(" ", $this->build_where()) : "";
         $ary_sql[] = $this->strGroupBy;
         $ary_sql[] = $this->strsqlOrder;
         $ary_sql[] = $this->length_and_paging();
         $sql = implode(" ", $ary_sql);
-        $result = $this->obj_mysqli->sql2array($sql);
+        $result = ($this->obj_mysqli->chk_stmnt($sql) == true) ? $this->obj_mysqli->sql2array($sql) : "";
         if ($result != false && isset($this->arycolumns)) {
             foreach ($result as $value_query) {
                 $rowdata = array();
@@ -259,5 +246,23 @@ class webutility_ssp
             echo "<b>function read</b><br>";
         }
         echo json_encode($result);
+    }
+    private function build_where()
+    {
+        $ary_where = array();
+        (!empty($this->strSqlWhere)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlWhere . ")" : $ary_where[] = "and (" . $this->strSqlWhere . ")") : "";
+        (!empty($this->strSqlSearch)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearch . ")" : $ary_where[] = "and (" . $this->strSqlSearch . ")") : "";
+        (!empty($this->strSqlSearchColumn)) ? (empty($ary_where) ? $ary_where[] = "(" . $this->strSqlSearchColumn . ")" : $ary_where[] = "and (" . $this->strSqlSearchColumn . ")") : "";
+        return $ary_where;
+    }
+    private function count_records(
+        $filter = false
+    ) {
+        if ($filter) {
+            $where = !empty($this->build_where()) ? $ary_sql[] = "where " . implode(" ", $this->build_where()) : "";
+            return "select count(*) from (select distinct (" . $this->arycolumns_id["DT_RowId"] . ") " . $this->strSqlFrom . " " . $where . ") tmp";
+        } else {
+            return "select count(*) from (select distinct (" . $this->arycolumns_id["DT_RowId"] . ") " . $this->strSqlFrom . ") tmp";
+        }
     }
 }

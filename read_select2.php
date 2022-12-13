@@ -4,7 +4,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 use App\webutility_ssp;
 use App\database_tools;
 
-$obj_ssp = new webutility_ssp($debug = false);
+$obj_ssp = new webutility_ssp(false); // debug mode
 $obj_mysqli = new database_tools();
 $data = json_decode($_POST["select2"], true);
 $search = (isset($_POST['search'])) ? true : false;

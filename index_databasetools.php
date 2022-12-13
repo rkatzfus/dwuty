@@ -21,6 +21,8 @@ use App\database_tools;
     $obj_mysqli->sql2array_pk_value($sql, "ID", "TEXT");
     $sql = "update MYSQL_DATABASE.root_table set del = 1 where ID = 1";
     $obj_mysqli->sql_exec_no_result($sql);
+    $sql = "select ID, DEL, TEXT, CHECKBOX from MYSQL_DATABASE.root_table;";
+    $obj_mysqli->chk_stmnt($sql);
     ?>
 </body>
 

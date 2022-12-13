@@ -22,15 +22,6 @@ class database_tools
     {
         $this->mysqli_conn->close();
     }
-    public function post_encode(
-        $aryIncoming = array()
-    ) {
-        if (!empty($aryIncoming)) {
-            return json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-        } else {
-            return "no matching data delivered";
-        }
-    }
     public function sql_getfield(
         $sql = ""
     ) {
@@ -107,6 +98,20 @@ class database_tools
                 echo "<hr>";
             } else {
                 mysqli_query($this->mysqli_conn, $sql);
+            }
+        }
+    }
+    public function chk_stmnt(
+        $sql = ""
+    ) {
+        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+            $result = (mysqli_num_rows(mysqli_query($this->mysqli_conn, $sql)) <> 0) ? true : false;
+            if ($this->debug == true) {
+                echo "<b>chk_stmnt</b>";
+                var_dump($result);
+                echo "<hr>";
+            } else {
+                return $result;
             }
         }
     }
