@@ -260,9 +260,9 @@ class webutility_ssp
     ) {
         if ($filter) {
             $where = !empty($this->build_where()) ? $ary_sql[] = "where " . implode(" ", $this->build_where()) : "";
-            return "select count(*) from (select distinct (" . $this->arycolumns_id["DT_RowId"] . ") " . $this->strSqlFrom . " " . $where . ") tmp";
+            return "select count(distinct " . $this->arycolumns_id["DT_RowId"] . ")" . $this->strSqlFrom . " " . $where;
         } else {
-            return "select count(*) from (select distinct (" . $this->arycolumns_id["DT_RowId"] . ") " . $this->strSqlFrom . ") tmp";
+            return "select count(distinct " . $this->arycolumns_id["DT_RowId"] . ")" . $this->strSqlFrom;
         }
     }
 }
