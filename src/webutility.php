@@ -37,8 +37,9 @@ class webutility
         $ajax  = array(),
         $pkfield  = ""
     ) {
-        $this->obj_mysqli = new database_tools();
-        $this->obj_ssp = new webutility_ssp($debug = false);
+        $this->obj_tools = new tools(false); // debug Mode
+        $this->obj_database_tools = new database_tools();
+        $this->webutility_ssp = new webutility_ssp(false); // debug Mode
         $this->ajax_read_where = "";
         $this->tbl_ID = $tbl_ID;
         $this->pkfield = $pkfield;
@@ -49,26 +50,26 @@ class webutility
                 switch ($ajax_key) {
                     case "read":
                         $this->ajax_read_url = $ajax_value["url"];
-                        $this->ajax_read_datasource = $this->post_encode($ajax_value["datasource"]);
+                        $this->ajax_read_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
                         $read = true;
                         break;
                     case "insert":
                         $this->ajax_insert_url = $ajax_value["url"];
-                        $this->ajax_insert_datasource = $this->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["fade_out"])) ? $this->ajax_insert_fade_out = $this->post_encode($ajax_value["fade_out"]) : "";
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
-                        (isset($ajax_value["check"])) ? $this->ajax_insert_check = $this->post_encode($ajax_value["check"]) : $this->ajax_insert_check = "false";
+                        $this->ajax_insert_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["fade_out"])) ? $this->ajax_insert_fade_out = $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        (isset($ajax_value["check"])) ? $this->ajax_insert_check = $this->obj_tools->post_encode($ajax_value["check"]) : $this->ajax_insert_check = "false";
                         $this->button_column = true;
                         break;
                     case "update":
                         $this->ajax_update_url =  $ajax_value["url"];
-                        $this->ajax_update_datasource = $this->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_update_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
                         break;
                     case "delete":
                         $this->ajax_delete_url = $ajax_value["url"];
-                        $this->ajax_delete_datasource = $this->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_delete_dropdown_multi = $this->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_delete_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
+                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_delete_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
                         $this->button_column = true;
                         break;
                     default:
@@ -369,10 +370,10 @@ class webutility
                                 type: "POST",
                                 dataType: "json",
                                 data: {
-                                    pkfield: <?= $this->post_encode($this->pkfield); ?>,
-                                    datasource: <?= $this->post_encode($this->ajax_read_datasource); ?>,
-                                    where: <?= $this->post_encode($this->ajax_read_where); ?>,
-                                    columnsdata: <?= $this->post_encode($columnsdata); ?>
+                                    pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
+                                    datasource: <?= $this->obj_tools->post_encode($this->ajax_read_datasource); ?>,
+                                    where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
+                                    columnsdata: <?= $this->obj_tools->post_encode($columnsdata); ?>
                                 }
                             },
                             rowId: "DT_RowId",
@@ -449,7 +450,7 @@ class webutility
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->post_encode($column["JSON"]); ?>;
+                                                aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
                                                 select = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>', {})
                                                 if (data != 0 && data != null) {
                                                     option = $("<option>" + aryJson[data] + "</option>");
@@ -465,7 +466,7 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->post_encode($column["JSON"]); ?>;
+                                                aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
                                                 select = $('<select class="SELECT2_<?= $column["NAME"]; ?>" multiple></select>', {})
                                                 if (data != 0 && data != null) {
                                                     var myData = data.split(",");
@@ -556,7 +557,7 @@ class webutility
                                                     query = {
                                                         search: params.term,
                                                         type: "public",
-                                                        select2: <?= $this->post_encode($select2data); ?>,
+                                                        select2: <?= $this->obj_tools->post_encode($select2data); ?>,
                                                     }
                                                     return query;
                                                 },
@@ -586,10 +587,10 @@ class webutility
                                     type: "POST",
                                     dataType: "json",
                                     data: {
-                                        pkfield: <?= $this->post_encode($this->pkfield); ?>,
+                                        pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
-                                        datasource: <?= $this->post_encode($this->ajax_delete_datasource); ?>,
-                                        dropdown_multi: <?= $this->post_encode($this->ajax_delete_dropdown_multi); ?>
+                                        datasource: <?= $this->obj_tools->post_encode($this->ajax_delete_datasource); ?>,
+                                        dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>
                                     }
                                 });
                                 $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -631,31 +632,31 @@ class webutility
                 foreach ($arySetting as $arySetting_key => $arySetting_value) {
                     switch ($arySetting_key) {
                         case "MODAL":
-                            $this->columns[$column_key]["SQLNAME"] = "concat('" . $this->post_encode($arySetting["MODAL"]) . "')";
-                            $this->columns[$column_key]["MODAL"] = $this->post_encode($arySetting["MODAL"]);
+                            $this->columns[$column_key]["SQLNAME"] = "concat('" . $this->obj_tools->post_encode($arySetting["MODAL"]) . "')";
+                            $this->columns[$column_key]["MODAL"] = $this->obj_tools->post_encode($arySetting["MODAL"]);
                             break;
                         case "SELECT2": // // setting 4 select2 dropdown
                             switch ($Typ) {
                                 case 6: // DROPDOWN
                                     $aryColumns = $arySetting["SELECT2"]["columns"];
-                                    $this->obj_ssp->set_length(-1); // remove length & paging
-                                    $this->obj_ssp->set_Select($aryColumns);
-                                    $this->obj_ssp->set_From($arySetting["SELECT2"]["from"]);
-                                    (isset($arySetting["SELECT2"]["where"])) ? $this->obj_ssp->set_Where($arySetting["SELECT2"]["where"]) : $this->obj_ssp->set_Where();
-                                    $sql = $this->obj_ssp->set_data_sql();
-                                    $ary_Select2Initial = $this->obj_mysqli->sql2array_pk_value($sql, "id", "text");
+                                    $this->webutility_ssp->set_length(-1); // remove length & paging
+                                    $this->webutility_ssp->set_select($aryColumns);
+                                    $this->webutility_ssp->set_from($arySetting["SELECT2"]["from"]);
+                                    (isset($arySetting["SELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SELECT2"]["where"]) : $this->webutility_ssp->set_where();
+                                    $sql = $this->webutility_ssp->set_data_sql();
+                                    $ary_Select2Initial = $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
                                     $this->columns[$column_key]["JSON"] = $ary_Select2Initial;
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     $this->columns[$column_key]["SQLNAME"] = "group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',')";
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
                                     $aryColumns = $arySetting["SUBSELECT2"]["columns"];
-                                    $this->obj_ssp->set_length(-1); // remove length & paging
-                                    $this->obj_ssp->set_Select($aryColumns);
-                                    $this->obj_ssp->set_From($arySetting["SUBSELECT2"]["from"]);
-                                    (isset($arySetting["SUBSELECT2"]["where"])) ? $this->obj_ssp->set_Where($arySetting["SUBSELECT2"]["where"]) : $this->obj_ssp->set_Where();
-                                    $sql = $this->obj_ssp->set_data_sql();
-                                    $ary_Select2Initial = $this->obj_mysqli->sql2array_pk_value($sql, "id", "text");
+                                    $this->webutility_ssp->set_length(-1); // remove length & paging
+                                    $this->webutility_ssp->set_select($aryColumns);
+                                    $this->webutility_ssp->set_from($arySetting["SUBSELECT2"]["from"]);
+                                    (isset($arySetting["SUBSELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SUBSELECT2"]["where"]) : $this->webutility_ssp->set_where();
+                                    $sql = $this->webutility_ssp->set_data_sql();
+                                    $ary_Select2Initial = $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
                                     $this->columns[$column_key]["JSON"] = $ary_Select2Initial;
                                     $this->columns[$column_key]["SUBSELECT2"] = $arySetting["SUBSELECT2"];
                                     break;
@@ -678,53 +679,6 @@ class webutility
         $strsqlwhere = ""
     ) {
         $this->ajax_read_where = $strsqlwhere;
-    }
-    public function post_encode(
-        $aryIncoming = array()
-    ) {
-        if (!empty($aryIncoming)) {
-            return json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-        } else {
-            return "no matching data delivered";
-        }
-    }
-    public function encrypt(
-        $data = "",
-        $password = ""
-    ) {
-        $iv = substr(sha1(mt_rand()), 0, 16);
-        $password = sha1($password);
-        $salt = sha1(mt_rand());
-        $saltWithPassword = hash("sha256", $password . $salt);
-        $encrypted = openssl_encrypt(
-            $data,
-            "aes-256-cbc",
-            $saltWithPassword,
-            0,
-            $iv
-        );
-        $msg_encrypted_bundle = "$iv:$salt:$encrypted";
-        return $msg_encrypted_bundle;
-    }
-    public function decrypt(
-        $msg_encrypted_bundle = "",
-        $password = ""
-    ) {
-        $password = sha1($password);
-        $components = explode(":", $msg_encrypted_bundle);
-        $iv            = $components[0];
-        $salt          = hash("sha256", $password . $components[1]);
-        $encrypted_msg = $components[2];
-        $decrypted_msg = openssl_decrypt(
-            $encrypted_msg,
-            "aes-256-cbc",
-            $salt,
-            0,
-            $iv
-        );
-        if ($decrypted_msg === false)
-            return false;
-        return $decrypted_msg;
     }
 }
 ?>
