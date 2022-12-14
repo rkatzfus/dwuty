@@ -395,8 +395,9 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
                                                 html = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
-                                                if (<?= $column["ACTION"]; ?> != 2) {
+                                                if (content_edit) {
                                                     html.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
@@ -409,18 +410,32 @@ class webutility
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
-                                                if (data !== null) {
-                                                    return '<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '" title="' + data + '">';
-                                                } else {
-                                                    return '';
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
+                                                html = $('<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                if (content_edit) {
+                                                    html.attr("disabled", "true");
                                                 }
+                                                if (data !== null) {
+                                                    html.attr("value", data);
+                                                    html.attr("title", data);
+                                                }
+                                                return html.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                is_checked = (data == true) ? "checked" : "";
-                                                return '<div class="form-switch"><input class="form-check-input" type="checkbox" style="box-shadow: none;" ' + is_checked + '></div>';
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
+                                                innerhtml = $('<input class="form-check-input" type="checkbox" style="box-shadow: none;">');
+                                                outerhtml = $('<div class="form-switch"></div>');
+                                                if (data == true) {
+                                                    innerhtml.attr("checked", "true");
+                                                }
+                                                if (content_edit) {
+                                                    innerhtml.attr("disabled", "true");
+                                                }
+                                                outerhtml.append(innerhtml);
+                                                return outerhtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;

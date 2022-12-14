@@ -61,7 +61,7 @@ $obj_database_tools = new database_tools();
 			)
 		);
 		$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", EDIT, TEXT);
-		$obj_webutility->new_column("root.EMAIL", "EMAIL", "column: EMAIL", EDIT, EMAIL);
+		$obj_webutility->new_column("root.EMAIL", "EMAIL", "column: EMAIL", VIEW, EMAIL);
 		$obj_webutility->new_column("root.CHECKBOX", "CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
 		$obj_webutility->new_column("root.LINK", "LINK", "column: LINK", EDIT, LINK);
 		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", VIEW, LINK_BUTTON);
