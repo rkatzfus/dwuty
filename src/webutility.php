@@ -56,20 +56,20 @@ class webutility
                     case "insert":
                         $this->ajax_insert_url = $ajax_value["url"];
                         $this->ajax_insert_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["fade_out"])) ? $this->ajax_insert_fade_out = $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_insert_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
-                        (isset($ajax_value["check"])) ? $this->ajax_insert_check = $this->obj_tools->post_encode($ajax_value["check"]) : $this->ajax_insert_check = "false";
+                        $this->ajax_insert_fade_out = (isset($ajax_value["fade_out"])) ? $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
+                        $this->ajax_insert_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_insert_check = (isset($ajax_value["check"])) ? $this->obj_tools->post_encode($ajax_value["check"]) : false;
                         $this->button_column = true;
                         break;
                     case "update":
                         $this->ajax_update_url =  $ajax_value["url"];
                         $this->ajax_update_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_update_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_update_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
                         break;
                     case "delete":
                         $this->ajax_delete_url = $ajax_value["url"];
                         $this->ajax_delete_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        (isset($ajax_value["dropdown_multi"])) ? $this->ajax_delete_dropdown_multi = $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_delete_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
                         $this->button_column = true;
                         break;
                     default:
@@ -94,15 +94,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        if (isset($this->ajax_insert_url)) {
-                    ?>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-outline-primary btn-sm" title="Datensatz anlegen" name="add_<?= $this->tbl_ID; ?>" id="add_<?= $this->tbl_ID; ?>" style="box-shadow: none;width: 80px;" data-ajaxdefault="">
-                                    <b>anlegen</b>
-                                </button>
-                            </div>
-                    <?php
-                        }
+                        (isset($this->ajax_insert_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' name='add_" . $this->tbl_ID . "' id='add_" . $this->tbl_ID . "' style='box-shadow: none' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -135,6 +127,13 @@ class webutility
         }
     ?>
         <footer>
+            <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="/vendor/datatables.net/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables.net/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+            <script src="/vendor/datatables.net/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+            <script src="/vendor/datatables.net/datatables.net-fixedheader-bs5/js/fixedHeader.bootstrap5.min.js"></script>
+            <script src="/vendor/select2/select2/dist/js/select2.min.js"></script>
+            <script src="/vendor/select2/select2/dist/js/i18n/de.js"></script>
             <script type="text/javascript">
                 $(document).ready(function() {
                     function read_data_<?= $this->tbl_ID; ?>() {
@@ -321,7 +320,10 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    ($columns_value["ACTION"] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
+
+
+                                    // (isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
+                                    // ($columns_value["ACTION"] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -393,11 +395,15 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
-                                                if (data !== null) {
-                                                    return '<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '" title="' + data + '">';
-                                                } else {
-                                                    return '';
+                                                html = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                if (<?= $column["ACTION"]; ?> != 2) {
+                                                    html.attr("disabled", "true");
                                                 }
+                                                if (data !== null) {
+                                                    html.attr("value", data);
+                                                    html.attr("title", data);
+                                                }
+                                                return html.prop("outerHTML");
                                             }
                                         <?php
                                             break;
@@ -596,6 +602,29 @@ class webutility
                                 $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
                                 read_data_<?= $this->tbl_ID; ?>();
                             }
+                        });
+                    <?php
+                    }
+                    if (isset($this->ajax_update_url)) {
+                    ?>
+                        alert("<?= $this->ajax_update_url; ?>");
+                        $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
+                            alert("blur");
+                            // if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
+                            //     $.ajax({
+                            //         url: "<#?= $this->ajax_delete_url; ?>",
+                            //         type: "POST",
+                            //         dataType: "json",
+                            //         data: {
+                            //             pkfield: <#?= $this->obj_tools->post_encode($this->pkfield); ?>,
+                            //             pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
+                            //             datasource: <#?= $this->obj_tools->post_encode($this->ajax_delete_datasource); ?>,
+                            //             dropdown_multi: <#?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>
+                            //         }
+                            //     });
+                            //     $("#<#?= $this->tbl_ID; ?>").DataTable().destroy();
+                            //     read_data_<#?= $this->tbl_ID; ?>();
+                            // }
                         });
                     <?php
                     }

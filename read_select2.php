@@ -5,7 +5,6 @@ use App\tools;
 use App\webutility_ssp;
 use App\database_tools;
 
-
 $obj_tools = new tools(false); // debug mode
 $obj_webutility_ssp = new webutility_ssp(false); // debug mode
 $obj_database_tools = new database_tools();

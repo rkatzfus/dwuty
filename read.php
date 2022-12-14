@@ -3,8 +3,8 @@ require_once __DIR__ . "/vendor/autoload.php";
 
 use App\webutility_ssp;
 
+$obj_webutility_ssp = new webutility_ssp(false); // debug mode
 $pkfield = $_POST["pkfield"];
-$obj_ssp = new webutility_ssp(false); // debug mode
 $arySearchColumn = array();
 $strSqlSearchColumn = "";
 $aryColumns[] =
@@ -76,16 +76,16 @@ if (!empty($_POST["search"]["value"])) {
 if (!empty($arySearchColumn)) {
     $strSqlSearchColumn = implode(" and ", $arySearchColumn);
 }
-$obj_ssp->set_length($_POST["length"]);
-$obj_ssp->set_draw($_POST["draw"]);
-$obj_ssp->set_order($_POST["order"], $_POST["columns"], "");
-$obj_ssp->set_columns($aryColumns);
-$obj_ssp->set_select($aryColumns);
-$obj_ssp->set_from($strSqlFrom);
-$obj_ssp->set_groupBy($aryGroupBy);
-$obj_ssp->set_where($_POST["where"]);
-$obj_ssp->set_search($strSqlSearch);
-$obj_ssp->set_searchColumn($strSqlSearchColumn);
-$obj_ssp->set_start($_POST["start"]);
-$obj_ssp->set_data_sql();
-$obj_ssp->read();
+$obj_webutility_ssp->set_length($_POST["length"]);
+$obj_webutility_ssp->set_draw($_POST["draw"]);
+$obj_webutility_ssp->set_order($_POST["order"], $_POST["columns"], "");
+$obj_webutility_ssp->set_columns($aryColumns);
+$obj_webutility_ssp->set_select($aryColumns);
+$obj_webutility_ssp->set_from($strSqlFrom);
+$obj_webutility_ssp->set_groupBy($aryGroupBy);
+$obj_webutility_ssp->set_where($_POST["where"]);
+$obj_webutility_ssp->set_search($strSqlSearch);
+$obj_webutility_ssp->set_searchColumn($strSqlSearchColumn);
+$obj_webutility_ssp->set_start($_POST["start"]);
+$obj_webutility_ssp->set_data_sql();
+$obj_webutility_ssp->read();

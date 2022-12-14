@@ -33,17 +33,9 @@ $obj_database_tools = new database_tools();
 				)
 			)
 		);
-		// $array_AJAX_xxxTESTxxx["delete"] = array(
-		// 	"url" => "/vendor/datatableswebutility/dwuty/delete.php"
-		// 	, "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
-		// 	, "dropdown_multi" => array(
-		// 		$datREF_ROOT_ID => array(
-		// 			"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref"
-		// 			, "primarykey" => "ref.REF_ROOT"
-		// 			, "valuekey" => "ref.REF_DROPDOWN_MULTI"
-		// 		)
-		// 	)
-		// );
+		$array_AJAX_xxxTESTxxx["update"] = array(
+			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
+		);
 		$obj_webutility = new webutility("dte_xxxTESTxxx", $array_AJAX_xxxTESTxxx, $pkfield_xxxTESTxxx);
 		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
 		$obj_webutility->set_where($strsqlWhere_xxxTESTxxx);
@@ -68,10 +60,10 @@ $obj_database_tools = new database_tools();
 				), "from" => "MYSQL_DATABASE.dropdown_multi_lookup_table dropdown_multi", "where" => "dropdown_multi.DEL<>1"
 			)
 		);
-		$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", VIEW, TEXT);
-		$obj_webutility->new_column("root.EMAIL", "EMAIL", "column: EMAIL", VIEW, EMAIL);
-		$obj_webutility->new_column("root.CHECKBOX", "CHECKBOX", "column: CHECKBOX", VIEW, CHECKBOX, $arySetting_CHECKBOX);
-		$obj_webutility->new_column("root.LINK", "LINK", "column: LINK", VIEW, LINK);
+		$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", EDIT, TEXT);
+		$obj_webutility->new_column("root.EMAIL", "EMAIL", "column: EMAIL", EDIT, EMAIL);
+		$obj_webutility->new_column("root.CHECKBOX", "CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
+		$obj_webutility->new_column("root.LINK", "LINK", "column: LINK", EDIT, LINK);
 		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", VIEW, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "COLOR", "column: COLOR", VIEW, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "DROPDOWN", "column: DROPDOWN", VIEW, DROPDOWN, $arySetting_DROPDOWN);
@@ -85,19 +77,9 @@ $obj_database_tools = new database_tools();
 	<?php
 	$obj_webutility->config(
 		$defOrderby_xxxTESTxxx,
-		"asc",
-		"fixedHeader: true"
+		"asc"
 	);
 	?>
-	<footer>
-		<script src="/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="/vendor/datatables.net/datatables.net/js/jquery.dataTables.min.js"></script>
-		<script src="/vendor/datatables.net/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-		<script src="/vendor/datatables.net/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-		<script src="/vendor/datatables.net/datatables.net-fixedheader-bs5/js/fixedHeader.bootstrap5.min.js"></script>
-		<script src="/vendor/select2/select2/dist/js/select2.min.js"></script>
-		<script src="/vendor/select2/select2/dist/js/i18n/de.js"></script>
-	</footer>
 </body>
 
 </html>
