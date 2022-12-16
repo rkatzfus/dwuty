@@ -320,8 +320,6 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    // (isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
-                                    // ($columns_value["ACTION"] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -408,7 +406,7 @@ class webutility
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
                                                 html = $('<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
                                                 if (content_edit) {
                                                     html.attr("disabled", "true");
@@ -457,7 +455,7 @@ class webutility
                                             break;
                                         case 4: // LINK_BUTTON
                                         ?> render: function(data) {
-                                                if (data !== null) {
+                                                if (data) {
                                                     return '<a class="btn btn-outline-primary form-control" href="' + data + '" title="' + data + '" target="_blank" rel="noopener" role="button" style="box-shadow: none;">Link</a>';
                                                 } else {
                                                     return '';
@@ -482,58 +480,68 @@ class webutility
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                innerhtml = $('<option>' + <?= $this->obj_tools->post_encode($column["JSON"]); ?>[data] + '</option>');
                                                 outerhtml = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>');
                                                 if (content_edit) {
                                                     outerhtml.attr("disabled", "true");
                                                 }
-                                                outerhtml.append(innerhtml);
+                                                if (data) {
+                                                    innerhtml = $('<option>' + <?= $this->obj_tools->post_encode($column["JSON"]); ?>[data] + '</option>');
+                                                    outerhtml.append(innerhtml);
+                                                }
                                                 return outerhtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
                                                 aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
-                                                select = $('<select class="SELECT2_<?= $column["NAME"]; ?>" multiple></select>', {})
-                                                if (data != 0 && data != null) {
+                                                outerhtml = $('<select class="SELECT2_<?= $column["NAME"]; ?>" multiple></select>');
+                                                if (content_edit) {
+                                                    outerhtml.attr("disabled", "true");
+                                                }
+                                                if (data) {
                                                     var myData = data.split(",");
                                                     myData.forEach(function(myDataElement) {
-                                                        option = $("<option selected>" + aryJson[myDataElement] + "</option>");
-                                                        option.attr("value", myDataElement);
-                                                        select.append(option);
-                                                        select.attr("data-search", myDataElement);
+                                                        innerhtml = $("<option selected>" + aryJson[myDataElement] + "</option>");
+                                                        innerhtml.attr("value", myDataElement);
+                                                        outerhtml.append(innerhtml);
                                                     });
+
                                                 }
-                                                return select.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;
                                         case 8: // DATE
                                         ?> render: function(data) {
-                                                if (data !== null) {
-                                                    return '<input type="date" class="form-control" style="text-align: right; box-shadow: none;" value="' + data + '">';
-                                                } else {
-                                                    return '';
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                html = $('<input type="date" class="form-control" style="text-align: right; box-shadow: none;">');
+                                                if (content_edit) {
+                                                    html.attr("disabled", "true");
                                                 }
+                                                if (data !== null) {
+                                                    html.attr("value", data);
+                                                }
+                                                return html.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 9: // DATETIME
                                         ?> render: function(data) {
-                                                if (data !== null) {
-                                                    return '<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" value="' + data.replace(" ", "T") + '" step="1">';
-                                                } else {
-                                                    return '';
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                html = $('<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" step="1">');
+                                                if (content_edit) {
+                                                    html.attr("disabled", "true");
                                                 }
+                                                if (data !== null) {
+                                                    html.attr("value", data.replace(" ", "T"));
+                                                }
+                                                return html.prop("outerHTML");
                                             }
                                     <?php
                                             break;
-                                        default:
-                                            # code...
-                                            break;
                                     }
-                                    // isset($column["DT_CONFIG"])?$column["DT_CONFIG"]:"";
                                     echo "},";
                                 }
                                 if (isset($this->ajax_delete_url)) {
@@ -543,7 +551,6 @@ class webutility
                                         className: "align-middle",
                                         render: function(data) {
                                             return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
-                                            console.log(data);
                                         }
                                     }
                                 <?php
@@ -660,12 +667,6 @@ class webutility
         $Typ = 0,
         $arySetting = array()
     ) {
-        if ($Typ == 4) {
-            $Action = 0;
-        }
-        // if ($Typ == 2 || $Typ == 8) {
-        //     $Action = 0;
-        // }
         $orderable = isset($arySetting["ORDERABLE"]) ? $arySetting["ORDERABLE"] : true;
         $searchable = isset($arySetting["SEARCHABLE"]) ? $arySetting["SEARCHABLE"] : true;
         $dtconfig = isset($arySetting["DT_CONFIG"]) ? $arySetting["DT_CONFIG"] : "";
