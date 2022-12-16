@@ -320,6 +320,7 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
+                                    isset($this->ajax_update_url) ? $classname[] = "update_" . $this->tbl_ID : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -392,30 +393,30 @@ class webutility
                                         case 0: // TEXT
                                 ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                html = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                outerhtml = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
                                                 if (content_edit) {
-                                                    html.attr("disabled", "true");
+                                                    outerhtml.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
-                                                    html.attr("value", data);
-                                                    html.attr("title", data);
+                                                    outerhtml.attr("value", data);
+                                                    outerhtml.attr("title", data);
                                                 }
-                                                return html.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                html = $('<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                outerhtml = $('<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
                                                 if (content_edit) {
-                                                    html.attr("disabled", "true");
+                                                    outerhtml.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
-                                                    html.attr("value", data);
-                                                    html.attr("title", data);
+                                                    outerhtml.attr("value", data);
+                                                    outerhtml.attr("title", data);
                                                 }
-                                                return html.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
@@ -466,14 +467,14 @@ class webutility
                                         case 5: // COLOR
                                         ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                html = $('<input type="color" style="box-shadow: none;">');
+                                                outerhtml = $('<input type="color" style="box-shadow: none;">');
                                                 if (data !== null) {
-                                                    html.attr("value", data);
+                                                    outerhtml.attr("value", data);
                                                 }
                                                 if (content_edit) {
-                                                    html.attr("disabled", "true");
+                                                    outerhtml.attr("disabled", "true");
                                                 }
-                                                return html.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
@@ -516,28 +517,28 @@ class webutility
                                         case 8: // DATE
                                         ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                html = $('<input type="date" class="form-control" style="text-align: right; box-shadow: none;">');
+                                                outerhtml = $('<input type="date" class="form-control" style="text-align: right; box-shadow: none;">');
                                                 if (content_edit) {
-                                                    html.attr("disabled", "true");
+                                                    outerhtml.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
-                                                    html.attr("value", data);
+                                                    outerhtml.attr("value", data);
                                                 }
-                                                return html.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 9: // DATETIME
                                         ?> render: function(data) {
                                                 content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                html = $('<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" step="1">');
+                                                outerhtml = $('<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" step="1">');
                                                 if (content_edit) {
-                                                    html.attr("disabled", "true");
+                                                    outerhtml.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
-                                                    html.attr("value", data.replace(" ", "T"));
+                                                    outerhtml.attr("value", data.replace(" ", "T"));
                                                 }
-                                                return html.prop("outerHTML");
+                                                return outerhtml.prop("outerHTML");
                                             }
                                     <?php
                                             break;
@@ -632,9 +633,13 @@ class webutility
                     <?php
                     }
                     if (isset($this->ajax_update_url)) {
-                    ?> alert("<?= $this->ajax_update_url; ?>");
-                        $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
-                            alert("blur");
+                    ?>
+                        $(document).on("change", ".update_<?= $this->tbl_ID; ?>", function() {
+                            rowid = $(this).closest("tr").attr("id").replace("row_", "");
+                            if (rowid) {
+                                alert(rowid);
+                            }
+
                             // if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
                             //     $.ajax({
                             //         url: "<#?= $this->ajax_delete_url; ?>",
