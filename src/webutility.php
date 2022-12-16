@@ -320,8 +320,6 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-
-
                                     // (isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
                                     // ($columns_value["ACTION"] == 2 && isset($this->ajax_update_url)) ? $classname[] = "contenteditable" : "";
                                     switch ($columns_value["TYP"]) {
@@ -395,7 +393,7 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
                                                 html = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
                                                 if (content_edit) {
                                                     html.attr("disabled", "true");
@@ -425,7 +423,7 @@ class webutility
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2;
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
                                                 innerhtml = $('<input class="form-check-input" type="checkbox" style="box-shadow: none;">');
                                                 outerhtml = $('<div class="form-switch"></div>');
                                                 if (data == true) {
@@ -441,11 +439,19 @@ class webutility
                                             break;
                                         case 3: // LINK
                                         ?> render: function(data) {
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                innerhtml = $('<input type="url" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                outerhtml = $('<a target="_blank" rel="noopener"></a>');
                                                 if (data !== null) {
-                                                    return '<a href="' + data + '" title="' + data + '" target="_blank" rel="noopener"><input type="url" class="form-control" style="border: none; background: transparent; box-shadow: none;" value="' + data + '"></a>';
-                                                } else {
-                                                    return '';
+                                                    innerhtml.attr("value", data);
+                                                    outerhtml.attr("href", data);
+                                                    outerhtml.attr("title", data);
                                                 }
+                                                if (content_edit) {
+                                                    innerhtml.attr("disabled", "true");
+                                                }
+                                                outerhtml.append(innerhtml);
+                                                return outerhtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
@@ -461,27 +467,28 @@ class webutility
                                             break;
                                         case 5: // COLOR
                                         ?> render: function(data) {
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                html = $('<input type="color" style="box-shadow: none;">');
                                                 if (data !== null) {
-                                                    return '<input type="color" style="box-shadow: none;" value="' + data + '">';
-                                                } else {
-                                                    return '';
+                                                    html.attr("value", data);
                                                 }
+                                                if (content_edit) {
+                                                    html.attr("disabled", "true");
+                                                }
+                                                return html.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
-                                                select = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>', {})
-                                                if (data != 0 && data != null) {
-                                                    option = $("<option>" + aryJson[data] + "</option>");
-                                                    option.attr("selected", "selected")
-                                                    select.append(option);
-                                                    option.attr("value", data);
-                                                    select.append(option);
-                                                    select.attr("data-search", data);
+                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                innerhtml = $('<option>' + <?= $this->obj_tools->post_encode($column["JSON"]); ?>[data] + '</option>');
+                                                outerhtml = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>');
+                                                if (content_edit) {
+                                                    outerhtml.attr("disabled", "true");
                                                 }
-                                                return select.prop("outerHTML");
+                                                outerhtml.append(innerhtml);
+                                                return outerhtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;
@@ -560,8 +567,6 @@ class webutility
                                         }
                                 ?>
                                         $(".SELECT2_<?= $column["NAME"]; ?>").select2({
-                                            disabled: false,
-                                            // disabled: <#?= (!isset($this->ajax_update_url))?"true":"false";?>,
                                             width: "100%",
                                             language: "de",
                                             placeholder: "Auswahl",
@@ -600,8 +605,7 @@ class webutility
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
                     if (isset($this->ajax_delete_url)) {
-                    ?>
-                        $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
+                    ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
                                 $.ajax({
                                     url: "<?= $this->ajax_delete_url; ?>",
@@ -621,8 +625,7 @@ class webutility
                     <?php
                     }
                     if (isset($this->ajax_update_url)) {
-                    ?>
-                        alert("<?= $this->ajax_update_url; ?>");
+                    ?> alert("<?= $this->ajax_update_url; ?>");
                         $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
                             alert("blur");
                             // if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
@@ -657,9 +660,12 @@ class webutility
         $Typ = 0,
         $arySetting = array()
     ) {
-        if ($Typ == 2 || $Typ == 8) {
+        if ($Typ == 4) {
             $Action = 0;
         }
+        // if ($Typ == 2 || $Typ == 8) {
+        //     $Action = 0;
+        // }
         $orderable = isset($arySetting["ORDERABLE"]) ? $arySetting["ORDERABLE"] : true;
         $searchable = isset($arySetting["SEARCHABLE"]) ? $arySetting["SEARCHABLE"] : true;
         $dtconfig = isset($arySetting["DT_CONFIG"]) ? $arySetting["DT_CONFIG"] : "";
