@@ -320,7 +320,7 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    isset($this->ajax_update_url) ? $classname[] = "update_" . $this->tbl_ID : "";
+                                    // isset($this->ajax_update_url) ? $classname[] = "update_" . $this->tbl_ID : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -401,6 +401,11 @@ class webutility
                                                 outerHtml = build_html(object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 return outerHtml.prop("outerHTML");
                                             }
@@ -417,6 +422,11 @@ class webutility
                                                 outerHtml = build_html(object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 return outerHtml.prop("outerHTML");
                                             }
@@ -438,6 +448,11 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     innerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        innerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 if (data == true) {
                                                     innerHtml.attr("checked", "true");
@@ -464,6 +479,11 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     innerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        innerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 outerHtml.append(innerHtml);
                                                 return outerHtml.prop("outerHTML");
@@ -501,6 +521,11 @@ class webutility
                                                 outerHtml = build_html(object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 return outerHtml.prop("outerHTML");
                                             }
@@ -521,6 +546,11 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 if (data) {
                                                     outerHtml.append(innerHtml);
@@ -540,6 +570,11 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 if (data) {
                                                     var myData = data.split(",");
@@ -564,6 +599,11 @@ class webutility
                                                 outerHtml = build_html(object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
                                                 return outerHtml.prop("outerHTML");
                                             }
@@ -579,8 +619,13 @@ class webutility
                                                 outerHtml = build_html(object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
+                                                } else {
+                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
+                                                    if (url) {
+                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
+                                                    }
                                                 }
-                                                if (data !== null) {
+                                                if (data) {
                                                     outerHtml.attr("value", data.replace(" ", "T"));
                                                 }
                                                 return outerHtml.prop("outerHTML");
