@@ -392,72 +392,98 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<input type="text" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                object = {
+                                                    Html: "<input type='text' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
+                                                    Attr: ["value", "title"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
-                                                if (data !== null) {
-                                                    outerhtml.attr("value", data);
-                                                    outerhtml.attr("title", data);
-                                                }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<input type="email" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
+                                                object = {
+                                                    Html: "<input type='email' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
+                                                    Attr: ["value", "title"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
-                                                if (data !== null) {
-                                                    outerhtml.attr("value", data);
-                                                    outerhtml.attr("title", data);
-                                                }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                innerhtml = $('<input class="form-check-input" type="checkbox" style="box-shadow: none;">');
-                                                outerhtml = $('<div class="form-switch"></div>');
-                                                if (data == true) {
-                                                    innerhtml.attr("checked", "true");
-                                                }
+                                                outer_object = {
+                                                    Html: "<div class='form-switch'></div>",
+                                                    Attr: ["value", "title"],
+                                                    data: data
+                                                };
+                                                inner_object = {
+                                                    Html: "<input class='form-check-input' type='checkbox' style='box-shadow: none;'>",
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                innerHtml = build_html(inner_object);
+                                                outerHtml = build_html(outer_object);
                                                 if (content_edit) {
-                                                    innerhtml.attr("disabled", "true");
+                                                    innerHtml.attr("disabled", "true");
                                                 }
-                                                outerhtml.append(innerhtml);
-                                                return outerhtml.prop("outerHTML");
+                                                if (data == true) {
+                                                    innerHtml.attr("checked", "true");
+                                                }
+                                                outerHtml.append(innerHtml);
+                                                return outerHtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;
                                         case 3: // LINK
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                innerhtml = $('<input type="url" class="form-control" style="border: none; background: transparent; box-shadow: none;">');
-                                                outerhtml = $('<a target="_blank" rel="noopener"></a>');
-                                                if (data !== null) {
-                                                    innerhtml.attr("value", data);
-                                                    outerhtml.attr("href", data);
-                                                    outerhtml.attr("title", data);
-                                                }
+                                                outer_object = {
+                                                    Html: "<a target='_blank' rel='noopener'></a>",
+                                                    Attr: ["href", "title"],
+                                                    data: data
+                                                };
+                                                inner_object = {
+                                                    Html: "<input type='url' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
+                                                    Attr: ["value"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                innerHtml = build_html(inner_object);
+                                                outerHtml = build_html(outer_object);
                                                 if (content_edit) {
-                                                    innerhtml.attr("disabled", "true");
+                                                    innerHtml.attr("disabled", "true");
                                                 }
-                                                outerhtml.append(innerhtml);
-                                                return outerhtml.prop("outerHTML");
+                                                outerHtml.append(innerHtml);
+                                                return outerHtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 4: // LINK_BUTTON
                                         ?> render: function(data) {
+                                                object = {
+                                                    Html: "<a class='btn btn-outline-primary form-control' target='_blank' rel='noopener' role='button' style='box-shadow: none;'>Link</a>",
+                                                    Attr: ["href", "title"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
+                                                if (content_edit) {
+                                                    outerHtml.addClass("disabled");
+                                                }
                                                 if (data) {
-                                                    return '<a class="btn btn-outline-primary form-control" href="' + data + '" title="' + data + '" target="_blank" rel="noopener" role="button" style="box-shadow: none;">Link</a>';
+                                                    return outerHtml.prop("outerHTML");
                                                 } else {
                                                     return '';
                                                 }
@@ -466,79 +492,98 @@ class webutility
                                             break;
                                         case 5: // COLOR
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<input type="color" style="box-shadow: none;">');
-                                                if (data !== null) {
-                                                    outerhtml.attr("value", data);
-                                                }
+                                                object = {
+                                                    Html: "<input type='color' style='box-shadow: none;'>",
+                                                    Attr: ["value"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<select class="SELECT2_<?= $column["NAME"]; ?>"></select>');
+                                                outer_object = {
+                                                    Html: "<select class='SELECT2_<?= $column['NAME']; ?>'></select>",
+                                                    data: data
+                                                };
+                                                inner_object = {
+                                                    Html: "<option>" + <?= $this->obj_tools->post_encode($column['JSON']); ?>[data] + "</option>",
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                innerHtml = build_html(inner_object);
+                                                outerHtml = build_html(outer_object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
                                                 if (data) {
-                                                    innerhtml = $('<option>' + <?= $this->obj_tools->post_encode($column["JSON"]); ?>[data] + '</option>');
-                                                    outerhtml.append(innerhtml);
+                                                    outerHtml.append(innerHtml);
                                                 }
-                                                return outerhtml.prop("outerHTML");
-                                            },
+                                                return outerHtml.prop("outerHTML");
+                                            }
                                         <?php
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                                                outer_object = {
+                                                    Html: "<select class='SELECT2_<?= $column['NAME']; ?>' multiple></select>",
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
                                                 aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
-                                                outerhtml = $('<select class="SELECT2_<?= $column["NAME"]; ?>" multiple></select>');
+                                                outerHtml = build_html(outer_object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
                                                 if (data) {
                                                     var myData = data.split(",");
                                                     myData.forEach(function(myDataElement) {
-                                                        innerhtml = $("<option selected>" + aryJson[myDataElement] + "</option>");
-                                                        innerhtml.attr("value", myDataElement);
-                                                        outerhtml.append(innerhtml);
+                                                        innerHtml = $("<option selected>" + aryJson[myDataElement] + "</option>");
+                                                        innerHtml.attr("value", myDataElement);
+                                                        outerHtml.append(innerHtml);
                                                     });
-
                                                 }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             },
                                         <?php
                                             break;
                                         case 8: // DATE
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<input type="date" class="form-control" style="text-align: right; box-shadow: none;">');
+                                                object = {
+                                                    Html: "<input type='date' class='form-control' style='text-align: right; box-shadow: none;'>",
+                                                    Attr: ["value"],
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
-                                                if (data !== null) {
-                                                    outerhtml.attr("value", data);
-                                                }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             }
                                         <?php
                                             break;
                                         case 9: // DATETIME
                                         ?> render: function(data) {
-                                                content_edit = parseInt(<?= $column["ACTION"]; ?>) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
-                                                outerhtml = $('<input type="datetime-local" class="form-control" style="text-align: right; box-shadow: none;" step="1">');
+                                                object = {
+                                                    Html: "<input type='datetime-local' class='form-control' style='text-align: right; box-shadow: none;' step='1'>",
+                                                    data: data
+                                                };
+                                                content_edit = content(<?= $column["ACTION"]; ?>);
+                                                outerHtml = build_html(object);
                                                 if (content_edit) {
-                                                    outerhtml.attr("disabled", "true");
+                                                    outerHtml.attr("disabled", "true");
                                                 }
                                                 if (data !== null) {
-                                                    outerhtml.attr("value", data.replace(" ", "T"));
+                                                    outerHtml.attr("value", data.replace(" ", "T"));
                                                 }
-                                                return outerhtml.prop("outerHTML");
+                                                return outerHtml.prop("outerHTML");
                                             }
                                     <?php
                                             break;
@@ -549,7 +594,7 @@ class webutility
                                     ?> {
                                         orderable: false,
                                         searchable: false,
-                                        className: "align-middle",
+                                        className: "text-center align-middle",
                                         render: function(data) {
                                             return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
                                         }
@@ -636,9 +681,11 @@ class webutility
                     ?>
                         $(document).on("change", ".update_<?= $this->tbl_ID; ?>", function() {
                             rowid = $(this).closest("tr").attr("id").replace("row_", "");
-                            if (rowid) {
-                                alert(rowid);
-                            }
+                            // var table = $("#<#?= $this->tbl_ID; ?>").DataTable();
+                            // console.log(table);
+                            // if (rowid) {
+                            //     alert(rowid);
+                            // }
 
                             // if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
                             //     $.ajax({
@@ -660,6 +707,23 @@ class webutility
                     }
                     ?>
                 });
+
+                function content(object = '') {
+                    return parseInt(object) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
+                }
+
+                function build_html(object = '') {
+                    html = $(object["Html"]);
+                    attr = object["Attr"];
+                    data = object["data"];
+                    if (data && attr) {
+                        const iterator = attr.values();
+                        for (const value of iterator) {
+                            html.attr(value, data);
+                        }
+                    }
+                    return html;
+                }
             </script>
         </footer>
 <?php
