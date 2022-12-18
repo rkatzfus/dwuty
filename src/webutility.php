@@ -322,8 +322,17 @@ class webutility
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
                                     switch ($columns_value["TYP"]) {
+                                        case 0: // TEXT
+                                            $classname[] = "align-middle";
+                                            break;
+                                        case 1: // EMAIL
+                                            $classname[] = "align-middle";
+                                            break;
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
+                                            $classname[] = "align-middle";
+                                            break;
+                                        case 3: // LINK
                                             $classname[] = "align-middle";
                                             break;
                                         case 4: // LINK_BUTTON
