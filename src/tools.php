@@ -17,12 +17,12 @@ class tools
         if (!empty($aryIncoming)) {
             $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
         } else {
-            $result = "no matching data delivered";
+            $result = false;
         }
         if ($this->debug == true) {
             echo "<hr>";
             echo "<b>function post_encode</b><br> ";
-            echo $result;
+            var_dump($result);
         } else {
             return $result;
         }

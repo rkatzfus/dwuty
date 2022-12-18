@@ -64,12 +64,13 @@ class webutility
                     case "update":
                         $this->ajax_update_url =  $ajax_value["url"];
                         $this->ajax_update_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->ajax_update_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_update_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : false;
+                        $this->ajax_update_bypass = (isset($ajax_value["bypass"])) ? $this->obj_tools->post_encode($ajax_value["bypass"]) : false;
                         break;
                     case "delete":
                         $this->ajax_delete_url = $ajax_value["url"];
                         $this->ajax_delete_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->ajax_delete_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        $this->ajax_delete_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : false;
                         $this->button_column = true;
                         break;
                     default:
@@ -320,7 +321,6 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    // isset($this->ajax_update_url) ? $classname[] = "update_" . $this->tbl_ID : "";
                                     switch ($columns_value["TYP"]) {
                                         case 2: // CHECKBOX
                                             $classname[] = "text-center";
@@ -724,29 +724,50 @@ class webutility
                     }
                     if (isset($this->ajax_update_url)) {
                     ?>
-                        $(document).on("change", ".update_<?= $this->tbl_ID; ?>", function() {
+                        $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
                             rowid = $(this).closest("tr").attr("id").replace("row_", "");
-                            // var table = $("#<#?= $this->tbl_ID; ?>").DataTable();
-                            // console.log(table);
-                            // if (rowid) {
-                            //     alert(rowid);
-                            // }
+                            td = $(this).closest("td");
+                            if (rowid) {
+                                var table = $("#<?= $this->tbl_ID; ?>").DataTable();
+                                columns = table.settings().init().columns;
+                                colIndex = table.cell(td).index().columnVisible;
+                                colName = columns[colIndex].name;
+                                colData = columns[colIndex].data;
+                                colCelltype = parseInt(columns[colIndex].celltype);
+                                switch (colCelltype) {
+                                    case 0: // TEXT
+                                    case 1: // EMAIL
+                                        value = $(this).val().trim();
+                                        break;
 
-                            // if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
-                            //     $.ajax({
-                            //         url: "<#?= $this->ajax_delete_url; ?>",
-                            //         type: "POST",
-                            //         dataType: "json",
-                            //         data: {
-                            //             pkfield: <#?= $this->obj_tools->post_encode($this->pkfield); ?>,
-                            //             pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
-                            //             datasource: <#?= $this->obj_tools->post_encode($this->ajax_delete_datasource); ?>,
-                            //             dropdown_multi: <#?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>
-                            //         }
-                            //     });
-                            //     $("#<#?= $this->tbl_ID; ?>").DataTable().destroy();
-                            //     read_data_<#?= $this->tbl_ID; ?>();
-                            // }
+                                    default:
+                                        break;
+                                }
+                                console.log(columns);
+                                console.log(colIndex);
+                                console.log(colName);
+                                console.log(colData);
+                                console.log(colCelltype);
+                                console.log(value);
+                                $.ajax({
+                                    url: "<?= $this->ajax_update_url; ?>",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: {
+                                        pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
+                                        pkvalue: rowid,
+                                        field: colName,
+                                        value: value,
+                                        celltype: colCelltype,
+                                        colData: colData,
+                                        datasource: <?= $this->obj_tools->post_encode($this->ajax_update_datasource); ?>,
+                                        dropdown_multi: "<?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>",
+                                        bypass: "<?= $this->obj_tools->post_encode($this->ajax_update_bypass); ?>"
+
+                                    }
+                                });
+
+                            }
                         });
                     <?php
                     }
