@@ -746,18 +746,28 @@ class webutility
                                 switch (colCelltype) {
                                     case 0: // TEXT
                                     case 1: // EMAIL
+                                    case 3: // LINK
+                                    case 5: // COLOR
                                         value = $(this).val().trim();
                                         break;
-
+                                    case 2: // CHECKBOX
+                                        value = $(this).find(":checkbox")[0].checked;
+                                        break;
+                                    case 6: // DROPDOWN
+                                        value = $(this).find("option:selected").val();
+                                        break;
+                                    case 7: // DROPDOWN_MULTI
+                                        value = $(this).children(":first").val();
+                                        break;
+                                    case 8: // DATE
+                                        value = $(this).find("input[type='date']").val();
+                                        break;
+                                    case 9: // DATETIME
+                                        value = $(this).find("input[type='datetime-local']").val();
+                                        break;
                                     default:
                                         break;
                                 }
-                                console.log(columns);
-                                console.log(colIndex);
-                                console.log(colName);
-                                console.log(colData);
-                                console.log(colCelltype);
-                                console.log(value);
                                 $.ajax({
                                     url: "<?= $this->ajax_update_url; ?>",
                                     type: "POST",
@@ -770,9 +780,9 @@ class webutility
                                         celltype: colCelltype,
                                         colData: colData,
                                         datasource: <?= $this->obj_tools->post_encode($this->ajax_update_datasource); ?>,
-                                        dropdown_multi: "<?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>",
-                                        bypass: "<?= $this->obj_tools->post_encode($this->ajax_update_bypass); ?>"
-
+                                        dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
+                                        // bypass: "<#?= $this->obj_tools->post_encode($this->ajax_update_bypass); ?>"
+                                        // coldata  raus?!?!
                                     }
                                 });
 

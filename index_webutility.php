@@ -34,7 +34,11 @@ $obj_database_tools = new database_tools();
 			)
 		);
 		$array_AJAX_xxxTESTxxx["update"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
+			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "MYSQL_DATABASE.root_table root", "dropdown_multi" => array(
+				$datREF_ROOT_ID => array(
+					"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+				)
+			)
 		);
 		$obj_webutility = new webutility("dte_xxxTESTxxx", $array_AJAX_xxxTESTxxx, $pkfield_xxxTESTxxx);
 		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
