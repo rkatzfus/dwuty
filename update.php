@@ -3,10 +3,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 
 use App\database_tools;
 
-// var_dump($_POST);
-
-
-$obj_database_tools = new database_tools(true); // debug mode
+$obj_database_tools = new database_tools(false); // debug mode
 $pkfield = isset($_POST["pkfield"]) ? $_POST["pkfield"] : "";
 $pkvalue = isset($_POST["pkvalue"]) ? intval($_POST["pkvalue"]) : "";
 $field = isset($_POST["field"]) ? $_POST["field"] : "";
@@ -21,6 +18,9 @@ if ($celltype === 7) {
     $dropdown_multi_valuekey = $dropdown_multi["valuekey"];
     echo "blub";
 } else {
-    $sql = "update " . $datasource . " set " . $field . " = '" . $value . "' where " . $pkfield . " = " . $pkvalue;
+    if ($celltype != 2) {
+        $value = "'" . $value . "'";
+    }
+    $sql = "update " . $datasource . " set " . $field . " = " . $value . " where " . $pkfield . " = " . $pkvalue;
     $obj_database_tools->sql_exec_no_result($sql);
 }

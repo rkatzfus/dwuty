@@ -346,10 +346,12 @@ class webutility
                                         case 6: // DROPDOWN
                                             $classname[] = "text-center";
                                             $classname[] = "align-middle";
+                                            (isset($this->ajax_update_url) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                             $classname[] = "text-center";
                                             $classname[] = "align-middle";
+                                            (isset($this->ajax_update_url) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
                                             break;
                                         case 8: // DATE
                                             $classname[] = "text-center";
@@ -555,11 +557,6 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
                                                 }
                                                 if (data) {
                                                     outerHtml.append(innerHtml);
@@ -579,11 +576,6 @@ class webutility
                                                 outerHtml = build_html(outer_object);
                                                 if (content_edit) {
                                                     outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
                                                 }
                                                 if (data) {
                                                     var myData = data.split(",");
@@ -748,10 +740,15 @@ class webutility
                                     case 1: // EMAIL
                                     case 3: // LINK
                                     case 5: // COLOR
+                                    case 8: // DATE
                                         value = $(this).val().trim();
                                         break;
                                     case 2: // CHECKBOX
-                                        value = $(this).find(":checkbox")[0].checked;
+                                        if (this.checked == true) {
+                                            value = true;
+                                        } else {
+                                            value = false;
+                                        }
                                         break;
                                     case 6: // DROPDOWN
                                         value = $(this).find("option:selected").val();
@@ -759,11 +756,8 @@ class webutility
                                     case 7: // DROPDOWN_MULTI
                                         value = $(this).children(":first").val();
                                         break;
-                                    case 8: // DATE
-                                        value = $(this).find("input[type='date']").val();
-                                        break;
                                     case 9: // DATETIME
-                                        value = $(this).find("input[type='datetime-local']").val();
+                                        value = $(this).val().replace("T", " ");
                                         break;
                                     default:
                                         break;
@@ -783,6 +777,7 @@ class webutility
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
                                         // bypass: "<#?= $this->obj_tools->post_encode($this->ajax_update_bypass); ?>"
                                         // coldata  raus?!?!
+                                        // datetime local englische version
                                     }
                                 });
 
