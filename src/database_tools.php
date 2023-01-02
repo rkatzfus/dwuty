@@ -8,6 +8,14 @@ class database_tools
     {
         $this->debug = $debug;
         $this->username = get_current_user();
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+    }
+    function __destruct()
+    {
+        $this->mysqli_conn->close();
+    }
+    private function build_conn()
+    {
         $host = "dwuty-db";
         $user = "MYSQL_USER";
         $pass = "MYSQL_PASSWORD";
@@ -18,29 +26,24 @@ class database_tools
             die();
         }
     }
-    function __destruct()
-    {
-        $this->mysqli_conn->close();
-    }
     public function sql_getfield(
         $sql = ""
     ) {
         $result = false;
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
-            $result = trim(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0]) ?? false;
-        }
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        $result = $this->chk_stmnt($sql) ? trim(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0]) ?? false : "";
         if ($this->debug == true) {
             echo "<b>sql_getfield</b>";
             var_dump($result);
             echo "<hr>";
-        } else {
-            return $result;
         }
+        return $result;
     }
     public function sql2array(
         $sql = ""
     ) {
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
                 $result[] = $value;
             }
@@ -48,16 +51,18 @@ class database_tools
                 echo "<b>sql2array</b>";
                 var_dump($result);
                 echo "<hr>";
-            } else {
-                return $result;
             }
+        } else {
+            $result = false;
         }
+        return $result;
     }
     public function sql2array_pk(
         $sql = "",
         $pk = ""
     ) {
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
                 $result[$value[$pk]] = $value;
             }
@@ -65,17 +70,19 @@ class database_tools
                 echo "<b>sql2array_pk</b>";
                 var_dump($result);
                 echo "<hr>";
-            } else {
-                return $result;
             }
+        } else {
+            $result = false;
         }
+        return $result;
     }
     public function sql2array_pk_value(
         $sql = "",
         $pk = "",
         $value = ""
     ) {
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
                 $result[$value_key[$pk]] = $value_key[$value];
             }
@@ -83,15 +90,17 @@ class database_tools
                 echo "<b>sql2array_pk_value</b>";
                 var_dump($result);
                 echo "<hr>";
-            } else {
-                return $result;
             }
+        } else {
+            $result = false;
         }
+        return $result;
     }
     public function sql_exec_no_result(
         $sql = ""
     ) {
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if (isset($sql) && !empty($sql)) {
             if ($this->debug == true) {
                 echo "<b>sql_exec_no_result</b>";
                 var_dump($sql);
@@ -104,15 +113,11 @@ class database_tools
     public function chk_stmnt(
         $sql = ""
     ) {
-        if ($this->mysqli_conn != false && isset($sql) && $sql != "") {
+        $result = false;
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if (isset($sql) && !empty($sql)) {
             $result = (mysqli_num_rows(mysqli_query($this->mysqli_conn, $sql)) <> 0) ? true : false;
-            if ($this->debug == true) {
-                echo "<b>chk_stmnt</b>";
-                var_dump($result);
-                echo "<hr>";
-            } else {
-                return $result;
-            }
         }
+        return $result;
     }
 }

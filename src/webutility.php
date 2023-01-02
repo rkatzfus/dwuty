@@ -848,7 +848,7 @@ class webutility
                                     $this->columns[$column_key]["JSON"] = $ary_Select2Initial;
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
-                                    $this->columns[$column_key]["SQLNAME"] = "group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',')";
+                                    $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["from"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
                                     $aryColumns = $arySetting["SUBSELECT2"]["columns"];
                                     $this->webutility_ssp->set_length(-1); // remove length & paging

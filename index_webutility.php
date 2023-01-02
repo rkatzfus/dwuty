@@ -24,7 +24,7 @@ $obj_database_tools = new database_tools();
 		$datREF_ROOT_ID = "REF_ROOT_ID";
 		$array_AJAX_xxxTESTxxx = array();
 		$array_AJAX_xxxTESTxxx["read"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on ref.REF_ROOT = root.ID"
+			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
 		);
 		$array_AJAX_xxxTESTxxx["delete"] = array(
 			"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "MYSQL_DATABASE.root_table root", "dropdown_multi" => array(
@@ -50,7 +50,7 @@ $obj_database_tools = new database_tools();
 			"AJAX" => "/vendor/datatableswebutility/dwuty/read_select2.php", "SELECT2" => array(
 				"columns" => array(
 					"id" => "dropdown.ID", "text" => "dropdown.TEXT"
-				), "from" => "MYSQL_DATABASE.dropdown_lookup_table dropdown"
+				), "from" => "MYSQL_DATABASE.dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI = array(
@@ -71,7 +71,7 @@ $obj_database_tools = new database_tools();
 		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", $datREF_ROOT_ID, "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
 		$obj_webutility->new_column("root.DATE", "DATE", "column: DATE", EDIT, DATE);
 		$obj_webutility->new_column("root.DATETIME", "DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$defOrderby_xxxTESTxxx = 0;
