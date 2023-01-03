@@ -120,4 +120,23 @@ class database_tools
         }
         return $result;
     }
+    public function rmv_alias(
+        $alias_value = "",
+        $type = "field"
+    ) {
+        switch ($type) {
+            case 'field':
+                $find = strpos($alias_value, ".");
+                $result = $find ? substr($alias_value, $find + 1) : $alias_value;
+                break;
+            case 'table':
+                $find = strpos($alias_value, " ");
+                $result = $find ? substr($alias_value, 0, $find) : $alias_value;
+                break;
+            default:
+                $result = false;
+                break;
+        }
+        return $result;
+    }
 }

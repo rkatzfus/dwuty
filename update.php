@@ -16,21 +16,26 @@ if ($celltype === 7) {
     $dropdown_multi_datasource = $dropdown_multi["datasource"];
     $dropdown_multi_primarykey = $dropdown_multi["primarykey"];
     $dropdown_multi_valuekey = $dropdown_multi["valuekey"];
-    var_dump($dropdown_multi);
-    echo $pkvalue . "<hr>";
-    echo $pkfield . "<hr>";
-    var_dump($value);
-    echo $field . "<hr>";
-
-
-    // $sql = "select " . $dropdown_multi_valuekey . " as '" . $dropdown_multi_valuekey . "' from " . $dropdown_multi_datasource . " where " . $dropdown_multi_primarykey . " = " . $pkvalue;
-    // $inDb = $obj_database_tools->sql2array_pk($sql, $dropdown_multi_valuekey);
-    // if ($inDb) { // clear all
-    //     $sql = "update " . $dropdown_multi_datasource . " set DEL = 1 where " . $dropdown_multi_primarykey . " = " . $pkvalue . " and " . $dropdown_multi_valuekey . " = ";
-    //     foreach ($inDb as $inDb_key => $inDb_value) {
-    //         $obj_database_tools->sql_exec_no_result($sql . $inDb_value[$dropdown_multi_valuekey]);
-    //     }
-    // }
+    $sql = "select " . $dropdown_multi_valuekey . " as '" . $dropdown_multi_valuekey . "' from " . $dropdown_multi_datasource . " where " . $dropdown_multi_primarykey . " = " . $pkvalue;
+    $inDb = $obj_database_tools->sql2array_pk($sql, $dropdown_multi_valuekey);
+    if ($inDb) { // clear all
+        $sql2del = "update " . $dropdown_multi_datasource . " set DEL = 1 where " . $dropdown_multi_primarykey . " = " . $pkvalue . " and " . $dropdown_multi_valuekey . " = ";
+        foreach ($inDb as $inDb_key => $inDb_value) {
+            $obj_database_tools->sql_exec_no_result($sql2del . $inDb_value[$dropdown_multi_valuekey]);
+        }
+    }
+    if ($value) { // check new settings
+        $sql4check = $sql . " and " . $dropdown_multi_valuekey . " = ";
+        foreach ($value as $toDo) {
+            if ($obj_database_tools->chk_stmnt($sql4check . $toDo)) { // check if value already exists in database
+                $sql = "update " . $dropdown_multi_datasource . " set DEL = 0 where " . $dropdown_multi_primarykey . '=' . $pkvalue . ' and ' .     $dropdown_multi_valuekey  . '=' . $toDo;
+            } else {
+                $sql = "insert into " .  $obj_database_tools->rmv_alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->rmv_alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->rmv_alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
+            }
+            echo $sql . "<hr>";
+            $obj_database_tools->sql_exec_no_result($sql);
+        }
+    }
 } else {
     if ($celltype != 2) {
         $value = "'" . $value . "'";
