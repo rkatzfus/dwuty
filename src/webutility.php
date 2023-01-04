@@ -322,7 +322,7 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
-                                    $classname = $this->alignment($columns_value["TYP"]);
+                                    $classname = $this->html_default($columns_value["TYP"])["alignment"];
                                     switch ($columns_value["TYP"]) {
                                         case 6: // DROPDOWN
                                             (isset($this->ajax_update_url) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
@@ -369,10 +369,10 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner_html["input"].title = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["input"].value = data;
+                                                html_default["input"].title = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -385,10 +385,10 @@ class webutility
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner_html["input"].title = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["input"].value = data;
+                                                html_default["input"].title = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -401,10 +401,9 @@ class webutility
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                outer = create_element("div", outer_html["div"]);
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                outer = create_element("div", html_default["div"]);
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -421,13 +420,12 @@ class webutility
                                             break;
                                         case 3: // LINK
                                         ?> render: function(data) {
-                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                outer_html["a"].href = data;
-                                                outer_html["a"].title = data;
-                                                outer = create_element("a", outer_html["a"]);
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["a"].href = data;
+                                                html_default["a"].title = data;
+                                                outer = create_element("a", html_default["a"]);
+                                                html_default["input"].value = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -441,10 +439,10 @@ class webutility
                                             break;
                                         case 4: // LINK_BUTTON
                                         ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["a"].href = data;
-                                                inner_html["a"].title = data;
-                                                inner = create_element("a", inner_html["a"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["a"].href = data;
+                                                html_default["a"].title = data;
+                                                inner = create_element("a", html_default["a"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).addClass("disabled");
                                                 }
@@ -459,9 +457,9 @@ class webutility
                                             break;
                                         case 5: // COLOR
                                         ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["input"].value = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -474,17 +472,16 @@ class webutility
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
-                                                outer = create_element("select", outer_html["select"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                outer = create_element("select", html_default["select"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(outer).attr("disabled", "true");
                                                 }
                                                 if (data) {
-                                                    inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                    inner_html["option"].value = data;
-                                                    inner_html["option"].createTextNode = <?= $this->obj_tools->post_encode($column['JSON']); ?>[data];
-                                                    inner = create_element("option", inner_html["option"]);
+                                                    html_default["option"].value = data;
+                                                    html_default["option"].createTextNode = <?= $this->obj_tools->post_encode($column['JSON']); ?>[data];
+                                                    inner = create_element("option", html_default["option"]);
                                                     outer.appendChild(inner);
                                                 }
                                                 return outer.outerHTML;
@@ -494,20 +491,19 @@ class webutility
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
                                                 aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
-                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
-                                                outer = create_element("select", outer_html["select"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                outer = create_element("select", html_default["select"]);
                                                 $(outer).attr("multiple", "true");
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(outer).attr("disabled", "true");
                                                 }
                                                 if (data) {
                                                     var myData = data.split(",");
-                                                    inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                     myData.forEach(function(myDataElement) {
-                                                        inner_html["option"].value = myDataElement;
-                                                        inner_html["option"].createTextNode = aryJson[myDataElement];
-                                                        inner = create_element("option", inner_html["option"]);
+                                                        html_default["option"].value = myDataElement;
+                                                        html_default["option"].createTextNode = aryJson[myDataElement];
+                                                        inner = create_element("option", html_default["option"]);
                                                         $(inner).attr("selected", "true");
                                                         outer.appendChild(inner);
                                                     });
@@ -518,9 +514,9 @@ class webutility
                                             break;
                                         case 8: // DATE
                                         ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["input"].value = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -533,9 +529,9 @@ class webutility
                                             break;
                                         case 9: // DATETIME
                                         ?> render: function(data) {
-                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                inner_html["input"].value = data;
-                                                inner = create_element("input", inner_html["input"]);
+                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                html_default["input"].value = data;
+                                                inner = create_element("input", html_default["input"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
@@ -638,12 +634,12 @@ class webutility
                                 switch ($column["TYP"]) {
                                     case 0: // TEXT
                             ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -653,12 +649,12 @@ class webutility
                                         break;
                                     case 1: // EMAIL
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -668,14 +664,13 @@ class webutility
                                         break;
                                     case 2: // CHECKBOX
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        outer = create_element("div", outer_html["div"]);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        outer = create_element("div", html_default["div"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -686,14 +681,13 @@ class webutility
                                         break;
                                     case 3: // LINK
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        outer = create_element("a", outer_html["a"]);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        outer = create_element("a", html_default["a"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -704,12 +698,12 @@ class webutility
                                         break;
                                     case 4: // LINK_BUTTON
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("a", inner_html["a"]);
+                                        inner = create_element("a", html_default["a"]);
                                         $(inner).addClass("disabled");
                                         td.appendChild(inner);
                                         tr.appendChild(td);
@@ -717,12 +711,12 @@ class webutility
                                         break;
                                     case 5: // COLOR
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -732,14 +726,14 @@ class webutility
                                         break;
                                     case 6: // DROPDOWN
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
 
-                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
-                                        outer = create_element("select", outer_html["select"]);
+                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        outer = create_element("select", html_default["select"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
                                         }
@@ -754,14 +748,14 @@ class webutility
                                         break;
                                     case 7: // DROPDOWN_MULTI
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
 
-                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
-                                        outer = create_element("select", outer_html["select"]);
+                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        outer = create_element("select", html_default["select"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
                                         }
@@ -776,12 +770,12 @@ class webutility
                                         break;
                                     case 8: // DATE
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -794,12 +788,12 @@ class webutility
                                         break;
                                     case 9: // DATE
                                     ?>
+                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
-                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                            class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        inner = create_element("input", inner_html["input"]);
+                                        inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
                                         }
@@ -851,6 +845,60 @@ class webutility
                             button_td.appendChild(button);
                             tr.appendChild(button_td);
                             $("#<?= $this->tbl_ID; ?> tbody").prepend(tr);
+
+
+
+
+
+                            //                 $('#<#?= $this->tbl_ID; ?> tbody').prepend(html);
+
+                            // foreach ($this->columns as $column) { // fill dropdown
+                            //   if ($column["TYP"] == 2 || $column["TYP"] == 8) {
+                            //     $target = ($column["TYP"] == 2) ? "SELECT2" : "SUBSELECT2";
+
+                            //     $('#DT_S2_<#?= $column["NAME"]; ?>').select2({
+                            //       ajax: {
+                            //         url: '<#?= $column["AJAX"]; ?>',
+                            //         type: 'POST',
+                            //         dataType: 'json',
+                            //         delay: 100,
+                            //         data: function(params) {
+                            //           query = {
+                            //             search: params.term,
+                            //             type: 'public',
+                            //             select2: '<#?= $this->obj_GOTTMODE->post_json($column[$target]); ?>',
+                            //           }
+                            //           return query;
+                            //         },
+                            //         processResults: function(data) {
+                            //           return {
+                            //             results: data
+                            //           };
+                            //         },
+                            //         cache: false
+                            //       },
+                            //       theme: "bootstrap-5",
+                            //       placeholder: 'Auswahl',
+                            //       dropdownAutoWidth: true,
+                            //       width: "100%"
+                            //       <#?= ($column["TYP"] == 2) ? ", allowClear: true" : ", allowClear: false"; ?>
+                            //     });
+
+                            //   }
+                            // }
+
+
+
+
+
+
+
+
+
+
+
+
+
                         });
                     <?php
                     }
@@ -1086,58 +1134,12 @@ class webutility
     ) {
         $this->ajax_read_where = $strsqlwhere;
     }
-    private function alignment(
-        $typ = ""
-    ) {
-        switch ($typ) {
-            case 0: // TEXT
-                $result[] = "align-middle";
-                break;
-            case 1: // EMAIL
-                $result[] = "align-middle";
-                break;
-            case 2: // CHECKBOX
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 3: // LINK
-                $result[] = "align-middle";
-                break;
-            case 4: // LINK_BUTTON
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 5: // COLOR
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 6: // DROPDOWN
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 7: // DROPDOWN_MULTI
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 8: // DATE
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            case 9: // DATETIME
-                $result[] = "text-center";
-                $result[] = "align-middle";
-                break;
-            default:
-                $result[] = "";
-                break;
-        }
-        return $result;
-    }
     private function html_default(
         $typ = ""
     ) {
-        switch ($typ) {
+        switch (intval($typ)) {
             case 0: // TEXT
+                $result["alignment"] = array("align-middle");
                 $result["input"] = array(
                     "type" => "text",
                     "class" => array("form-control"),
@@ -1145,6 +1147,7 @@ class webutility
                 );
                 break;
             case 1: // EMAIL
+                $result["alignment"] = array("align-middle");
                 $result["input"] = array(
                     "type" => "email",
                     "class" => array("form-control"),
@@ -1152,6 +1155,7 @@ class webutility
                 );
                 break;
             case 2: // CHECKBOX
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["input"] = array(
                     "type" => "checkbox",
                     "class" => array("form-check-input"),
@@ -1162,6 +1166,7 @@ class webutility
                 );
                 break;
             case 3: // LINK
+                $result["alignment"] = array("align-middle");
                 $result["input"] = array(
                     "type" => "url",
                     "class" => array("form-control"),
@@ -1173,6 +1178,7 @@ class webutility
                 );
                 break;
             case 4: // LINK_BUTTON
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["a"] = array(
                     "class" => array("btn", "btn-outline-primary", "form-control"),
                     "style" => array("box-shadow: none"),
@@ -1183,20 +1189,24 @@ class webutility
                 );
                 break;
             case 5: // COLOR
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["input"] = array(
                     "type" => "color",
                     "style" => array("box-shadow: none")
                 );
                 break;
             case 6: // DROPDOWN
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["select"] = array();
                 $result["option"] = array();
                 break;
             case 7: // DROPDOWN_MULTI
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["select"] = array();
                 $result["option"] = array();
                 break;
             case 8: // DATE
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["input"] = array(
                     "type" => "date",
                     "class" => array("form-control"),
@@ -1204,6 +1214,7 @@ class webutility
                 );
                 break;
             case 9: // DATETIME
+                $result["alignment"] = array("text-center", "align-middle");
                 $result["input"] = array(
                     "type" => "datetime-local",
                     "class" => array("form-control"),
@@ -1212,6 +1223,7 @@ class webutility
                 );
                 break;
             default:
+                $result["alignment"] = array("text-center", "align-middle");
                 $result[] = "";
                 break;
         }
