@@ -53,12 +53,13 @@ class webutility
                         $this->ajax_read_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
                         $read = true;
                         break;
-                    case "insert":
-                        $this->ajax_insert_url = $ajax_value["url"];
-                        $this->ajax_insert_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->ajax_insert_fade_out = (isset($ajax_value["fade_out"])) ? $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
-                        $this->ajax_insert_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
-                        $this->ajax_insert_check = (isset($ajax_value["check"])) ? $this->obj_tools->post_encode($ajax_value["check"]) : false;
+                    case "create":
+                        $this->ajax_create_url = $ajax_value["url"];
+                        $this->ajax_create_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
+
+                        // $this->ajax_create_fade_out = (isset($ajax_value["fade_out"])) ? $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
+                        // $this->ajax_create_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
+                        // $this->ajax_create_check = (isset($ajax_value["check"])) ? $this->obj_tools->post_encode($ajax_value["check"]) : false;
                         $this->button_column = true;
                         break;
                     case "update":
@@ -95,7 +96,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        (isset($this->ajax_insert_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' name='add_" . $this->tbl_ID . "' id='add_" . $this->tbl_ID . "' style='box-shadow: none' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
+                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' id='add_" . $this->tbl_ID . "' style='box-shadow: none' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -321,48 +322,13 @@ class webutility
                                 <?php
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
+                                    $classname = $this->alignment($columns_value["TYP"]);
                                     switch ($columns_value["TYP"]) {
-                                        case 0: // TEXT
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 1: // EMAIL
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 2: // CHECKBOX
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 3: // LINK
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 4: // LINK_BUTTON
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 5: // COLOR
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
-                                            break;
                                         case 6: // DROPDOWN
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
                                             (isset($this->ajax_update_url) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
                                             break;
                                         case 7: // DROPDOWN_MULTI
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
                                             (isset($this->ajax_update_url) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
-                                            break;
-                                        case 8: // DATE
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
-                                            break;
-                                        case 9: // DATETIME
-                                            $classname[] = "text-center";
-                                            $classname[] = "align-middle";
-                                            break;
-                                        default:
-                                            // code
                                             break;
                                     }
                                     $aryColumndef[] = array(
@@ -403,165 +369,125 @@ class webutility
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
                                 ?> render: function(data) {
-                                                object = {
-                                                    Html: "<input type='text' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
-                                                    Attr: ["value", "title"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner_html["input"].title = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                return inner.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 1: // EMAIL
                                         ?> render: function(data) {
-                                                object = {
-                                                    Html: "<input type='email' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
-                                                    Attr: ["value", "title"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner_html["input"].title = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                return inner.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 2: // CHECKBOX
                                         ?> render: function(data) {
-                                                outer_object = {
-                                                    Html: "<div class='form-switch'></div>",
-                                                    Attr: ["value", "title"],
-                                                    data: data
-                                                };
-                                                inner_object = {
-                                                    Html: "<input class='form-check-input' type='checkbox' style='box-shadow: none;'>",
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                innerHtml = build_html(inner_object);
-                                                outerHtml = build_html(outer_object);
-                                                if (content_edit) {
-                                                    innerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        innerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                outer = create_element("div", outer_html["div"]);
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
                                                 if (data == true) {
-                                                    innerHtml.attr("checked", "true");
+                                                    $(inner).attr("checked", "true");
                                                 }
-                                                outerHtml.append(innerHtml);
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                outer.appendChild(inner);
+                                                return outer.outerHTML;
                                             },
                                         <?php
                                             break;
                                         case 3: // LINK
                                         ?> render: function(data) {
-                                                outer_object = {
-                                                    Html: "<a target='_blank' rel='noopener'></a>",
-                                                    Attr: ["href", "title"],
-                                                    data: data
-                                                };
-                                                inner_object = {
-                                                    Html: "<input type='url' class='form-control' style='border: none; background: transparent; box-shadow: none;'>",
-                                                    Attr: ["value"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                innerHtml = build_html(inner_object);
-                                                outerHtml = build_html(outer_object);
-                                                if (content_edit) {
-                                                    innerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        innerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                outer_html["a"].href = data;
+                                                outer_html["a"].title = data;
+                                                outer = create_element("a", outer_html["a"]);
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                outerHtml.append(innerHtml);
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                outer.appendChild(inner);
+                                                return outer.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 4: // LINK_BUTTON
                                         ?> render: function(data) {
-                                                object = {
-                                                    Html: "<a class='btn btn-outline-primary form-control' target='_blank' rel='noopener' role='button' style='box-shadow: none;'>Link</a>",
-                                                    Attr: ["href", "title"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.addClass("disabled");
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["a"].href = data;
+                                                inner_html["a"].title = data;
+                                                inner = create_element("a", inner_html["a"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).addClass("disabled");
                                                 }
                                                 if (data) {
-                                                    return outerHtml.prop("outerHTML");
+                                                    return inner.outerHTML;
                                                 } else {
                                                     return '';
                                                 }
+                                                return inner.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 5: // COLOR
                                         ?> render: function(data) {
-                                                object = {
-                                                    Html: "<input type='color' style='box-shadow: none;'>",
-                                                    Attr: ["value"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                return inner.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
-                                                outer_object = {
-                                                    Html: "<select class='SELECT2_<?= $column['NAME']; ?>'></select>",
-                                                    data: data
-                                                };
-                                                inner_object = {
-                                                    Html: "<option>" + <?= $this->obj_tools->post_encode($column['JSON']); ?>[data] + "</option>",
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                innerHtml = build_html(inner_object);
-                                                outerHtml = build_html(outer_object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
+                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                outer = create_element("select", outer_html["select"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(outer).attr("disabled", "true");
                                                 }
                                                 if (data) {
-                                                    outerHtml.append(innerHtml);
+                                                    inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                    inner_html["option"].value = data;
+                                                    inner_html["option"].createTextNode = <?= $this->obj_tools->post_encode($column['JSON']); ?>[data];
+                                                    inner = create_element("option", inner_html["option"]);
+                                                    outer.appendChild(inner);
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                return outer.outerHTML;
                                             }
                                         <?php
                                             break;
@@ -703,6 +629,179 @@ class webutility
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
+
+
+
+
+
+                    //------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+                    if (isset($this->ajax_create_url)) {
+                    ?> $("#add_<?= $this->tbl_ID; ?>").click(function() {
+                            alert("create row");
+                            tr = create_element("tr");
+                            <?php
+                            foreach ($this->columns as $column) {
+                                switch ($column["TYP"]) {
+                                    case 0: // TEXT
+                            ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 1: // EMAIL
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 2: // CHECKBOX
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        outer = create_element("div", outer_html["div"]);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        outer.appendChild(inner);
+                                        td.appendChild(outer);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 3: // LINK
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        outer = create_element("a", outer_html["a"]);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        outer.appendChild(inner);
+                                        td.appendChild(outer);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 4: // LINK_BUTTON
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("a", inner_html["a"]);
+                                        $(inner).addClass("disabled");
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 5: // COLOR
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
+                            <?php
+                                        break;
+                                }
+                            }
+
+
+
+
+
+
+
+
+                            // // Überschreiben mit Ajax Werten aus dem anlegen Button
+                            // ajax_default = $(this).data('ajaxdefault');
+                            // for (ifilter in ajax_default) {
+                            //     if (ifilter !== "DTTBL_ID") {
+                            //         def = ajax_default['DTTBL_DEFAULT']
+                            //         html = html.replaceAll('AJAX_DEFAULT_' + ifilter + '_ID', ajax_default[ifilter]);
+                            //         html = html.replaceAll('AJAX_DEFAULT_' + ifilter + '_TEXT', def);
+                            //     }
+                            // }
+                            ?>
+                            object = {
+                                style: ["text-align:center"],
+                            };
+                            button_td = create_element("td", object);
+                            object = {
+                                type: "button",
+                                class: [
+                                    "btn",
+                                    "btn-outline-success",
+                                    "btn-sm"
+                                ],
+                                style: [
+                                    "box-shadow: none"
+                                ],
+                                createTextNode: "speichern",
+                                id: "create_" + <?= $this->obj_tools->post_encode($this->tbl_ID); ?>
+                            };
+                            button = create_element("button", object);
+                            button_td.appendChild(button);
+                            tr.appendChild(button_td);
+                            $("#<?= $this->tbl_ID; ?> tbody").prepend(tr);
+                        });
+                    <?php
+                    }
+
+
+
+
+                    //------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
                     if (isset($this->ajax_delete_url)) {
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
@@ -804,6 +903,56 @@ class webutility
                     }
                     return html;
                 }
+
+                function create_element(
+                    $element = '',
+                    object = ''
+                ) {
+                    result = document.createElement($element);
+                    if (object) {
+                        for (const [key, value] of Object.entries(object)) {
+                            switch (key) {
+                                case 'type':
+                                    $(result).attr('type', value);
+                                    break;
+                                case 'class':
+                                    $(result).addClass(value.join(" "));
+                                    break;
+                                case 'style':
+                                    $(result).attr('style', value.join(";"));
+                                    break;
+                                case 'id':
+                                    $(result).attr('id', value);
+                                    break;
+                                case 'value':
+                                    $(result).attr('value', value);
+                                    break;
+                                case 'target':
+                                    $(result).attr('target', value);
+                                    break;
+                                case 'rel':
+                                    $(result).attr('rel', value);
+                                    break;
+                                case 'role':
+                                    $(result).attr('role', value);
+                                    break;
+                                case 'href':
+                                    $(result).attr('href', value);
+                                    break;
+                                case 'title':
+                                    $(result).attr('title', value);
+                                    break;
+                                case 'createTextNode':
+                                    $(result).append(document.createTextNode(value));
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                    }
+                    return result;
+                }
             </script>
         </footer>
 <?php
@@ -879,6 +1028,130 @@ class webutility
         $strsqlwhere = ""
     ) {
         $this->ajax_read_where = $strsqlwhere;
+    }
+    private function alignment(
+        $typ = ""
+    ) {
+        switch ($typ) {
+            case 0: // TEXT
+                $result[] = "align-middle";
+                break;
+            case 1: // EMAIL
+                $result[] = "align-middle";
+                break;
+            case 2: // CHECKBOX
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 3: // LINK
+                $result[] = "align-middle";
+                break;
+            case 4: // LINK_BUTTON
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 5: // COLOR
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 6: // DROPDOWN
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 7: // DROPDOWN_MULTI
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 8: // DATE
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            case 9: // DATETIME
+                $result[] = "text-center";
+                $result[] = "align-middle";
+                break;
+            default:
+                $result[] = "";
+                break;
+        }
+        return $result;
+    }
+    private function html_default(
+        $typ = ""
+    ) {
+        switch ($typ) {
+            case 0: // TEXT
+                $result["input"] = array(
+                    "type" => "text",
+                    "class" => array("form-control"),
+                    "style" => array("border: none", "background: transparent", "box-shadow: none")
+                );
+                break;
+            case 1: // EMAIL
+                $result["input"] = array(
+                    "type" => "email",
+                    "class" => array("form-control"),
+                    "style" => array("border: none", "background: transparent", "box-shadow: none")
+                );
+                break;
+            case 2: // CHECKBOX
+                $result["input"] = array(
+                    "type" => "checkbox",
+                    "class" => array("form-check-input"),
+                    "style" => array("box-shadow: none")
+                );
+                $result["div"] = array(
+                    "class" => array("form-switch"),
+                );
+                break;
+            case 3: // LINK
+                $result["input"] = array(
+                    "type" => "url",
+                    "class" => array("form-control"),
+                    "style" => array("border: none", "background: transparent", "box-shadow: none")
+                );
+                $result["a"] = array(
+                    "target" => "_blank",
+                    "rel" => "noopener"
+                );
+                break;
+            case 4: // LINK_BUTTON
+                $result["a"] = array(
+                    "class" => array("btn", "btn-outline-primary", "form-control"),
+                    "style" => array("box-shadow: none"),
+                    "target" => "_blank",
+                    "rel" => "noopener",
+                    "role" => "button",
+                    "createTextNode" => "Link"
+                );
+                break;
+            case 5: // COLOR
+                $result["input"] = array(
+                    "type" => "color",
+                    "style" => array("box-shadow: none")
+                );
+                break;
+            case 6: // DROPDOWN
+                $result["select"] = array();
+                $result["option"] = array();
+                break;
+                // case 7: // DROPDOWN_MULTI
+                //     $result[] = "text-center";
+                //     $result[] = "align-middle";
+                //     break;
+                // case 8: // DATE
+                //     $result[] = "text-center";
+                //     $result[] = "align-middle";
+                //     break;
+                // case 9: // DATETIME
+                //     $result[] = "text-center";
+                //     $result[] = "align-middle";
+                //     break;
+            default:
+                $result[] = "";
+                break;
+        }
+        return $result;
     }
 }
 ?>
