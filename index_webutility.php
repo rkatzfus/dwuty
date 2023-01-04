@@ -74,9 +74,9 @@ $obj_database_tools = new database_tools();
 		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		// $obj_webutility->new_column("root.REF_DROPDOWN_MULTI", $datREF_ROOT_ID, "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
-		// $obj_webutility->new_column("root.DATE", "DATE", "column: DATE", EDIT, DATE);
-		// $obj_webutility->new_column("root.DATETIME", "DATETIME", "column: DATETIME", EDIT, DATETIME);
+		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", $datREF_ROOT_ID, "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility->new_column("root.DATE", "DATE", "column: DATE", EDIT, DATE);
+		$obj_webutility->new_column("root.DATETIME", "DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$defOrderby_xxxTESTxxx = 0;
 		$obj_webutility->table_header();
 		?>

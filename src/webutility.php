@@ -493,69 +493,56 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                outer_object = {
-                                                    Html: "<select class='SELECT2_<?= $column['NAME']; ?>' multiple></select>",
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
                                                 aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
-                                                outerHtml = build_html(outer_object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
+                                                outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                outer = create_element("select", outer_html["select"]);
+                                                $(outer).attr("multiple", "true");
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(outer).attr("disabled", "true");
                                                 }
                                                 if (data) {
                                                     var myData = data.split(",");
+                                                    inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                     myData.forEach(function(myDataElement) {
-                                                        innerHtml = $("<option selected>" + aryJson[myDataElement] + "</option>");
-                                                        innerHtml.attr("value", myDataElement);
-                                                        outerHtml.append(innerHtml);
+                                                        inner_html["option"].value = myDataElement;
+                                                        inner_html["option"].createTextNode = aryJson[myDataElement];
+                                                        inner = create_element("option", inner_html["option"]);
+                                                        $(inner).attr("selected", "true");
+                                                        outer.appendChild(inner);
                                                     });
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                return outer.outerHTML;
                                             },
                                         <?php
                                             break;
                                         case 8: // DATE
                                         ?> render: function(data) {
-                                                object = {
-                                                    Html: "<input type='date' class='form-control' style='text-align: right; box-shadow: none;'>",
-                                                    Attr: ["value"],
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                                return inner.outerHTML;
                                             }
                                         <?php
                                             break;
                                         case 9: // DATETIME
                                         ?> render: function(data) {
-                                                object = {
-                                                    Html: "<input type='datetime-local' class='form-control' style='text-align: right; box-shadow: none;' step='1'>",
-                                                    data: data
-                                                };
-                                                content_edit = content(<?= $column["ACTION"]; ?>);
-                                                outerHtml = build_html(object);
-                                                if (content_edit) {
-                                                    outerHtml.attr("disabled", "true");
-                                                } else {
-                                                    url = "<?= isset($this->ajax_update_url) ? true : false; ?>";
-                                                    if (url) {
-                                                        outerHtml.addClass("update_<?= $this->tbl_ID ?>");
-                                                    }
+                                                inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                                inner_html["input"].value = data;
+                                                inner = create_element("input", inner_html["input"]);
+                                                if (content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("disabled", "true");
                                                 }
-                                                if (data) {
-                                                    outerHtml.attr("value", data.replace(" ", "T"));
+                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
-                                                return outerHtml.prop("outerHTML");
+                                                return inner.outerHTML;
                                             }
                                     <?php
                                             break;
@@ -580,10 +567,10 @@ class webutility
                                 foreach ($this->columns as $column) {
                                     if ($column["TYP"] == 6 || $column["TYP"] == 7) {
                                         switch ($column["TYP"]) {
-                                            case 6: // DT_EDIT_DROPDOWN_v2
+                                            case 6: // DROPDOWN
                                                 $select2data = json_encode($column["SELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
                                                 break;
-                                            case 7: // DT_EDIT_DROPDOWN_MULTI_v2
+                                            case 7: // DROPDOWN_MULTI
                                                 $select2data = json_encode($column["SUBSELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
                                                 break;
                                             default:
@@ -741,6 +728,86 @@ class webutility
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 6: // DROPDOWN
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+
+                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        outer = create_element("select", outer_html["select"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(outer).attr("disabled", "true");
+                                        }
+                                        inner = create_element("option");
+                                        outer.appendChild(inner);
+
+
+                                        td.appendChild(outer);
+                                        tr.appendChild(td);
+
+                                    <?php
+                                        break;
+                                    case 7: // DROPDOWN_MULTI
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+
+                                        outer_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        outer_html["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        outer = create_element("select", outer_html["select"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(outer).attr("disabled", "true");
+                                        }
+                                        inner = create_element("option");
+                                        outer.appendChild(inner);
+
+
+                                        td.appendChild(outer);
+                                        tr.appendChild(td);
+
+                                    <?php
+                                        break;
+                                    case 8: // DATE
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                            $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                        }
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
+                                    <?php
+                                        break;
+                                    case 9: // DATE
+                                    ?>
+                                        object = {
+                                            class: <?= $this->obj_tools->post_encode($this->alignment($column["TYP"])); ?>,
+                                        };
+                                        td = create_element("td", object);
+                                        inner_html = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
+                                        inner = create_element("input", inner_html["input"]);
+                                        if (content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("disabled", "true");
+                                        }
+                                        if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                            $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                        }
+                                        td.appendChild(inner);
+                                        tr.appendChild(td);
                             <?php
                                         break;
                                 }
@@ -891,19 +958,6 @@ class webutility
                     return parseInt(object) != 2 || Boolean(<?= isset($this->ajax_update_url) ? "false" : "true"; ?>);
                 }
 
-                function build_html(object = '') {
-                    html = $(object["Html"]);
-                    attr = object["Attr"];
-                    data = object["data"];
-                    if (data && attr) {
-                        const iterator = attr.values();
-                        for (const value of iterator) {
-                            html.attr(value, data);
-                        }
-                    }
-                    return html;
-                }
-
                 function create_element(
                     $element = '',
                     object = ''
@@ -941,6 +995,9 @@ class webutility
                                     break;
                                 case 'title':
                                     $(result).attr('title', value);
+                                    break;
+                                case 'step':
+                                    $(result).attr('step', value);
                                     break;
                                 case 'createTextNode':
                                     $(result).append(document.createTextNode(value));
@@ -1135,18 +1192,25 @@ class webutility
                 $result["select"] = array();
                 $result["option"] = array();
                 break;
-                // case 7: // DROPDOWN_MULTI
-                //     $result[] = "text-center";
-                //     $result[] = "align-middle";
-                //     break;
-                // case 8: // DATE
-                //     $result[] = "text-center";
-                //     $result[] = "align-middle";
-                //     break;
-                // case 9: // DATETIME
-                //     $result[] = "text-center";
-                //     $result[] = "align-middle";
-                //     break;
+            case 7: // DROPDOWN_MULTI
+                $result["select"] = array();
+                $result["option"] = array();
+                break;
+            case 8: // DATE
+                $result["input"] = array(
+                    "type" => "date",
+                    "class" => array("form-control"),
+                    "style" => array("text-align: right", "box-shadow: none")
+                );
+                break;
+            case 9: // DATETIME
+                $result["input"] = array(
+                    "type" => "datetime-local",
+                    "class" => array("form-control"),
+                    "style" => array("text-align: right", "box-shadow: none"),
+                    "step" => "1"
+                );
+                break;
             default:
                 $result[] = "";
                 break;
