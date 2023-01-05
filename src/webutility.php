@@ -574,34 +574,7 @@ class webutility
                                                 break;
                                         }
                                 ?>
-                                        $(".SELECT2_<?= $column["NAME"]; ?>").select2({
-                                            width: "100%",
-                                            language: "de",
-                                            placeholder: "Auswahl",
-                                            dropdownAutoWidth: true,
-                                            allowClear: true,
-                                            ajax: {
-                                                url: "<?= $column["AJAX"]; ?>",
-                                                type: "POST",
-                                                delay: 100,
-                                                dataType: "json",
-                                                theme: "bootstrap-5",
-                                                cache: false,
-                                                data: function(params) {
-                                                    query = {
-                                                        search: params.term,
-                                                        type: "public",
-                                                        select2: <?= $this->obj_tools->post_encode($select2data); ?>,
-                                                    }
-                                                    return query;
-                                                },
-                                                processResults: function(response) {
-                                                    return {
-                                                        results: response
-                                                    };
-                                                },
-                                            },
-                                        });
+                                        create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode($select2data); ?>);
                                 <?php
                                     }
                                 }
@@ -731,7 +704,6 @@ class webutility
                                             class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-
                                         html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                         outer = create_element("select", html_default["select"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
@@ -739,11 +711,8 @@ class webutility
                                         }
                                         inner = create_element("option");
                                         outer.appendChild(inner);
-
-
                                         td.appendChild(outer);
                                         tr.appendChild(td);
-
                                     <?php
                                         break;
                                     case 7: // DROPDOWN_MULTI
@@ -753,19 +722,16 @@ class webutility
                                             class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-
                                         html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                         outer = create_element("select", html_default["select"]);
+                                        $(outer).attr("multiple", "true");
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
                                         }
                                         inner = create_element("option");
                                         outer.appendChild(inner);
-
-
                                         td.appendChild(outer);
                                         tr.appendChild(td);
-
                                     <?php
                                         break;
                                     case 8: // DATE
@@ -845,60 +811,26 @@ class webutility
                             button_td.appendChild(button);
                             tr.appendChild(button_td);
                             $("#<?= $this->tbl_ID; ?> tbody").prepend(tr);
-
-
-
-
-
-                            //                 $('#<#?= $this->tbl_ID; ?> tbody').prepend(html);
-
-                            // foreach ($this->columns as $column) { // fill dropdown
-                            //   if ($column["TYP"] == 2 || $column["TYP"] == 8) {
-                            //     $target = ($column["TYP"] == 2) ? "SELECT2" : "SUBSELECT2";
-
-                            //     $('#DT_S2_<#?= $column["NAME"]; ?>').select2({
-                            //       ajax: {
-                            //         url: '<#?= $column["AJAX"]; ?>',
-                            //         type: 'POST',
-                            //         dataType: 'json',
-                            //         delay: 100,
-                            //         data: function(params) {
-                            //           query = {
-                            //             search: params.term,
-                            //             type: 'public',
-                            //             select2: '<#?= $this->obj_GOTTMODE->post_json($column[$target]); ?>',
-                            //           }
-                            //           return query;
-                            //         },
-                            //         processResults: function(data) {
-                            //           return {
-                            //             results: data
-                            //           };
-                            //         },
-                            //         cache: false
-                            //       },
-                            //       theme: "bootstrap-5",
-                            //       placeholder: 'Auswahl',
-                            //       dropdownAutoWidth: true,
-                            //       width: "100%"
-                            //       <#?= ($column["TYP"] == 2) ? ", allowClear: true" : ", allowClear: false"; ?>
-                            //     });
-
-                            //   }
-                            // }
-
-
-
-
-
-
-
-
-
-
-
-
-
+                            <?php
+                            foreach ($this->columns as $column) {
+                                if ($column["TYP"] == 6 || $column["TYP"] == 7) {
+                                    switch ($column["TYP"]) {
+                                        case 6: // DROPDOWN
+                                            $select2data = json_encode($column["SELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+                                            break;
+                                        case 7: // DROPDOWN_MULTI
+                                            $select2data = json_encode($column["SUBSELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+                                            break;
+                                        default:
+                                            # code...
+                                            break;
+                                    }
+                            ?>
+                                    create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode($select2data); ?>);
+                            <?php
+                                }
+                            }
+                            ?>
                         });
                     <?php
                     }
@@ -1015,37 +947,21 @@ class webutility
                         for (const [key, value] of Object.entries(object)) {
                             switch (key) {
                                 case 'type':
-                                    $(result).attr('type', value);
+                                case 'id':
+                                case 'value':
+                                case 'rel':
+                                case 'target':
+                                case 'role':
+                                case 'href':
+                                case 'title':
+                                case 'step':
+                                    $(result).attr(key, value);
                                     break;
                                 case 'class':
                                     $(result).addClass(value.join(" "));
                                     break;
                                 case 'style':
                                     $(result).attr('style', value.join(";"));
-                                    break;
-                                case 'id':
-                                    $(result).attr('id', value);
-                                    break;
-                                case 'value':
-                                    $(result).attr('value', value);
-                                    break;
-                                case 'target':
-                                    $(result).attr('target', value);
-                                    break;
-                                case 'rel':
-                                    $(result).attr('rel', value);
-                                    break;
-                                case 'role':
-                                    $(result).attr('role', value);
-                                    break;
-                                case 'href':
-                                    $(result).attr('href', value);
-                                    break;
-                                case 'title':
-                                    $(result).attr('title', value);
-                                    break;
-                                case 'step':
-                                    $(result).attr('step', value);
                                     break;
                                 case 'createTextNode':
                                     $(result).append(document.createTextNode(value));
@@ -1057,6 +973,70 @@ class webutility
 
                     }
                     return result;
+                }
+
+                function create_select2(
+                    select2_name = "",
+                    select2_url = "",
+                    select2_data = ""
+                ) {
+                    $(".SELECT2_" + select2_name).select2({
+                        width: "100%",
+                        language: "de",
+                        placeholder: "Auswahl",
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        ajax: {
+                            url: select2_url,
+                            type: "POST",
+                            delay: 100,
+                            dataType: "json",
+                            theme: "bootstrap-5",
+                            cache: false,
+                            data: function(params) {
+                                query = {
+                                    search: params.term,
+                                    type: "public",
+                                    select2: select2_data,
+                                }
+                                return query;
+                            },
+                            processResults: function(response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                        },
+                    });
+                    // $(".SELECT2_<#?= $column["NAME"]; ?>").select2({
+                    //     width: "100%",
+                    //     language: "de",
+                    //     placeholder: "Auswahl",
+                    //     dropdownAutoWidth: true,
+                    //     allowClear: true,
+                    //     ajax: {
+                    //         url: "<#?= $column["AJAX"]; ?>",
+                    //         type: "POST",
+                    //         delay: 100,
+                    //         dataType: "json",
+                    //         theme: "bootstrap-5",
+                    //         cache: false,
+                    //         data: function(params) {
+                    //             query = {
+                    //                 search: params.term,
+                    //                 type: "public",
+                    //                 select2: <#?= $this->obj_tools->post_encode($select2data); ?>,
+                    //             }
+                    //             return query;
+                    //         },
+                    //         processResults: function(response) {
+                    //             return {
+                    //                 results: response
+                    //             };
+                    //         },
+                    //     },
+                    // });
+
                 }
             </script>
         </footer>
