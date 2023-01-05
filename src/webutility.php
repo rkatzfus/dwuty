@@ -562,19 +562,8 @@ class webutility
                                 <?php
                                 foreach ($this->columns as $column) {
                                     if ($column["TYP"] == 6 || $column["TYP"] == 7) {
-                                        switch ($column["TYP"]) {
-                                            case 6: // DROPDOWN
-                                                $select2data = json_encode($column["SELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-                                                break;
-                                            case 7: // DROPDOWN_MULTI
-                                                $select2data = json_encode($column["SUBSELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-                                                break;
-                                            default:
-                                                # code...
-                                                break;
-                                        }
                                 ?>
-                                        create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode($select2data); ?>);
+                                        create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
                                 <?php
                                     }
                                 }
@@ -814,19 +803,8 @@ class webutility
                             <?php
                             foreach ($this->columns as $column) {
                                 if ($column["TYP"] == 6 || $column["TYP"] == 7) {
-                                    switch ($column["TYP"]) {
-                                        case 6: // DROPDOWN
-                                            $select2data = json_encode($column["SELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-                                            break;
-                                        case 7: // DROPDOWN_MULTI
-                                            $select2data = json_encode($column["SUBSELECT2"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
-                                            break;
-                                        default:
-                                            # code...
-                                            break;
-                                    }
                             ?>
-                                    create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode($select2data); ?>);
+                                    create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode($column["AJAX"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
                             <?php
                                 }
                             }
