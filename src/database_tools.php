@@ -96,17 +96,21 @@ class database_tools
         }
         return $result;
     }
-    public function sql_exec_no_result(
+    public function sql_exec_result_id(
         $sql = ""
     ) {
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         if (isset($sql) && !empty($sql)) {
             if ($this->debug == true) {
-                echo "<b>sql_exec_no_result</b>";
+                echo "<b>sql_exec_result_id</b>";
                 var_dump($sql);
                 echo "<hr>";
             } else {
                 mysqli_query($this->mysqli_conn, $sql);
+                $identity =  mysqli_insert_id($this->mysqli_conn);
+                if ($identity) {
+                    return $identity;
+                }
             }
         }
     }

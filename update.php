@@ -21,7 +21,7 @@ if ($celltype === 7) {
     if ($inDb) { // clear all
         $sql2del = "update " . $dropdown_multi_datasource . " set DEL = 1 where " . $dropdown_multi_primarykey . " = " . $pkvalue . " and " . $dropdown_multi_valuekey . " = ";
         foreach ($inDb as $inDb_key => $inDb_value) {
-            $obj_database_tools->sql_exec_no_result($sql2del . $inDb_value[$dropdown_multi_valuekey]);
+            $obj_database_tools->sql_exec_result_id($sql2del . $inDb_value[$dropdown_multi_valuekey]);
         }
     }
     if ($value) { // check new settings
@@ -32,7 +32,7 @@ if ($celltype === 7) {
             } else {
                 $sql = "insert into " .  $obj_database_tools->rmv_alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->rmv_alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->rmv_alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
             }
-            $obj_database_tools->sql_exec_no_result($sql);
+            $obj_database_tools->sql_exec_result_id($sql);
         }
     }
 } else {
@@ -40,5 +40,5 @@ if ($celltype === 7) {
         $value = "'" . $value . "'";
     }
     $sql = "update " . $datasource . " set " . $field . " = " . $value . " where " . $pkfield . " = " . $pkvalue;
-    $obj_database_tools->sql_exec_no_result($sql);
+    $obj_database_tools->sql_exec_result_id($sql);
 }

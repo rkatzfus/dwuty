@@ -20,7 +20,7 @@ use App\database_tools;
     $sql = "select ID, TEXT from  MYSQL_DATABASE.dropdown_lookup_table;";
     $obj_database_tools->sql2array_pk_value($sql, "ID", "TEXT");
     $sql = "update MYSQL_DATABASE.root_table set del = 1 where ID = 1";
-    $obj_database_tools->sql_exec_no_result($sql);
+    $obj_database_tools->sql_exec_result_id($sql);
     ?>
 </body>
 

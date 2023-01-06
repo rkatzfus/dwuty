@@ -56,10 +56,6 @@ class webutility
                     case "create":
                         $this->ajax_create_url = $ajax_value["url"];
                         $this->ajax_create_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-
-                        // $this->ajax_create_fade_out = (isset($ajax_value["fade_out"])) ? $this->obj_tools->post_encode($ajax_value["fade_out"]) : "";
-                        // $this->ajax_create_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : "";
-                        // $this->ajax_create_check = (isset($ajax_value["check"])) ? $this->obj_tools->post_encode($ajax_value["check"]) : false;
                         $this->button_column = true;
                         break;
                     case "update":
@@ -574,19 +570,6 @@ class webutility
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
-
-
-
-
-
-                    //------------------------------------------------------------------------------------
-
-
-
-
-
-
-
                     if (isset($this->ajax_create_url)) {
                     ?> $("#add_<?= $this->tbl_ID; ?>").click(function() {
                             tr = create_element("tr");
@@ -846,6 +829,11 @@ class webutility
                                         break;
                                     case 2: // CHECKBOX
                                         value = $(":checkbox", this)[0].checked;
+                                        if (value) {
+                                            value = 1;
+                                        } else {
+                                            value = 0;
+                                        }
                                         objInsert[dataid] = {
                                             "columntype": columntype,
                                             "sqlname": data.attr("data-sqlname"),
