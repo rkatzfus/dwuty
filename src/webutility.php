@@ -96,7 +96,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' id='add_" . $this->tbl_ID . "' style='box-shadow: none' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
+                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -551,7 +551,7 @@ class webutility
                                         searchable: false,
                                         className: "text-center align-middle",
                                         render: function(data) {
-                                            return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
+                                            return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;width: 80px;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
                                         }
                                     }
                                 <?php
@@ -735,7 +735,9 @@ class webutility
                                             $(outer).attr("disabled", "true");
                                         } else {
                                             $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
-                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
+                                            $(outer).attr("data-select2_pkfield", <?= $this->obj_tools->post_encode($column["SELECT2_PKFIELD"]); ?>);
+                                            $(outer).attr("data-select2_valuekey", <?= $this->obj_tools->post_encode($column["SELECT2_VALUEKEY"]); ?>);
+                                            $(outer).attr("data-select2_datasource", <?= $this->obj_tools->post_encode($column["SELECT2_DATASOURCE"]); ?>);
                                         }
                                         inner = create_element("option");
                                         outer.appendChild(inner);
@@ -795,7 +797,8 @@ class webutility
                                     "btn-sm"
                                 ],
                                 style: [
-                                    "box-shadow: none"
+                                    "box-shadow: none",
+                                    "width: 80px"
                                 ],
                                 createTextNode: "speichern",
                                 id: "create_" + <?= $this->obj_tools->post_encode($this->tbl_ID); ?>
@@ -814,11 +817,6 @@ class webutility
                             }
                             ?>
                         });
-
-
-
-
-
                         $(document).on("click", "#create_<?= $this->tbl_ID; ?>", function() {
                             currentRow = $(this).closest("tr");
                             const objInsert = {};
@@ -875,14 +873,32 @@ class webutility
                                         }
                                         break;
                                     case 6: // DROPDOWN
-                                        sqlname = data.attr("data-sqlname");
                                         value = $("select", this).select2('data')[0].id;
-                                        // console.log(value);
-
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
                                         break;
                                     case 7: // DROPDOWN_MULTI
-                                        sqlname = data.attr("data-sqlname");
-                                        // console.log(sqlname);
+                                        value_multi = $("select", this).select2('data');
+                                        value = [];
+                                        if (value_multi.length > 0) {
+                                            value_multi.forEach(function(item) {
+                                                value.push(item.id);
+                                            });
+                                        }
+                                        if (value.length != 0) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "select2_pkfield": data.attr("data-select2_pkfield"),
+                                                "select2_valuekey": data.attr("data-select2_valuekey"),
+                                                "select2_datasource": data.attr("data-select2_datasource"),
+                                                "value": value
+                                            };
+                                        }
                                         break;
                                     case 8: // DATE
                                         value = $("input[type='date']", this).val();
@@ -905,99 +921,21 @@ class webutility
                                         }
                                         break;
                                 }
-
-                                // console.log($(this).attr('data-columntype'));
-
-                                // id = $(this).attr('id') || 'no_id'; //get current td's id
-                                // if (id != 'no_id') {
-                                //     datatyp = parseInt($(this).attr('data-typ') || 'no_datatyp'); //get current data-typ
-                                //     items = {}; //create an empty object
-                                //     items['sqlname'] = id; // add element to object
-                                //     items['data-typ'] = datatyp; // add element to object
-                                //     switch (datatyp) {
-                                //         case 2: // CHECKBOX
-                                //             items['data-value'] = $(this).find(":checkbox")[0].checked;
-                                //             break;
-                                //         case 5: // COLOR
-                                //             items['data-value'] = $(this).find("input[type='color']").val();
-                                //             break;
-                                //         case 6: // DROPDOWN
-                                //             dataSelect2 = $('#SELECT2_' + $(this).attr('name')).select2('data');
-                                //             // Insert auch wenn ein Dropdown nicht ausgefüllt ist
-                                //             if (typeof dataSelect2[0] === 'undefined') {
-                                //                 items['data-value'] = '';
-                                //             } else {
-                                //                 items['data-value'] = dataSelect2[0].id;
-                                //             }
-                                //             break;
-                                //         case 7: // DROPDOWN_MULTI
-                                //             dataSelect2 = $('#SELECT2_' + $(this).attr('name')).select2('data');
-                                //             dropdown_multi_selected = [];
-                                //             if (dataSelect2.length > 0) {
-                                //                 dataSelect2.forEach(function(item) {
-                                //                     dropdown_multi_selected.push(item.id);
-                                //                 });
-                                //                 items['data-value'] = dropdown_multi_selected;
-                                //                 items['sqlname'] = $(this).attr('name');
-                                //             }
-                                //             break;
-                                //         case 8: // DATE
-                                //             items['data-value'] = $(this).find("input[type='date']").val();
-                                //             break;
-                                //         case 9: // DATETIME
-                                //             items['data-value'] = $(this).find("input[type='datetime-local']").val();
-                                //             break;
-                                //         default:
-                                //             items['data-value'] = $(this).text();
-                                //             break;
-                                //     }
-                                //     items['value'] = items['data-value'];
-                                //     tdArray.push(items); //push the object to array
-
-                                // }
                             });
-
-
-
-
-
-
-
-                            console.log(objInsert);
-
-
-
-
-
-
-                            // function ajax_insert() {
-                            //     if (requiredbug == false) {
-                            //         $.ajax({
-                            //             'url': "<#?= $this->ajax_insert_url; ?>",
-                            //             'method': 'POST',
-                            //             'data': {
-                            //                 'columns': JSON.stringify(tdArray),
-                            //                 'datasource': "<#?= $this->ajax_insert_datasource; ?>"
-                            //                 <?php
-                                                //                 if (isset($this->ajax_insert_fade_out)) {
-                                                //                     echo ",'fade_out': '" . $this->ajax_insert_fade_out . "'";
-                                                //                 }
-                                                //                 if (isset($this->ajax_insert_dropdown_multi)) {
-                                                //                     echo ",'dropdown_multi': '" . $this->ajax_insert_dropdown_multi . "'";
-                                                //                 }
-                                                //                 if (isset($this->ajax_insert_exPostSQL)) {
-                                                //                     echo ",'exPostSQL': '" . $this->ajax_insert_exPostSQL . "'";
-                                                //                 }
-                                                //                 
-                                                ?>
-                            //             },
-                            //             'success': function(data) {
-                            //                 $('#<#?= $this->tbl_ID; ?>').DataTable().destroy();
-                            //                 fetch_data_<#?= $this->tbl_ID; ?>();
-                            //             }
-                            //         });
-                            //     }
-                            // }
+                            insertdata = {
+                                datasource: <?= $this->obj_tools->post_encode($this->ajax_create_datasource); ?>,
+                                data: objInsert
+                            };
+                            $.ajax({
+                                url: "<?= $this->ajax_create_url; ?>",
+                                type: "POST",
+                                dataType: "json",
+                                data: insertdata,
+                                success: function() {
+                                    //                 $('#<#?= $this->tbl_ID; ?>').DataTable().destroy();
+                                    //                 fetch_data_<#?= $this->tbl_ID; ?>();
+                                }
+                            });
                         });
 
 
@@ -1015,21 +953,6 @@ class webutility
 
                     <?php
                     }
-
-
-
-
-                    //------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
                     if (isset($this->ajax_delete_url)) {
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
@@ -1232,6 +1155,9 @@ class webutility
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["from"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
+                                    $this->columns[$column_key]["SELECT2_PKFIELD"] =  $arySetting["SELECT2"]["columns"]["id"];
+                                    $this->columns[$column_key]["SELECT2_VALUEKEY"] = $arySetting["SELECT2"]["columns"]["text"];
+                                    $this->columns[$column_key]["SELECT2_DATASOURCE"] = $arySetting["SELECT2"]["from"];
                                     $aryColumns = $arySetting["SUBSELECT2"]["columns"];
                                     $this->webutility_ssp->set_length(-1); // remove length & paging
                                     $this->webutility_ssp->set_select($aryColumns);

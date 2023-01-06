@@ -41,7 +41,7 @@ $obj_database_tools = new database_tools();
 			)
 		);
 		$array_AJAX_xxxTESTxxx["create"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+			"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "MYSQL_DATABASE.root_table root"
 		);
 		$obj_webutility = new webutility("dte_xxxTESTxxx", $array_AJAX_xxxTESTxxx, $pkfield_xxxTESTxxx);
 		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
