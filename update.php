@@ -32,7 +32,6 @@ if ($celltype === 7) {
             } else {
                 $sql = "insert into " .  $obj_database_tools->rmv_alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->rmv_alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->rmv_alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
             }
-            echo $sql . "<hr>";
             $obj_database_tools->sql_exec_no_result($sql);
         }
     }

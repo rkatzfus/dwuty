@@ -786,7 +786,7 @@ class webutility
                             }
                             ?>
                             object = {
-                                style: ["text-align:center"],
+                                class: ["text-center", "align-middle"]
                             };
                             button_td = create_element("td", object);
                             object = {
@@ -924,33 +924,17 @@ class webutility
                             });
                             insertdata = {
                                 datasource: <?= $this->obj_tools->post_encode($this->ajax_create_datasource); ?>,
-                                data: objInsert
+                                data: JSON.stringify(objInsert)
                             };
                             $.ajax({
                                 url: "<?= $this->ajax_create_url; ?>",
                                 type: "POST",
                                 dataType: "json",
                                 data: insertdata,
-                                success: function() {
-                                    //                 $('#<#?= $this->tbl_ID; ?>').DataTable().destroy();
-                                    //                 fetch_data_<#?= $this->tbl_ID; ?>();
-                                }
                             });
+                            $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
+                            read_data_<?= $this->tbl_ID; ?>();
                         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <?php
                     }
                     if (isset($this->ajax_delete_url)) {
