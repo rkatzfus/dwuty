@@ -589,7 +589,6 @@ class webutility
 
                     if (isset($this->ajax_create_url)) {
                     ?> $("#add_<?= $this->tbl_ID; ?>").click(function() {
-                            alert("create row");
                             tr = create_element("tr");
                             <?php
                             foreach ($this->columns as $column) {
@@ -604,6 +603,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
+                                        } else {
+                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
@@ -619,6 +621,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
+                                        } else {
+                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
@@ -635,6 +640,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
+                                        } else {
+                                            $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         outer.appendChild(inner);
                                         td.appendChild(outer);
@@ -652,6 +660,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
+                                        } else {
+                                            $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         outer.appendChild(inner);
                                         td.appendChild(outer);
@@ -681,6 +692,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
+                                        } else {
+                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
@@ -697,6 +711,9 @@ class webutility
                                         outer = create_element("select", html_default["select"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
+                                        } else {
+                                            $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         inner = create_element("option");
                                         outer.appendChild(inner);
@@ -716,6 +733,9 @@ class webutility
                                         $(outer).attr("multiple", "true");
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
+                                        } else {
+                                            $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         inner = create_element("option");
                                         outer.appendChild(inner);
@@ -733,15 +753,16 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
-                                        }
-                                        if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
-                                            $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                        } else {
+                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
+                                            $(outer).attr("data-name", name);
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
                                     <?php
                                         break;
-                                    case 9: // DATE
+                                    case 9: // DATETIME
                                     ?>
                                         html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
@@ -751,9 +772,9 @@ class webutility
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
-                                        }
-                                        if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
-                                            $(inner).addClass("update_<?= $this->tbl_ID ?>");
+                                        } else {
+                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
+                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
                                         td.appendChild(inner);
                                         tr.appendChild(td);
@@ -761,23 +782,6 @@ class webutility
                                         break;
                                 }
                             }
-
-
-
-
-
-
-
-
-                            // // Überschreiben mit Ajax Werten aus dem anlegen Button
-                            // ajax_default = $(this).data('ajaxdefault');
-                            // for (ifilter in ajax_default) {
-                            //     if (ifilter !== "DTTBL_ID") {
-                            //         def = ajax_default['DTTBL_DEFAULT']
-                            //         html = html.replaceAll('AJAX_DEFAULT_' + ifilter + '_ID', ajax_default[ifilter]);
-                            //         html = html.replaceAll('AJAX_DEFAULT_' + ifilter + '_TEXT', def);
-                            //     }
-                            // }
                             ?>
                             object = {
                                 style: ["text-align:center"],
@@ -810,6 +814,205 @@ class webutility
                             }
                             ?>
                         });
+
+
+
+
+
+                        $(document).on("click", "#create_<?= $this->tbl_ID; ?>", function() {
+                            currentRow = $(this).closest("tr");
+                            const objInsert = {};
+                            $(currentRow).find('td').each(function(dataid) {
+                                data = $(this.innerHTML);
+                                columntype = parseInt(data.attr("data-columntype"));
+                                switch (columntype) {
+                                    case 0: // TEXT
+                                        value = $("input[type='text']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
+                                        break;
+                                    case 1: // EMAIL
+                                        value = $("input[type='email']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
+                                        break;
+                                    case 2: // CHECKBOX
+                                        value = $(":checkbox", this)[0].checked;
+                                        objInsert[dataid] = {
+                                            "columntype": columntype,
+                                            "sqlname": data.attr("data-sqlname"),
+                                            "value": value
+                                        };
+                                        break;
+                                    case 3: // LINK
+                                        value = $("input[type='url']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
+                                        break;
+                                    case 5: // COLOR
+                                        value = $("input[type='color']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
+                                        break;
+                                    case 6: // DROPDOWN
+                                        sqlname = data.attr("data-sqlname");
+                                        value = $("select", this).select2('data')[0].id;
+                                        // console.log(value);
+
+                                        break;
+                                    case 7: // DROPDOWN_MULTI
+                                        sqlname = data.attr("data-sqlname");
+                                        // console.log(sqlname);
+                                        break;
+                                    case 8: // DATE
+                                        value = $("input[type='date']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value
+                                            };
+                                        }
+                                        break;
+                                    case 9: // DATETIME
+                                        value = $("input[type='datetime-local']", this).val();
+                                        if (value) {
+                                            objInsert[dataid] = {
+                                                "columntype": columntype,
+                                                "sqlname": data.attr("data-sqlname"),
+                                                "value": value.replace("T", " ")
+                                            }
+                                        }
+                                        break;
+                                }
+
+                                // console.log($(this).attr('data-columntype'));
+
+                                // id = $(this).attr('id') || 'no_id'; //get current td's id
+                                // if (id != 'no_id') {
+                                //     datatyp = parseInt($(this).attr('data-typ') || 'no_datatyp'); //get current data-typ
+                                //     items = {}; //create an empty object
+                                //     items['sqlname'] = id; // add element to object
+                                //     items['data-typ'] = datatyp; // add element to object
+                                //     switch (datatyp) {
+                                //         case 2: // CHECKBOX
+                                //             items['data-value'] = $(this).find(":checkbox")[0].checked;
+                                //             break;
+                                //         case 5: // COLOR
+                                //             items['data-value'] = $(this).find("input[type='color']").val();
+                                //             break;
+                                //         case 6: // DROPDOWN
+                                //             dataSelect2 = $('#SELECT2_' + $(this).attr('name')).select2('data');
+                                //             // Insert auch wenn ein Dropdown nicht ausgefüllt ist
+                                //             if (typeof dataSelect2[0] === 'undefined') {
+                                //                 items['data-value'] = '';
+                                //             } else {
+                                //                 items['data-value'] = dataSelect2[0].id;
+                                //             }
+                                //             break;
+                                //         case 7: // DROPDOWN_MULTI
+                                //             dataSelect2 = $('#SELECT2_' + $(this).attr('name')).select2('data');
+                                //             dropdown_multi_selected = [];
+                                //             if (dataSelect2.length > 0) {
+                                //                 dataSelect2.forEach(function(item) {
+                                //                     dropdown_multi_selected.push(item.id);
+                                //                 });
+                                //                 items['data-value'] = dropdown_multi_selected;
+                                //                 items['sqlname'] = $(this).attr('name');
+                                //             }
+                                //             break;
+                                //         case 8: // DATE
+                                //             items['data-value'] = $(this).find("input[type='date']").val();
+                                //             break;
+                                //         case 9: // DATETIME
+                                //             items['data-value'] = $(this).find("input[type='datetime-local']").val();
+                                //             break;
+                                //         default:
+                                //             items['data-value'] = $(this).text();
+                                //             break;
+                                //     }
+                                //     items['value'] = items['data-value'];
+                                //     tdArray.push(items); //push the object to array
+
+                                // }
+                            });
+
+
+
+
+
+
+
+                            console.log(objInsert);
+
+
+
+
+
+
+                            // function ajax_insert() {
+                            //     if (requiredbug == false) {
+                            //         $.ajax({
+                            //             'url': "<#?= $this->ajax_insert_url; ?>",
+                            //             'method': 'POST',
+                            //             'data': {
+                            //                 'columns': JSON.stringify(tdArray),
+                            //                 'datasource': "<#?= $this->ajax_insert_datasource; ?>"
+                            //                 <?php
+                                                //                 if (isset($this->ajax_insert_fade_out)) {
+                                                //                     echo ",'fade_out': '" . $this->ajax_insert_fade_out . "'";
+                                                //                 }
+                                                //                 if (isset($this->ajax_insert_dropdown_multi)) {
+                                                //                     echo ",'dropdown_multi': '" . $this->ajax_insert_dropdown_multi . "'";
+                                                //                 }
+                                                //                 if (isset($this->ajax_insert_exPostSQL)) {
+                                                //                     echo ",'exPostSQL': '" . $this->ajax_insert_exPostSQL . "'";
+                                                //                 }
+                                                //                 
+                                                ?>
+                            //             },
+                            //             'success': function(data) {
+                            //                 $('#<#?= $this->tbl_ID; ?>').DataTable().destroy();
+                            //                 fetch_data_<#?= $this->tbl_ID; ?>();
+                            //             }
+                            //         });
+                            //     }
+                            // }
+                        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <?php
                     }
 
@@ -848,8 +1051,7 @@ class webutility
                     <?php
                     }
                     if (isset($this->ajax_update_url)) {
-                    ?>
-                        $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
+                    ?> $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
                             rowid = $(this).closest("tr").attr("id").replace("row_", "");
                             td = $(this).closest("td");
                             if (rowid) {
@@ -899,9 +1101,6 @@ class webutility
                                         colData: colData,
                                         datasource: <?= $this->obj_tools->post_encode($this->ajax_update_datasource); ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
-                                        // bypass: "<#?= $this->obj_tools->post_encode($this->ajax_update_bypass); ?>"
-                                        // coldata  raus?!?!
-                                        // datetime local englische version
                                     }
                                 });
 
@@ -986,35 +1185,6 @@ class webutility
                             },
                         },
                     });
-                    // $(".SELECT2_<#?= $column["NAME"]; ?>").select2({
-                    //     width: "100%",
-                    //     language: "de",
-                    //     placeholder: "Auswahl",
-                    //     dropdownAutoWidth: true,
-                    //     allowClear: true,
-                    //     ajax: {
-                    //         url: "<#?= $column["AJAX"]; ?>",
-                    //         type: "POST",
-                    //         delay: 100,
-                    //         dataType: "json",
-                    //         theme: "bootstrap-5",
-                    //         cache: false,
-                    //         data: function(params) {
-                    //             query = {
-                    //                 search: params.term,
-                    //                 type: "public",
-                    //                 select2: <#?= $this->obj_tools->post_encode($select2data); ?>,
-                    //             }
-                    //             return query;
-                    //         },
-                    //         processResults: function(response) {
-                    //             return {
-                    //                 results: response
-                    //             };
-                    //         },
-                    //     },
-                    // });
-
                 }
             </script>
         </footer>
