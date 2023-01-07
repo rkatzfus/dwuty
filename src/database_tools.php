@@ -19,7 +19,8 @@ class database_tools
         $host = getenv('HOST');
         $user = getenv('MYSQL_USER');
         $pass = getenv('MYSQL_PASSWORD');
-        $this->mysqli_conn = new \mysqli($host, $user, $pass);
+        $database = getenv('MYSQL_DATABASE');
+        $this->mysqli_conn = new \mysqli($host, $user, $pass, $database);
         if ($this->mysqli_conn->connect_error) {
             echo ("Connection failed: " . $this->mysqli_conn->connect_error);
             $this->mysqli_conn = false;
