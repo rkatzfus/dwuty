@@ -24,24 +24,24 @@ $obj_database_tools = new database_tools();
 		$datREF_ROOT_ID = "REF_ROOT_ID";
 		$array_AJAX_xxxTESTxxx = array();
 		$array_AJAX_xxxTESTxxx["read"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "MYSQL_DATABASE.root_table root left join MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
 		);
 		$array_AJAX_xxxTESTxxx["delete"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "MYSQL_DATABASE.root_table root", "dropdown_multi" => array(
+			"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "root_table root", "dropdown_multi" => array(
 				$datREF_ROOT_ID => array(
-					"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+					"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 				)
 			)
 		);
 		$array_AJAX_xxxTESTxxx["update"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "MYSQL_DATABASE.root_table root", "dropdown_multi" => array(
+			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "root_table root", "dropdown_multi" => array(
 				$datREF_ROOT_ID => array(
-					"datasource" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+					"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 				)
 			)
 		);
 		$array_AJAX_xxxTESTxxx["create"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "MYSQL_DATABASE.root_table root"
+			"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "root_table root"
 		);
 		$obj_webutility = new webutility("dte_xxxTESTxxx", $array_AJAX_xxxTESTxxx, $pkfield_xxxTESTxxx);
 		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
@@ -53,18 +53,18 @@ $obj_database_tools = new database_tools();
 			"AJAX" => "/vendor/datatableswebutility/dwuty/read_select2.php", "SELECT2" => array(
 				"columns" => array(
 					"id" => "dropdown.ID", "text" => "dropdown.TEXT"
-				), "from" => "MYSQL_DATABASE.dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
+				), "from" => "dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI = array(
 			"AJAX" => "/vendor/datatableswebutility/dwuty/read_select2.php", "SELECT2" => array(
 				"columns" => array(
 					"id" => "ref.REF_ROOT", "text" => "ref.REF_DROPDOWN_MULTI"
-				), "from" => "MYSQL_DATABASE.ref_root_ref_dropdown_multi_table ref", "where" => "ref.DEL<>1"
+				), "from" => "ref_root_ref_dropdown_multi_table ref", "where" => "ref.DEL<>1"
 			), "SUBSELECT2" => array(
 				"columns" => array(
 					"id" => "dropdown_multi.ID", "text" => "dropdown_multi.TEXT"
-				), "from" => "MYSQL_DATABASE.dropdown_multi_lookup_table dropdown_multi", "where" => "dropdown_multi.DEL<>1"
+				), "from" => "dropdown_multi_lookup_table dropdown_multi", "where" => "dropdown_multi.DEL<>1"
 			)
 		);
 		$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", EDIT, TEXT);
