@@ -22,7 +22,7 @@ foreach ($_POST["columns"] as $key => $value) {
     }
 }
 $strSqlFrom = json_decode($_POST["datasource"], true);
-$ary_Columnsdata = $_POST["columnsdata"];
+$ary_Columnsdata = json_decode($_POST["columnsdata"], true);
 $aryGroupBy[] = $pkfield;
 foreach ($ary_Columnsdata as $value) {
     if (array_key_exists("SELECT2", $value)) {
