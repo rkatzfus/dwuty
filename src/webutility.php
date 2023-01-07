@@ -372,7 +372,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -388,7 +388,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -406,7 +406,7 @@ class webutility
                                                 if (data == true) {
                                                     $(inner).attr("checked", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 outer.appendChild(inner);
@@ -425,7 +425,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 outer.appendChild(inner);
@@ -459,7 +459,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -516,7 +516,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -531,7 +531,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if (<?= isset($this->ajax_update_url) ? true : false; ?>) {
+                                                if (<?= isset($this->ajax_update_url); ?>) {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
