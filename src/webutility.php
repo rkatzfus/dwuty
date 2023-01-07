@@ -110,6 +110,7 @@ class webutility
         foreach ($this->columns as $column) {
             if ($column["TYP"] == 6 or $column["TYP"] == 7) {
                 $ary_SearchSelect2[$column["SQLNAME"]] = $column["JSON"];
+                $columnjson = $column["JSON"];
             }
         }
         foreach ($this->columns as $columns_key => $columns_value) {
@@ -486,7 +487,7 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                aryJson = JSON.stringify(<?= $this->obj_tools->post_encode($column["JSON"]); ?>);
+                                                aryJson = <?= $this->obj_tools->post_encode($columnjson); ?>;
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                                 outer = create_element("select", html_default["select"]);
@@ -498,7 +499,7 @@ class webutility
                                                     var myData = data.split(",");
                                                     myData.forEach(function(myDataElement) {
                                                         html_default["option"].value = myDataElement;
-                                                        html_default["option"].createTextNode = JSON.parse(aryJson)[myDataElement];
+                                                        html_default["option"].createTextNode = aryJson[myDataElement];
                                                         inner = create_element("option", html_default["option"]);
                                                         $(inner).attr("selected", "true");
                                                         outer.appendChild(inner);
