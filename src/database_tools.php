@@ -16,9 +16,9 @@ class database_tools
     }
     private function build_conn()
     {
-        $host = "dwuty-db";
-        $user = "MYSQL_USER";
-        $pass = "MYSQL_PASSWORD";
+        $host = getenv('HOST');
+        $user = getenv('MYSQL_USER');
+        $pass = getenv('MYSQL_PASSWORD');
         $this->mysqli_conn = new \mysqli($host, $user, $pass);
         if ($this->mysqli_conn->connect_error) {
             echo ("Connection failed: " . $this->mysqli_conn->connect_error);
