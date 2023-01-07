@@ -123,7 +123,6 @@ class webutility
                 }
             }
         }
-        $columnsdata = $this->obj_tools->post_encode($columnsdata);
     ?>
         <footer>
             <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -346,8 +345,7 @@ class webutility
                                     pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                     datasource: <?= $this->obj_tools->post_encode($this->ajax_read_datasource); ?>,
                                     where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
-                                    columnsdata: <?= $this->obj_tools->post_encode($columnsdata); ?>
-
+                                    columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>)
                                 }
                             },
                             rowId: "DT_RowId",
