@@ -110,7 +110,6 @@ class webutility
         foreach ($this->columns as $column) {
             if ($column["TYP"] == 6 or $column["TYP"] == 7) {
                 $ary_SearchSelect2[$column["SQLNAME"]] = $column["JSON"];
-                $columnjson = $column["JSON"];
             }
         }
         foreach ($this->columns as $columns_key => $columns_value) {
@@ -487,7 +486,7 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
-                                                aryJson = <?= $this->obj_tools->post_encode($columnjson); ?>;
+                                                aryJson = <?= $this->obj_tools->post_encode($column["JSON"]); ?>;
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                                 outer = create_element("select", html_default["select"]);
