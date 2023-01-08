@@ -15,7 +15,7 @@ class tools
         $aryIncoming = array()
     ) {
         if (!empty($aryIncoming)) {
-            $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+            $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         } else {
             $result = false;
         }

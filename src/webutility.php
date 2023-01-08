@@ -468,6 +468,7 @@ class webutility
                                             break;
                                         case 6: // DROPDOWN
                                         ?> render: function(data) {
+                                                initialvalues = JSON.parse(<?= $this->obj_tools->post_encode($column['JSON']); ?>);
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                                 outer = create_element("select", html_default["select"]);
@@ -476,7 +477,7 @@ class webutility
                                                 }
                                                 if (data) {
                                                     html_default["option"].value = data;
-                                                    html_default["option"].createTextNode = <?= $this->obj_tools->post_encode($column['JSON']); ?>[data];
+                                                    html_default["option"].createTextNode = initialvalues[data];
                                                     inner = create_element("option", html_default["option"]);
                                                     outer.appendChild(inner);
                                                 }
@@ -486,6 +487,7 @@ class webutility
                                             break;
                                         case 7: // DROPDOWN_MULTI
                                         ?> render: function(data) {
+                                                initialvalues = JSON.parse(<?= $this->obj_tools->post_encode($column['JSON']); ?>);
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
                                                 outer = create_element("select", html_default["select"]);
@@ -497,7 +499,7 @@ class webutility
                                                     var myData = data.split(",");
                                                     myData.forEach(function(myDataElement) {
                                                         html_default["option"].value = myDataElement;
-                                                        html_default["option"].createTextNode = <?= $this->obj_tools->post_encode($column["JSON"]); ?>[myDataElement];
+                                                        html_default["option"].createTextNode = initialvalues[myDataElement];
                                                         inner = create_element("option", html_default["option"]);
                                                         $(inner).attr("selected", "true");
                                                         outer.appendChild(inner);
@@ -1121,7 +1123,7 @@ class webutility
                                     (isset($arySetting["SELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SELECT2"]["where"]) : $this->webutility_ssp->set_where();
                                     $sql = $this->webutility_ssp->set_data_sql();
                                     $ary_Select2Initial =  $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
-                                    $this->columns[$column_key]["JSON"] = $ary_Select2Initial;
+                                    $this->columns[$column_key]["JSON"] = $this->obj_tools->post_encode($ary_Select2Initial);
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["from"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
@@ -1136,7 +1138,7 @@ class webutility
                                     (isset($arySetting["SUBSELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SUBSELECT2"]["where"]) : $this->webutility_ssp->set_where();
                                     $sql = $this->webutility_ssp->set_data_sql();
                                     $ary_Select2Initial = $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
-                                    $this->columns[$column_key]["JSON"] = $ary_Select2Initial;
+                                    $this->columns[$column_key]["JSON"] = $this->obj_tools->post_encode($ary_Select2Initial);
                                     $this->columns[$column_key]["SUBSELECT2"] = $arySetting["SUBSELECT2"];
                                     break;
                                 default:
