@@ -4,9 +4,22 @@ namespace App;
 
 class database_tools
 {
-    function __construct($debug = false)
-    {
+    function __construct(
+        $debug = false,
+        $credentials = array()
+    ) {
         $this->debug = $debug;
+        if (empty($credentials)) {
+            $this->host = getenv('HOST');
+            $this->user = getenv('MYSQL_USER');
+            $this->pass = getenv('MYSQL_PASSWORD');
+            $this->database = getenv('MYSQL_DATABASE');
+        } else {
+            $this->host = $credentials["host"];
+            $this->user = $credentials["user"];
+            $this->pass = $credentials["pass"];
+            $this->database = $credentials["database"];
+        }
         $this->username = get_current_user();
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
     }
@@ -16,11 +29,7 @@ class database_tools
     }
     private function build_conn()
     {
-        $host = getenv('HOST');
-        $user = getenv('MYSQL_USER');
-        $pass = getenv('MYSQL_PASSWORD');
-        $database = getenv('MYSQL_DATABASE');
-        $this->mysqli_conn = new \mysqli($host, $user, $pass, $database);
+        $this->mysqli_conn = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
         if ($this->mysqli_conn->connect_error) {
             echo ("Connection failed: " . $this->mysqli_conn->connect_error);
             $this->mysqli_conn = false;
