@@ -18,6 +18,8 @@ if ($datasource && $data) {
         }
         if ($data_value["columntype"] == 7) {
             $ary_dropdownmulti[] = $data_value;
+        } else {
+            $ary_dropdownmulti = "";
         }
     }
 
