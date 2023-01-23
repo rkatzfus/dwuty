@@ -14,10 +14,9 @@ class tools
     public function post_encode(
         $aryIncoming = array()
     ) {
+        $result = "false";
         if (!empty($aryIncoming)) {
             $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
-        } else {
-            $result = false;
         }
         if ($this->debug == true) {
             echo "<hr>";
