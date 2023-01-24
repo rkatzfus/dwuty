@@ -22,7 +22,8 @@ class webutility_ssp
         $this->strsqlOrder = "";
         $this->strGroupBy = "";
         $this->data = array();
-        $this->obj_mysqli = new database_tools();
+        $this->obj_database_tools = new database_tools();
+        $this->obj_tools = new tools();
     }
     public function set_draw(
         $draw = 0
@@ -81,7 +82,7 @@ class webutility_ssp
     {
         if (!isset($this->recordsTotal) && $this->recordsTotal < 1) {
             $sql = $this->count_records(false);
-            $this->recordsTotal = intval($this->obj_mysqli->sql_getfield($sql));
+            $this->recordsTotal = intval($this->obj_database_tools->sql_getfield($sql));
             if ($this->debug == true) {
                 echo "<hr>";
                 echo "<b>function set_recordsTotal</b><br>";
@@ -94,7 +95,7 @@ class webutility_ssp
     {
         if (!isset($this->recordsFiltered) && $this->recordsFiltered < 1) {
             $sql = $this->count_records(true);
-            $this->recordsFiltered = intval($this->obj_mysqli->sql_getfield($sql));
+            $this->recordsFiltered = intval($this->obj_database_tools->sql_getfield($sql));
             if ($this->debug == true) {
                 echo "<hr>";
                 echo "<b>function set_recordsFiltered</b><br>";
@@ -206,7 +207,7 @@ class webutility_ssp
         $ary_sql[] = $this->strsqlOrder;
         $ary_sql[] = $this->length_and_paging();
         $sql = implode(" ", $ary_sql);
-        $result = ($this->obj_mysqli->chk_stmnt($sql) == true) ? $this->obj_mysqli->sql2array($sql) : "";
+        $result = ($this->obj_database_tools->chk_stmnt($sql) == true) ? $this->obj_database_tools->sql2array($sql) : "";
         if ($result != false && isset($this->arycolumns)) {
             foreach ($result as $value_query) {
                 $rowdata = array();
@@ -245,7 +246,7 @@ class webutility_ssp
             echo "<hr>";
             echo "<b>function read</b><br>";
         }
-        echo json_encode($result);
+        echo $this->obj_tools->post_encode($result);
     }
     private function build_where()
     {
