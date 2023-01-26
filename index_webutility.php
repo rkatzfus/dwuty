@@ -20,30 +20,36 @@ $obj_database_tools = new database_tools();
 <body>
 	<div class="container-fluid mt-1">
 		<?php
-		$pkfield_xxxTESTxxx = "root.ID";
 		$datREF_ROOT_ID = "REF_ROOT_ID";
-		$array_AJAX_xxxTESTxxx = array();
-		$array_AJAX_xxxTESTxxx["read"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+		$ary_webutility_config = array(
+			"tablename" => "dte_xxxTESTxxx",
+			"crud" => array(
+				"create" => array(
+					"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "root_table root"
+				),
+				"read" => array(
+					"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+				),
+				"update" => array(
+					"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "root_table root", "dropdown_multi" => array(
+						$datREF_ROOT_ID => array(
+							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+						)
+					)
+				),
+				"delete" => array(
+					"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "root_table root", "dropdown_multi" => array(
+						$datREF_ROOT_ID => array(
+							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
+						)
+					)
+				),
+
+			),
+			"primarykey" => "root.ID",
+			"lang_iso_639_1" => "de"
 		);
-		$array_AJAX_xxxTESTxxx["delete"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "root_table root", "dropdown_multi" => array(
-				$datREF_ROOT_ID => array(
-					"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
-				)
-			)
-		);
-		$array_AJAX_xxxTESTxxx["update"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "root_table root", "dropdown_multi" => array(
-				$datREF_ROOT_ID => array(
-					"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
-				)
-			)
-		);
-		$array_AJAX_xxxTESTxxx["create"] = array(
-			"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "root_table root"
-		);
-		$obj_webutility = new webutility("dte_xxxTESTxxx", $array_AJAX_xxxTESTxxx, $pkfield_xxxTESTxxx);
+		$obj_webutility = new webutility($ary_webutility_config);
 		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
 		$obj_webutility->set_where($strsqlWhere_xxxTESTxxx);
 		$arySetting_CHECKBOX = array(

@@ -31,22 +31,20 @@ define("DATETIME", "9");
 class webutility
 {
     private $columns = array();
-    private $tbl_ID;
     function __construct(
-        $tbl_ID = "",
-        $ajax  = array(),
-        $pkfield  = ""
+        $tabledata = array()
     ) {
         $this->obj_tools = new tools(false); // debug Mode
         $this->obj_database_tools = new database_tools();
         $this->webutility_ssp = new webutility_ssp(false); // debug Mode
         $this->ajax_read_where = "";
-        $this->tbl_ID = $tbl_ID;
-        $this->pkfield = $pkfield;
-        if (isset($ajax)) {
+        $this->tbl_ID = $tabledata["tablename"];
+        $this->pkfield = $tabledata["primarykey"];
+        $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
+        if (isset($tabledata["crud"])) {
             $read = false;
             $this->button_column = false;
-            foreach ($ajax as $ajax_key => $ajax_value) {
+            foreach ($tabledata["crud"] as $ajax_key => $ajax_value) {
                 switch ($ajax_key) {
                     case "read":
                         $this->ajax_read_url = $ajax_value["url"];
@@ -131,183 +129,13 @@ class webutility
             <script src="/vendor/datatables.net/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-fixedheader-bs5/js/fixedHeader.bootstrap5.min.js"></script>
             <script src="/vendor/select2/select2/dist/js/select2.min.js"></script>
-            <script src="/vendor/select2/select2/dist/js/i18n/de.js"></script>
+            <script src="/vendor/select2/select2/dist/js/i18n/<?= $this->language; ?>.js"></script>
             <script type="text/javascript">
                 $(document).ready(function() {
                     function read_data_<?= $this->tbl_ID; ?>() {
                         var table = $("#<?= $this->tbl_ID; ?>").DataTable({
                             language: {
-                                "emptyTable": "Keine Daten in der Tabelle vorhanden",
-                                "info": "_START_ bis _END_ von _TOTAL_ Einträgen",
-                                "infoEmpty": "Keine Daten vorhanden",
-                                "infoFiltered": "(gefiltert von _MAX_ Einträgen)",
-                                "infoThousands": ".",
-                                "loadingRecords": "Wird geladen ..",
-                                "processing": "Bitte warten ..",
-                                "paginate": {
-                                    "first": "Erste",
-                                    "previous": "Zurück",
-                                    "next": "Nächste",
-                                    "last": "Letzte"
-                                },
-                                "aria": {
-                                    "sortAscending": ": aktivieren, um Spalte aufsteigend zu sortieren",
-                                    "sortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
-                                },
-                                "select": {
-                                    "rows": {
-                                        "_": "%d Zeilen ausgewählt",
-                                        "1": "1 Zeile ausgewählt"
-                                    },
-                                    "cells": {
-                                        "1": "1 Zelle ausgewählt",
-                                        "_": "%d Zellen ausgewählt"
-                                    },
-                                    "columns": {
-                                        "1": "1 Spalte ausgewählt",
-                                        "_": "%d Spalten ausgewählt"
-                                    }
-                                },
-                                "buttons": {
-                                    "print": "Drucken",
-                                    "copy": "Kopieren",
-                                    "copyTitle": "In Zwischenablage kopieren",
-                                    "copySuccess": {
-                                        "_": "%d Zeilen kopiert",
-                                        "1": "1 Zeile kopiert"
-                                    },
-                                    "collection": "Aktionen <span class=\"ui-button-icon-primary ui-icon ui-icon-triangle-1-s\"><\/span>",
-                                    "colvis": "Spaltensichtbarkeit",
-                                    "colvisRestore": "Sichtbarkeit wiederherstellen",
-                                    "copyKeys": "Drücken Sie die Taste <i>ctrl<\/i> oder <i>⌘<\/i> + <i>C<\/i> um die Tabelle<br \/>in den Zwischenspeicher zu kopieren.<br \/><br \/>Um den Vorgang abzubrechen, klicken Sie die Nachricht an oder drücken Sie auf Escape.",
-                                    "csv": "CSV",
-                                    "excel": "Excel",
-                                    "pageLength": {
-                                        "-1": "Alle Zeilen anzeigen",
-                                        "_": "%d Zeilen anzeigen"
-                                    },
-                                    "pdf": "PDF"
-                                },
-                                "autoFill": {
-                                    "cancel": "Abbrechen",
-                                    "fill": "Alle Zellen mit <i>%d<i> füllen<\/i><\/i>",
-                                    "fillHorizontal": "Alle horizontalen Zellen füllen",
-                                    "fillVertical": "Alle vertikalen Zellen füllen"
-                                },
-                                "decimal": ",",
-                                "search": "Suche:",
-                                "searchBuilder": {
-                                    "add": "Bedingung hinzufügen",
-                                    "button": {
-                                        "0": "Such-Baukasten",
-                                        "_": "Such-Baukasten (%d)"
-                                    },
-                                    "condition": "Bedingung",
-                                    "conditions": {
-                                        "date": {
-                                            "after": "Nach",
-                                            "before": "Vor",
-                                            "between": "Zwischen",
-                                            "empty": "Leer",
-                                            "not": "Nicht",
-                                            "notBetween": "Nicht zwischen",
-                                            "notEmpty": "Nicht leer",
-                                            "equals": "Gleich"
-                                        },
-                                        "number": {
-                                            "between": "Zwischen",
-                                            "empty": "Leer",
-                                            "equals": "Entspricht",
-                                            "gt": "Größer als",
-                                            "gte": "Größer als oder gleich",
-                                            "lt": "Kleiner als",
-                                            "lte": "Kleiner als oder gleich",
-                                            "not": "Nicht",
-                                            "notBetween": "Nicht zwischen",
-                                            "notEmpty": "Nicht leer"
-                                        },
-                                        "string": {
-                                            "contains": "Beinhaltet",
-                                            "empty": "Leer",
-                                            "endsWith": "Endet mit",
-                                            "equals": "Entspricht",
-                                            "not": "Nicht",
-                                            "notEmpty": "Nicht leer",
-                                            "startsWith": "Startet mit",
-                                            "notContains": "enthält nicht",
-                                            "notStarts": "startet nicht mit",
-                                            "notEnds": "endet nicht mit"
-                                        },
-                                        "array": {
-                                            "equals": "ist gleich",
-                                            "empty": "ist leer",
-                                            "contains": "enthält",
-                                            "not": "ist ungleich",
-                                            "notEmpty": "ist nicht leer",
-                                            "without": "aber nicht"
-                                        }
-                                    },
-                                    "data": "Daten",
-                                    "deleteTitle": "Filterregel entfernen",
-                                    "leftTitle": "Äußere Kriterien",
-                                    "logicAnd": "UND",
-                                    "logicOr": "ODER",
-                                    "rightTitle": "Innere Kriterien",
-                                    "title": {
-                                        "0": "Such-Baukasten",
-                                        "_": "Such-Baukasten (%d)"
-                                    },
-                                    "value": "Wert",
-                                    "clearAll": "Alle löschen"
-                                },
-                                "searchPanes": {
-                                    "clearMessage": "Leeren",
-                                    "collapse": {
-                                        "0": "Suchmasken",
-                                        "_": "Suchmasken (%d)"
-                                    },
-                                    "countFiltered": "{shown} ({total})",
-                                    "emptyPanes": "Keine Suchmasken",
-                                    "loadMessage": "Lade Suchmasken..",
-                                    "title": "Aktive Filter: %d",
-                                    "showMessage": "zeige Alle",
-                                    "collapseMessage": "Alle einklappen",
-                                    "count": "{total}"
-                                },
-                                "thousands": ".",
-                                "zeroRecords": "Keine passenden Einträge gefunden",
-                                "lengthMenu": "_MENU_ Zeilen anzeigen",
-                                "datetime": {
-                                    "previous": "Vorher",
-                                    "next": "Nachher",
-                                    "hours": "Stunden",
-                                    "minutes": "Minuten",
-                                    "seconds": "Sekunden",
-                                    "unknown": "Unbekannt",
-                                    "weekdays": [
-                                        "Sonntag",
-                                        "Montag",
-                                        "Dienstag",
-                                        "Mittwoch",
-                                        "Donnerstag",
-                                        "Freitag",
-                                        "Samstag"
-                                    ],
-                                    "months": [
-                                        "Januar",
-                                        "Februar",
-                                        "März",
-                                        "April",
-                                        "Mai",
-                                        "Juni",
-                                        "Juli",
-                                        "August",
-                                        "September",
-                                        "Oktober",
-                                        "November",
-                                        "Dezember"
-                                    ]
-                                },
+                                url: "/vendor/datatableswebutility/dwuty/src/datatables_i18n/<?= $this->language; ?>.json",
                             },
                             stateSave: true,
                             processing: true,
@@ -1055,8 +883,7 @@ class webutility
                 ) {
                     $(".SELECT2_" + select2_name).select2({
                         width: "100%",
-                        language: "de",
-                        placeholder: "Auswahl",
+                        language: "<?= $this->language; ?>",
                         dropdownAutoWidth: true,
                         allowClear: true,
                         ajax: {
