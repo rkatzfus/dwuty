@@ -1,0 +1,8 @@
+{
+    "deleteRecord": "Wollen Sie diesen Datensatz löschen?",
+    "buttons": {
+        "create": "anlegen",
+        "update": "speichern",
+        "delete": "löschen"
+    }
+}

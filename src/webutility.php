@@ -41,6 +41,7 @@ class webutility
         $this->tbl_ID = $tabledata["tablename"];
         $this->pkfield = $tabledata["primarykey"];
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
+        $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
         if (isset($tabledata["crud"])) {
             $read = false;
             $this->button_column = false;
@@ -90,7 +91,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' title='Datensatz anlegen' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>anlegen</b></button></div>" : "";
+                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>" . $this->language_dwuty["buttons"]["create"] . "</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -376,7 +377,7 @@ class webutility
                                         searchable: false,
                                         className: "text-center align-middle",
                                         render: function(data) {
-                                            return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;width: 80px;" id="delete_<?= $this->tbl_ID; ?>"><b>löschen</b></button>';
+                                            return '<button class="btn btn-outline-danger btn-sm" style="box-shadow:none;width: 80px;" id="delete_<?= $this->tbl_ID; ?>"><b><?= $this->language_dwuty["buttons"]["delete"]; ?></b></button>';
                                         }
                                     }
                                 <?php
@@ -612,7 +613,7 @@ class webutility
                                     "box-shadow: none",
                                     "width: 80px"
                                 ],
-                                createTextNode: "speichern",
+                                createTextNode: "<?= $this->language_dwuty["buttons"]["update"]; ?>",
                                 id: "create_" + <?= $this->obj_tools->post_encode($this->tbl_ID); ?>
                             };
                             button = create_element("button", object);
@@ -756,7 +757,7 @@ class webutility
                     }
                     if (isset($this->ajax_delete_url)) {
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
-                            if (confirm("Willst du diesen Datensatz wirklich löschen?")) {
+                            if (confirm("<?= $this->language_dwuty["deleteRecord"]; ?> ")) {
                                 $.ajax({
                                     url: "<?= $this->ajax_delete_url; ?>",
                                     type: "POST",
