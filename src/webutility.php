@@ -87,7 +87,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        echo (isset($this->ajax_create_url)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>" . $this->language_dwuty["buttons"]["create"] . "</b></button></div>" : "";
+                        echo (isset($this->ajax_create_datasource)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>" . $this->language_dwuty["buttons"]["create"] . "</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -396,7 +396,7 @@ class webutility
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
-                    if (isset($this->ajax_create_url)) {
+                    if (isset($this->ajax_create_datasource)) {
                     ?> $("#add_<?= $this->tbl_ID; ?>").click(function() {
                             tr = create_element("tr");
                             <?php
