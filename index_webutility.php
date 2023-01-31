@@ -25,20 +25,20 @@ $obj_database_tools = new database_tools();
 			"tablename" => "dte_xxxTESTxxx",
 			"crud" => array(
 				"create" => array(
-					"url" => "/vendor/datatableswebutility/dwuty/create.php", "datasource" => "root_table root"
+					"datasource" => "root_table root"
 				),
 				"read" => array(
-					"url" => "/vendor/datatableswebutility/dwuty/read.php", "datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+					"datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
 				),
 				"update" => array(
-					"url" => "/vendor/datatableswebutility/dwuty/update.php", "datasource" => "root_table root", "dropdown_multi" => array(
+					"datasource" => "root_table root", "dropdown_multi" => array(
 						$datREF_ROOT_ID => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 						)
 					)
 				),
 				"delete" => array(
-					"url" => "/vendor/datatableswebutility/dwuty/delete.php", "datasource" => "root_table root", "dropdown_multi" => array(
+					"datasource" => "root_table root", "dropdown_multi" => array(
 						$datREF_ROOT_ID => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 						)
@@ -56,14 +56,14 @@ $obj_database_tools = new database_tools();
 			"ORDERABLE" => false, "SEARCHABLE" => false
 		);
 		$arySetting_DROPDOWN = array(
-			"AJAX" => "/vendor/datatableswebutility/dwuty/read_select2.php", "SELECT2" => array(
+			"AJAX" => "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php", "SELECT2" => array(
 				"columns" => array(
 					"id" => "dropdown.ID", "text" => "dropdown.TEXT"
 				), "from" => "dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI = array(
-			"AJAX" => "/vendor/datatableswebutility/dwuty/read_select2.php", "SELECT2" => array(
+			"AJAX" => "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php", "SELECT2" => array(
 				"columns" => array(
 					"id" => "ref.REF_ROOT", "text" => "ref.REF_DROPDOWN_MULTI"
 				), "from" => "ref_root_ref_dropdown_multi_table ref", "where" => "ref.DEL<>1"
