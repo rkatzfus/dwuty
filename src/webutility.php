@@ -17,17 +17,6 @@ define("DROPDOWN_MULTI", "7");
 define("DATE", "8");
 define("DATETIME", "9");
 
-
-// DEFINE("DT_EDIT_PERCENT_v2", "9");
-// DEFINE("DT_EDIT_CURRENCY_v2", "10");
-// DEFINE("DT_EDIT_MODAL_BUTTON_v2", "11");
-// DEFINE("DT_EDIT_NUMBER_v2", "12");
-// DEFINE("DT_EDIT_FILE_v2", "14");
-// DEFINE("tel", "14");
-
-
-
-
 class webutility
 {
     private $columns = array();
@@ -108,14 +97,12 @@ class webutility
             }
         }
         foreach ($this->columns as $columns_key => $columns_value) {
-            if ($columns_value["TYP"] != 11) { // MODAL_BUTTON
-                if ($columns_value["TYP"] == 7) { // DROPDOWN_MULTI_FIELD
-                    $columns_value["SQLNAME"] = $columns_value["SQLNAMETABLE"];
-                    unset($columns_value["SQLNAMETABLE"]);
-                    $columnsdata[$columns_key] = $columns_value;
-                } else {
-                    $columnsdata[$columns_key] = $columns_value;
-                }
+            if ($columns_value["TYP"] == 7) { // DROPDOWN_MULTI_FIELD
+                $columns_value["SQLNAME"] = $columns_value["SQLNAMETABLE"];
+                unset($columns_value["SQLNAMETABLE"]);
+                $columnsdata[$columns_key] = $columns_value;
+            } else {
+                $columnsdata[$columns_key] = $columns_value;
             }
         }
     ?>
@@ -185,7 +172,7 @@ class webutility
                                 foreach ($this->columns as $column) {
                                     echo "{";
                                     echo "name: \"" . $column["SQLNAME"] . "\", ";
-                                    echo "data: \"" . $column["NAME"] . "\", ";
+                                    echo "data: \"" . $column["UNIQUE_ID"] . "\", ";
                                     echo "celltype: \"" . $column["TYP"] . "\", ";
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
@@ -295,7 +282,7 @@ class webutility
                                         ?> render: function(data) {
                                                 initialvalues = JSON.parse(<?= $this->obj_tools->post_encode($column['JSON']); ?>);
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['UNIQUE_ID']); ?>];
                                                 outer = create_element("select", html_default["select"]);
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(outer).attr("disabled", "true");
@@ -314,7 +301,7 @@ class webutility
                                         ?> render: function(data) {
                                                 initialvalues = JSON.parse(<?= $this->obj_tools->post_encode($column['JSON']); ?>);
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                                html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['UNIQUE_ID']); ?>];
                                                 outer = create_element("select", html_default["select"]);
                                                 $(outer).attr("multiple", "true");
                                                 if (content(<?= $column["ACTION"]; ?>)) {
@@ -385,7 +372,7 @@ class webutility
                                 foreach ($this->columns as $column) {
                                     if ($column["TYP"] == 6 || $column["TYP"] == 7) {
                                 ?>
-                                        create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
+                                        create_select2(<?= $this->obj_tools->post_encode($column["UNIQUE_ID"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
                                 <?php
                                     }
                                 }
@@ -516,7 +503,7 @@ class webutility
                                             class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['UNIQUE_ID']); ?>];
                                         outer = create_element("select", html_default["select"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(outer).attr("disabled", "true");
@@ -537,7 +524,7 @@ class webutility
                                             class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['NAME']); ?>];
+                                        html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['UNIQUE_ID']); ?>];
                                         outer = create_element("select", html_default["select"]);
                                         $(outer).attr("multiple", "true");
                                         if (content(<?= $column["ACTION"]; ?>)) {
@@ -620,7 +607,7 @@ class webutility
                             foreach ($this->columns as $column) {
                                 if ($column["TYP"] == 6 || $column["TYP"] == 7) {
                             ?>
-                                    create_select2(<?= $this->obj_tools->post_encode($column["NAME"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
+                                    create_select2(<?= $this->obj_tools->post_encode($column["UNIQUE_ID"]); ?>, <?= $this->obj_tools->post_encode(($column["TYP"] == 6) ? $this->obj_tools->post_encode($column["SELECT2"]) : $this->obj_tools->post_encode($column["SUBSELECT2"])); ?>);
                             <?php
                                 }
                             }
@@ -911,7 +898,6 @@ class webutility
     }
     public function new_column(
         $SqlName = "",
-        $Name = "",
         $Displayname = "",
         $Action = 0,
         $Typ = 0,
@@ -924,18 +910,15 @@ class webutility
         $default = isset($arySetting["DEFAULT"]) ? $arySetting["DEFAULT"] : "";
         $encryption = isset($arySetting["ENCRYPTION"]) ? $arySetting["ENCRYPTION"] : false;
         $input_restrictions = isset($arySetting["INPUT_RESTRICTIONS"]) ? $arySetting["INPUT_RESTRICTIONS"] : false;
+        $Name = uniqid();
 
         $this->columns[] = array( //default4all
-            "SQLNAME" => $SqlName, "NAME" => $Name, "DISPLAYNAME" => $Displayname, "ACTION" => $Action, "TYP" => $Typ, "ORDERABLE" => $orderable, "SEARCHABLE" => $searchable, "DT_CONFIG" => $dtconfig, "REQUIRED" => $required, "DEFAULT" => $default, "ENCRYPTION" => $encryption, "INPUT_RESTRICTIONS" => $input_restrictions
+            "SQLNAME" => $SqlName, "UNIQUE_ID" => $Name, "DISPLAYNAME" => $Displayname, "ACTION" => $Action, "TYP" => $Typ, "ORDERABLE" => $orderable, "SEARCHABLE" => $searchable, "DT_CONFIG" => $dtconfig, "REQUIRED" => $required, "DEFAULT" => $default, "ENCRYPTION" => $encryption, "INPUT_RESTRICTIONS" => $input_restrictions
         );
         foreach ($this->columns as $column_key => $column_value) {
-            if ($this->columns[$column_key]["NAME"] == $Name && !empty($arySetting)) {
+            if ($this->columns[$column_key]["UNIQUE_ID"] == $Name && !empty($arySetting)) {
                 foreach ($arySetting as $arySetting_key => $arySetting_value) {
                     switch ($arySetting_key) {
-                        case "MODAL":
-                            $this->columns[$column_key]["SQLNAME"] = "concat('" . $this->obj_tools->post_encode($arySetting["MODAL"]) . "')";
-                            $this->columns[$column_key]["MODAL"] = $this->obj_tools->post_encode($arySetting["MODAL"]);
-                            break;
                         case "SELECT2": // // setting 4 select2 dropdown
                             switch ($Typ) {
                                 case 6: // DROPDOWN
@@ -950,6 +933,7 @@ class webutility
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["from"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
+                                    $this->columns[$column_key]["UNIQUE_ID"] = $arySetting["UNIQUE_ID"];
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
                                     $this->columns[$column_key]["SELECT2_PKFIELD"] =  $arySetting["SELECT2"]["columns"]["id"];
                                     $this->columns[$column_key]["SELECT2_VALUEKEY"] = $arySetting["SELECT2"]["columns"]["text"];
@@ -968,7 +952,6 @@ class webutility
                                     # code...
                                     break;
                             }
-                            $this->columns[$column_key]["AJAX"] = $arySetting["AJAX"];
                             $this->columns[$column_key]["SELECT2"] = $arySetting["SELECT2"];
                             break;
                         default:

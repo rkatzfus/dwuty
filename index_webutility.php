@@ -3,10 +3,8 @@
 <?php
 require_once __DIR__ . "/vendor/autoload.php";
 
-use App\database_tools;
 use App\webutility;
 
-$obj_database_tools = new database_tools();
 ?>
 
 <head>
@@ -20,7 +18,7 @@ $obj_database_tools = new database_tools();
 <body>
 	<div class="container-fluid mt-1">
 		<?php
-		$datREF_ROOT_ID = "REF_ROOT_ID";
+		$datREF_ROOT_ID = uniqid();
 		$ary_webutility_config = array(
 			"tablename" => "dte_xxxTESTxxx",
 			"crud" => array(
@@ -56,14 +54,15 @@ $obj_database_tools = new database_tools();
 			"ORDERABLE" => false, "SEARCHABLE" => false
 		);
 		$arySetting_DROPDOWN = array(
-			"AJAX" => "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php", "SELECT2" => array(
+			"SELECT2" => array(
 				"columns" => array(
 					"id" => "dropdown.ID", "text" => "dropdown.TEXT"
 				), "from" => "dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI = array(
-			"AJAX" => "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php", "SELECT2" => array(
+			"UNIQUE_ID" => $datREF_ROOT_ID,
+			"SELECT2" => array(
 				"columns" => array(
 					"id" => "ref.REF_ROOT", "text" => "ref.REF_DROPDOWN_MULTI"
 				), "from" => "ref_root_ref_dropdown_multi_table ref", "where" => "ref.DEL<>1"
@@ -73,16 +72,16 @@ $obj_database_tools = new database_tools();
 				), "from" => "dropdown_multi_lookup_table dropdown_multi", "where" => "dropdown_multi.DEL<>1"
 			)
 		);
-		$obj_webutility->new_column("root.TEXT", "TEXT", "column: TEXT", EDIT, TEXT);
-		$obj_webutility->new_column("root.EMAIL", "EMAIL", "column: EMAIL", EDIT, EMAIL);
-		$obj_webutility->new_column("root.CHECKBOX", "CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
-		$obj_webutility->new_column("root.LINK", "LINK", "column: LINK", EDIT, LINK);
-		$obj_webutility->new_column("root.LINK_BUTTON", "LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
-		$obj_webutility->new_column("root.COLOR", "COLOR", "column: COLOR", EDIT, COLOR);
-		$obj_webutility->new_column("root.REF_DROPDOWN", "DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", $datREF_ROOT_ID, "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
-		$obj_webutility->new_column("root.DATE", "DATE", "column: DATE", EDIT, DATE);
-		$obj_webutility->new_column("root.DATETIME", "DATETIME", "column: DATETIME", EDIT, DATETIME);
+		$obj_webutility->new_column("root.TEXT", "column: TEXT", EDIT, TEXT);
+		$obj_webutility->new_column("root.EMAIL", "column: EMAIL", EDIT, EMAIL);
+		$obj_webutility->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
+		$obj_webutility->new_column("root.LINK", "column: LINK", EDIT, LINK);
+		$obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
+		$obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
+		$obj_webutility->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
+		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
+		$obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$defOrderby_xxxTESTxxx = 0;
 		$obj_webutility->table_header();
 		?>
