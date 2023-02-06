@@ -47,7 +47,7 @@ if (!empty($_POST["search"]["value"])) {
     }
     foreach ($ary2search_complete as $complete_value) {
         foreach ($ary_Columnsdata as $Columnsdata_value) {
-            if ($complete_value == $Columnsdata_value["NAME"]) {
+            if ($complete_value == $Columnsdata_value["UNIQUE_ID"]) {
                 if (!in_array($Columnsdata_value["TYP"], array("6", "7"), true)) {
                     $ary_sqlSearch[] = $Columnsdata_value["SQLNAME"] . " like '%" . $searchString . "%'";
                 } else {
