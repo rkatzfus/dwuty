@@ -910,7 +910,7 @@ class webutility
         $default = isset($arySetting["DEFAULT"]) ? $arySetting["DEFAULT"] : "";
         $encryption = isset($arySetting["ENCRYPTION"]) ? $arySetting["ENCRYPTION"] : false;
         $input_restrictions = isset($arySetting["INPUT_RESTRICTIONS"]) ? $arySetting["INPUT_RESTRICTIONS"] : false;
-        $Name = uniqid();
+        $Name = "a" . uniqid();
 
         $this->columns[] = array( //default4all
             "SQLNAME" => $SqlName, "UNIQUE_ID" => $Name, "DISPLAYNAME" => $Displayname, "ACTION" => $Action, "TYP" => $Typ, "ORDERABLE" => $orderable, "SEARCHABLE" => $searchable, "DT_CONFIG" => $dtconfig, "REQUIRED" => $required, "DEFAULT" => $default, "ENCRYPTION" => $encryption, "INPUT_RESTRICTIONS" => $input_restrictions
