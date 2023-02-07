@@ -26,6 +26,10 @@ class tools
             return $result;
         }
     }
+    public function uniqueid()
+    {
+        return "a" . uniqid();
+    }
     public function encrypt(
         $data = "",
         $password = ""

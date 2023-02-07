@@ -3,6 +3,7 @@
 <?php
 require_once __DIR__ . "/vendor/autoload.php";
 
+use App\tools;
 use App\webutility;
 
 ?>
@@ -18,7 +19,8 @@ use App\webutility;
 <body>
 	<div class="container-fluid mt-1">
 		<?php
-		$datREF_ROOT_ID = uniqid();
+		$obj_tools = new tools(false); // debug Mode
+		$datREF_ROOT_ID = $obj_tools->uniqueid();
 		$ary_webutility_config = array(
 			"tablename" => "dte_xxxTESTxxx",
 			"crud" => array(
@@ -79,7 +81,7 @@ use App\webutility;
 		$obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		// $obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
 		$obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
 		$obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$defOrderby_xxxTESTxxx = 0;
