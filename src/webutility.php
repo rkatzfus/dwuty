@@ -176,29 +176,16 @@ class webutility
                                     echo "celltype: \"" . $column["TYP"] . "\", ";
                                     switch ($column["TYP"]) {
                                         case 0: // TEXT
-                                ?> render: function(data) {
-                                                html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                html_default["input"].value = data;
-                                                html_default["input"].title = data;
-                                                inner = create_element("input", html_default["input"]);
-                                                if (content(<?= $column["ACTION"]; ?>)) {
-                                                    $(inner).attr("disabled", "true");
-                                                }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
-                                                    $(inner).addClass("update_<?= $this->tbl_ID ?>");
-                                                }
-                                                return inner.outerHTML;
-                                            }
-                                        <?php
-                                            break;
                                         case 1: // EMAIL
-                                        ?> render: function(data) {
+                                ?>
+                                            render: function(data) {
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                html_default["input"].value = data;
-                                                html_default["input"].title = data;
-                                                inner = create_element("input", html_default["input"]);
-                                                if (content(<?= $column["ACTION"]; ?>)) {
-                                                    $(inner).attr("disabled", "true");
+                                                inner = create_element("div", html_default["div"]);
+                                                if (data) {
+                                                    inner.innerHTML += data;
+                                                }
+                                                if (!content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("contenteditable", "true");
                                                 }
                                                 if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
@@ -208,7 +195,8 @@ class webutility
                                         <?php
                                             break;
                                         case 2: // CHECKBOX
-                                        ?> render: function(data) {
+                                        ?>
+                                            render: function(data) {
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 outer = create_element("div", html_default["div"]);
                                                 inner = create_element("input", html_default["input"]);
@@ -229,13 +217,17 @@ class webutility
                                         case 3: // LINK
                                         ?> render: function(data) {
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                                html_default["a"].href = data;
-                                                html_default["a"].title = data;
+                                                if (data) {
+                                                    html_default["a"].href = data;
+                                                    html_default["a"].title = data;
+                                                }
                                                 outer = create_element("a", html_default["a"]);
-                                                html_default["input"].value = data;
-                                                inner = create_element("input", html_default["input"]);
-                                                if (content(<?= $column["ACTION"]; ?>)) {
-                                                    $(inner).attr("disabled", "true");
+                                                inner = create_element("div", html_default["div"]);
+                                                if (data) {
+                                                    inner.innerHTML += data;
+                                                }
+                                                if (!content(<?= $column["ACTION"]; ?>)) {
+                                                    $(inner).attr("contenteditable", "true");
                                                 }
                                                 if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
@@ -390,34 +382,17 @@ class webutility
                             foreach ($this->columns as $column) {
                                 switch ($column["TYP"]) {
                                     case 0: // TEXT
+                                    case 1: // EMAIL
+                                    case 3: // LINK
                             ?>
                                         html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                         object = {
                                             class: html_default["alignment"]
                                         };
                                         td = create_element("td", object);
-                                        inner = create_element("input", html_default["input"]);
-                                        if (content(<?= $column["ACTION"]; ?>)) {
-                                            $(inner).attr("disabled", "true");
-                                        } else {
-                                            $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
-                                            $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
-                                        }
-                                        td.appendChild(inner);
-                                        tr.appendChild(td);
-                                    <?php
-                                        break;
-                                    case 1: // EMAIL
-                                    ?>
-                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        object = {
-                                            class: html_default["alignment"]
-                                        };
-                                        td = create_element("td", object);
-                                        inner = create_element("input", html_default["input"]);
-                                        if (content(<?= $column["ACTION"]; ?>)) {
-                                            $(inner).attr("disabled", "true");
-                                        } else {
+                                        inner = create_element("div", html_default["div"]);
+                                        if (!content(<?= $column["ACTION"]; ?>)) {
+                                            $(inner).attr("contenteditable", "true");
                                             $(inner).attr("data-columntype", <?= $column["TYP"]; ?>);
                                             $(inner).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
                                         }
@@ -433,26 +408,6 @@ class webutility
                                         };
                                         td = create_element("td", object);
                                         outer = create_element("div", html_default["div"]);
-                                        inner = create_element("input", html_default["input"]);
-                                        if (content(<?= $column["ACTION"]; ?>)) {
-                                            $(inner).attr("disabled", "true");
-                                        } else {
-                                            $(outer).attr("data-columntype", <?= $column["TYP"]; ?>);
-                                            $(outer).attr("data-sqlname", <?= $this->obj_tools->post_encode($column["SQLNAME"]); ?>);
-                                        }
-                                        outer.appendChild(inner);
-                                        td.appendChild(outer);
-                                        tr.appendChild(td);
-                                    <?php
-                                        break;
-                                    case 3: // LINK
-                                    ?>
-                                        html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
-                                        object = {
-                                            class: html_default["alignment"]
-                                        };
-                                        td = create_element("td", object);
-                                        outer = create_element("a", html_default["a"]);
                                         inner = create_element("input", html_default["input"]);
                                         if (content(<?= $column["ACTION"]; ?>)) {
                                             $(inner).attr("disabled", "true");
@@ -621,7 +576,7 @@ class webutility
                                 columntype = parseInt(data.attr("data-columntype"));
                                 switch (columntype) {
                                     case 0: // TEXT
-                                        value = $("input[type='text']", this).val();
+                                        value = $("div[type='text']", this).text().trim();
                                         if (value) {
                                             objInsert[dataid] = {
                                                 "columntype": columntype,
@@ -631,7 +586,7 @@ class webutility
                                         }
                                         break;
                                     case 1: // EMAIL
-                                        value = $("input[type='email']", this).val();
+                                        value = $("div[type='email']", this).text().trim();
                                         if (value) {
                                             objInsert[dataid] = {
                                                 "columntype": columntype,
@@ -654,7 +609,7 @@ class webutility
                                         };
                                         break;
                                     case 3: // LINK
-                                        value = $("input[type='url']", this).val();
+                                        value = $("div[type='url']", this).text().trim();
                                         if (value) {
                                             objInsert[dataid] = {
                                                 "columntype": columntype,
@@ -773,6 +728,8 @@ class webutility
                                     case 0: // TEXT
                                     case 1: // EMAIL
                                     case 3: // LINK
+                                        value = $(this).text().trim();
+                                        break;
                                     case 5: // COLOR
                                     case 8: // DATE
                                         value = $(this).val().trim();
@@ -973,7 +930,7 @@ class webutility
         switch (intval($typ)) {
             case 0: // TEXT
                 $result["alignment"] = array("align-middle");
-                $result["input"] = array(
+                $result["div"] = array(
                     "type" => "text",
                     "class" => array("form-control"),
                     "style" => array("border: none", "background: transparent", "box-shadow: none")
@@ -981,8 +938,8 @@ class webutility
                 break;
             case 1: // EMAIL
                 $result["alignment"] = array("align-middle");
-                $result["input"] = array(
-                    "type" => "email",
+                $result["div"] = array(
+                    "type" =>  array("email"),
                     "class" => array("form-control"),
                     "style" => array("border: none", "background: transparent", "box-shadow: none")
                 );
@@ -1000,7 +957,7 @@ class webutility
                 break;
             case 3: // LINK
                 $result["alignment"] = array("align-middle");
-                $result["input"] = array(
+                $result["div"] = array(
                     "type" => "url",
                     "class" => array("form-control"),
                     "style" => array("border: none", "background: transparent", "box-shadow: none")

@@ -91,7 +91,8 @@ use App\webutility;
 	<?php
 	$obj_webutility->config(
 		$defOrderby_xxxTESTxxx,
-		"asc"
+		"asc",
+		"fixedHeader:true"
 	);
 	?>
 </body>
