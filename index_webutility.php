@@ -87,11 +87,16 @@ use App\webutility;
 		?>
 	</div>
 	<?php
-	$obj_webutility->config(
-		0, // column no. for initial sorting, counting starts with 0
-		"asc",
-		"fixedHeader:true"
+	$ary_config = array(
+		"default_order" => array(
+			"column_no" => 0, "direction" => "asc"
+		),
+		"datatables_ext" => array(
+			"fixedHeader" => "true"
+		)
+
 	);
+	$obj_webutility->config($ary_config);
 	?>
 </body>
 

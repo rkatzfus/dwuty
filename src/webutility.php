@@ -86,10 +86,35 @@ class webutility
     <?php
     }
     public function config(
-        $default_order = "",
-        $default_order_dir = "asc",
-        $additional_options = ""
+        $ary_config = array()
     ) {
+        $ary_order = isset($ary_config["default_order"]) ? $ary_config["default_order"] : "";
+        if (!empty($ary_order)) {
+            $default_order = isset($ary_order["column_no"]) ? $ary_order["column_no"] : "";
+            $default_order_dir = isset($ary_order["direction"]) ? $ary_order["direction"] : "asc";
+        } else { // default
+            $default_order = "";
+            $default_order_dir = "asc";
+        }
+
+        $ary_ext = isset($ary_config["datatables_ext"]) ? $ary_config["datatables_ext"] : "";
+        if (!empty($ary_ext)) {
+            foreach ($ary_ext as $ext_key => $ext_value) {
+                $ary_tmp[] = $ext_key . ":" . $ext_value;
+            }
+            $additional_options = implode(",", $ary_tmp);
+            unset($ary_tmp);
+        } else {
+            $additional_options = "";
+        }
+
+
+
+
+
+
+
+
         $ary_SearchSelect2 = array();
         foreach ($this->columns as $column) {
             if ($column["TYP"] == 6 or $column["TYP"] == 7) {
