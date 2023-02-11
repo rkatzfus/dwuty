@@ -27,7 +27,7 @@ class webutility
         $this->obj_database_tools = new database_tools();
         $this->webutility_ssp = new webutility_ssp(false); // debug Mode
         $this->ajax_read_where = "";
-        $this->tbl_ID = $tabledata["tablename"];
+        $this->tbl_ID = $this->obj_tools->uniqueid();
         $this->pkfield = $tabledata["primarykey"];
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);

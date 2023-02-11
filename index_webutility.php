@@ -22,7 +22,6 @@ use App\webutility;
 		$obj_tools = new tools(false); // debug Mode
 		$datREF_ROOT_ID = $obj_tools->uniqueid();
 		$ary_webutility_config = array(
-			"tablename" => "dte_xxxTESTxxx",
 			"crud" => array(
 				"create" => array(
 					"datasource" => "root_table root"
@@ -84,13 +83,12 @@ use App\webutility;
 		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
 		$obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
 		$obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
-		$defOrderby_xxxTESTxxx = 0;
 		$obj_webutility->table_header();
 		?>
 	</div>
 	<?php
 	$obj_webutility->config(
-		$defOrderby_xxxTESTxxx,
+		0, // column no. for initial sorting, counting starts with 0
 		"asc",
 		"fixedHeader:true"
 	);
