@@ -4,5 +4,8 @@
         "create": "create",
         "update": "insert",
         "delete": "delete"
+    },
+    "select2": {
+        "placeholder": "choose"
     }
 }

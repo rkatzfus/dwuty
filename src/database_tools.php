@@ -36,6 +36,11 @@ class database_tools
             die();
         }
     }
+    public function escape(
+        $string = ""
+    ) {
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    }
     public function sql_getfield(
         $sql = ""
     ) {
@@ -134,18 +139,33 @@ class database_tools
         }
         return $result;
     }
-    public function rmv_alias(
+    public function alias(
         $alias_value = "",
-        $type = "field"
+        $type = "field",
+        $action = "rmv"
     ) {
         switch ($type) {
             case 'field':
                 $find = strpos($alias_value, ".");
-                $result = $find ? substr($alias_value, $find + 1) : $alias_value;
+                switch ($action) {
+                    case 'rmv':
+                        $result = $find ? substr($alias_value, $find + 1) : $alias_value;
+                        break;
+                    case 'get':
+                        $result = $find ? substr($alias_value, 0, $find) : $alias_value;
+                        break;
+                }
                 break;
             case 'table':
                 $find = strpos($alias_value, " ");
-                $result = $find ? substr($alias_value, 0, $find) : $alias_value;
+                switch ($action) {
+                    case 'rmv':
+                        $result = $find ? substr($alias_value, 0, $find) : $alias_value;
+                        break;
+                    case 'get':
+                        $result = $find ? substr($alias_value, $find + 1) : $alias_value;
+                        break;
+                }
                 break;
             default:
                 $result = false;

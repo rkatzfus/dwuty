@@ -65,7 +65,7 @@ CREATE TABLE `dropdown_multi_lookup_table` (
 --
 
 INSERT INTO `dropdown_multi_lookup_table` (`ID`, `DEL`, `TEXT`) VALUES
-(1, b'0', 'zéro'),
+(1, b'0', 'zero'),
 (2, b'0', 'un'),
 (3, b'0', 'deux'),
 (4, b'0', 'trois'),

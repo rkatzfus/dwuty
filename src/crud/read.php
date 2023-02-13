@@ -21,7 +21,7 @@ foreach ($_POST["columns"] as $key => $value) {
         }
     }
 }
-$strSqlFrom = json_decode($_POST["datasource"], true);
+$strSqlFrom = $_POST["datasource"];
 $ary_Columnsdata = json_decode($_POST["columnsdata"], true);
 $aryGroupBy[] = $pkfield;
 foreach ($ary_Columnsdata as $value) {

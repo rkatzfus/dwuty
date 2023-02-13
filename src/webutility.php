@@ -28,39 +28,49 @@ class webutility
         $this->webutility_ssp = new webutility_ssp(false); // debug Mode
         $this->ajax_read_where = "";
         $this->tbl_ID = $this->obj_tools->uniqueid();
+        $this->datasource = $this->obj_tools->post_encode($tabledata["datasource"]);
         $this->pkfield = $tabledata["primarykey"];
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
         if (isset($tabledata["crud"])) {
-            $read = false;
+            $this->create = false;
+            $this->read = false;
+            $this->update = false;
+            $this->delete = false;
             $this->button_column = false;
-            foreach ($tabledata["crud"] as $ajax_key => $ajax_value) {
-                switch ($ajax_key) {
-                    case "read":
-                        $this->ajax_read_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $read = true;
-                        break;
+            foreach ($tabledata["crud"] as $crud_key => $crud_value) {
+                switch ($crud_key) {
                     case "create":
-                        $this->ajax_create_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->button_column = true;
+                        if ($crud_value["activ"] == true) {
+                            $this->create = true;
+                            $this->button_column = true;
+                        }
+                        break;
+                    case "read":
+                        if ($crud_value["activ"] == true) {
+                            $this->read = true;
+                        }
                         break;
                     case "update":
-                        $this->ajax_update_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->ajax_update_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : false;
-                        $this->ajax_update_bypass = (isset($ajax_value["bypass"])) ? $this->obj_tools->post_encode($ajax_value["bypass"]) : false;
+                        if ($crud_value["activ"] == true) {
+                            $this->update = true;
+                            $this->ajax_update_dropdown_multi = (isset($crud_value["dropdown_multi"])) ? $this->obj_tools->post_encode($crud_value["dropdown_multi"]) : false;
+                        }
                         break;
                     case "delete":
-                        $this->ajax_delete_datasource = $this->obj_tools->post_encode($ajax_value["datasource"]);
-                        $this->ajax_delete_dropdown_multi = (isset($ajax_value["dropdown_multi"])) ? $this->obj_tools->post_encode($ajax_value["dropdown_multi"]) : false;
-                        $this->button_column = true;
+                        if ($crud_value["activ"] == true) {
+                            $this->delete = true;
+                            $this->ajax_delete_dropdown_multi = (isset($crud_value["dropdown_multi"])) ? $this->obj_tools->post_encode($crud_value["dropdown_multi"]) : false;
+                            $this->button_column = true;
+                        }
                         break;
                     default:
-                        throw new \Exception("AJAX ERROR occured!");
+                        throw new \Exception("ERROR occured!");
                         exit();
                 }
             }
-            if ($read != true) {
-                throw new \Exception("no AJAX SOURCE defined");
+            if ($this->read != true) {
+                throw new \Exception("nothing toDo :o)");
             }
         }
     }
@@ -76,7 +86,7 @@ class webutility
                     }
                     if ($this->button_column == true) {
                         echo "<th>";
-                        echo (isset($this->ajax_create_datasource)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>" . $this->language_dwuty["buttons"]["create"] . "</b></button></div>" : "";
+                        echo (($this->create)) ? "<div class='text-center'><button type='button' class='btn btn-outline-primary btn-sm' id='add_" . $this->tbl_ID . "' style='box-shadow: none; width: 80px;' data-ajaxdefault=''><b>" . $this->language_dwuty["buttons"]["create"] . "</b></button></div>" : "";
                         echo "</th>";
                     }
                     ?>
@@ -96,7 +106,6 @@ class webutility
             $default_order = "";
             $default_order_dir = "asc";
         }
-
         $ary_ext = isset($ary_config["datatables_ext"]) ? $ary_config["datatables_ext"] : "";
         if (!empty($ary_ext)) {
             foreach ($ary_ext as $ext_key => $ext_value) {
@@ -107,14 +116,6 @@ class webutility
         } else {
             $additional_options = "";
         }
-
-
-
-
-
-
-
-
         $ary_SearchSelect2 = array();
         foreach ($this->columns as $column) {
             if ($column["TYP"] == 6 or $column["TYP"] == 7) {
@@ -156,14 +157,6 @@ class webutility
                                 $aryColumndef = array();
                                 foreach ($this->columns as $columns_key => $columns_value) {
                                     $classname = $this->html_default($columns_value["TYP"])["alignment"];
-                                    switch ($columns_value["TYP"]) {
-                                        case 6: // DROPDOWN
-                                            (isset($this->ajax_update_datasource) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
-                                            break;
-                                        case 7: // DROPDOWN_MULTI
-                                            (isset($this->ajax_update_datasource) && $column["ACTION"] == 2) ? $classname[] = "update_" . $this->tbl_ID : "";
-                                            break;
-                                    }
                                     $aryColumndef[] = array(
                                         "targets: " . $columns_key, ($columns_value["ORDERABLE"] == 1) ? "orderable: true" : "orderable: false", ($columns_value["SEARCHABLE"] == 1) ? "searchable: true" : "searchable: false", (isset($classname)) ? "className: '" . implode(" ", $classname) . "'" : ""
                                     );
@@ -180,7 +173,7 @@ class webutility
                                 dataType: "json",
                                 data: {
                                     pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
-                                    datasource: <?= $this->obj_tools->post_encode($this->ajax_read_datasource); ?>,
+                                    datasource: <?= $this->datasource; ?>,
                                     where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
                                     columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>)
                                 }
@@ -212,7 +205,7 @@ class webutility
                                                 if (!content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("contenteditable", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -231,7 +224,7 @@ class webutility
                                                 if (data == true) {
                                                     $(inner).attr("checked", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 outer.appendChild(inner);
@@ -254,7 +247,7 @@ class webutility
                                                 if (!content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("contenteditable", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 outer.appendChild(inner);
@@ -288,7 +281,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -296,7 +289,8 @@ class webutility
                                         <?php
                                             break;
                                         case 6: // DROPDOWN
-                                        ?> render: function(data) {
+                                        ?>
+                                            render: function(data) {
                                                 initialvalues = JSON.parse(<?= $this->obj_tools->post_encode($column['JSON']); ?>);
                                                 html_default = <?= $this->obj_tools->post_encode($this->html_default($column["TYP"])); ?>;
                                                 html_default["select"].class = ["SELECT2_" + <?= $this->obj_tools->post_encode($column['UNIQUE_ID']); ?>];
@@ -311,6 +305,11 @@ class webutility
                                                     outer.appendChild(inner);
                                                 }
                                                 return outer.outerHTML;
+                                            },
+                                            createdCell: function(td) {
+                                                if ("<?= ($this->update && $column["ACTION"] == 2) ? true : false; ?>") {
+                                                    $(td).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
                                             }
                                         <?php
                                             break;
@@ -336,6 +335,11 @@ class webutility
                                                 }
                                                 return outer.outerHTML;
                                             },
+                                            createdCell: function(td) {
+                                                if ("<?= ($this->update && $column["ACTION"] == 2) ? true : false; ?>") {
+                                                    $(td).addClass("update_<?= $this->tbl_ID ?>");
+                                                }
+                                            }
                                         <?php
                                             break;
                                         case 8: // DATE
@@ -346,7 +350,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -361,7 +365,7 @@ class webutility
                                                 if (content(<?= $column["ACTION"]; ?>)) {
                                                     $(inner).attr("disabled", "true");
                                                 }
-                                                if ("<?= isset($this->ajax_update_datasource) ? true : false; ?>") {
+                                                if ("<?= $this->update ? true : false; ?>") {
                                                     $(inner).addClass("update_<?= $this->tbl_ID ?>");
                                                 }
                                                 return inner.outerHTML;
@@ -371,7 +375,7 @@ class webutility
                                     }
                                     echo "},";
                                 }
-                                if (isset($this->ajax_delete_datasource)) {
+                                if ($this->delete) {
                                     ?> {
                                         orderable: false,
                                         searchable: false,
@@ -400,7 +404,7 @@ class webutility
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
-                    if (isset($this->ajax_create_datasource)) {
+                    if ($this->create) {
                     ?> $("#add_<?= $this->tbl_ID; ?>").click(function() {
                             tr = create_element("tr");
                             <?php
@@ -704,7 +708,7 @@ class webutility
                                 }
                             });
                             insertdata = {
-                                datasource: <?= $this->obj_tools->post_encode($this->ajax_create_datasource); ?>,
+                                datasource: <?= $this->datasource ?>,
                                 data: JSON.stringify(objInsert)
                             };
                             $.ajax({
@@ -718,9 +722,9 @@ class webutility
                         });
                     <?php
                     }
-                    if (isset($this->ajax_delete_datasource)) {
+                    if ($this->delete) {
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
-                            if (confirm("<?= $this->language_dwuty["deleteRecord"]; ?> ")) {
+                            if (confirm("<?= $this->language_dwuty["deleteRecord"]; ?>")) {
                                 $.ajax({
                                     url: "/vendor/datatableswebutility/dwuty/src/crud/delete.php",
                                     type: "POST",
@@ -728,7 +732,7 @@ class webutility
                                     data: {
                                         pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
-                                        datasource: <?= $this->obj_tools->post_encode($this->ajax_delete_datasource); ?>,
+                                        datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>
                                     }
                                 });
@@ -738,7 +742,7 @@ class webutility
                         });
                     <?php
                     }
-                    if (isset($this->ajax_update_datasource)) {
+                    if ($this->update) {
                     ?> $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
                             rowid = $(this).closest("tr").attr("id").replace("row_", "");
                             td = $(this).closest("td");
@@ -789,7 +793,7 @@ class webutility
                                         value: value,
                                         celltype: colCelltype,
                                         colData: colData,
-                                        datasource: <?= $this->obj_tools->post_encode($this->ajax_update_datasource); ?>,
+                                        datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
                                     }
                                 });
@@ -802,7 +806,7 @@ class webutility
                 });
 
                 function content(object = '') {
-                    return parseInt(object) != 2 || Boolean(<?= isset($this->ajax_update_datasource) ? "false" : "true"; ?>);
+                    return parseInt(object) != 2 || Boolean(<?= $this->update ? "false" : "true"; ?>);
                 }
 
                 function create_element(
@@ -844,13 +848,14 @@ class webutility
 
                 function create_select2(
                     select2_name = "",
-                    select2_data = ""
+                    select2_data = "",
                 ) {
                     $(".SELECT2_" + select2_name).select2({
                         width: "100%",
                         language: "<?= $this->language; ?>",
                         dropdownAutoWidth: true,
                         allowClear: true,
+                        placeholder: "<?= $this->language_dwuty["select2"]["placeholder"]; ?>",
                         ajax: {
                             url: "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php",
                             type: "POST",

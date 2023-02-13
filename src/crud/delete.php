@@ -6,9 +6,9 @@ use App\database_tools;
 $obj_database_tools = new database_tools(false); // debug mode
 $pkfield = $_POST["pkfield"];
 $pkvalue = $_POST["pkvalue"];
-$ds = json_decode($_POST["datasource"], true);
+$ds = $_POST["datasource"];
 $dropdownmulti = isset($_POST["dropdown_multi"]) ? json_decode($_POST["dropdown_multi"], true) : "";
-$sql = "update " . $ds . " set del = 1 where " . $pkfield . " = " . $pkvalue;
+$sql = "update " . $ds . " set " . $obj_database_tools->alias($pkfield, "field", "get") . ".del = 1 where " . $pkfield . " = " . $pkvalue;
 $obj_database_tools->sql_exec_result_id($sql);
 if (!empty($dropdownmulti)) {
     foreach ($dropdownmulti as $dropdownmulti_value) {

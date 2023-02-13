@@ -7,10 +7,10 @@ $obj_database_tools = new database_tools(false); // debug mode
 $pkfield = isset($_POST["pkfield"]) ? $_POST["pkfield"] : "";
 $pkvalue = isset($_POST["pkvalue"]) ? intval($_POST["pkvalue"]) : "";
 $field = isset($_POST["field"]) ? $_POST["field"] : "";
-$value = isset($_POST["value"]) ? $_POST["value"] : "";
+$value = isset($_POST["value"]) ? $_POST["value"] : "NULL";
 $celltype = isset($_POST["celltype"]) ? intval($_POST["celltype"]) : "";
 $colData = isset($_POST["colData"]) ? $_POST["colData"] : "";
-$datasource = isset($_POST["datasource"]) ? json_decode($_POST["datasource"], true) : "";
+$datasource = isset($_POST["datasource"]) ? $_POST["datasource"] : "";
 if ($celltype === 7) {
     $dropdown_multi = isset($_POST["dropdown_multi"]) ? json_decode($_POST["dropdown_multi"], true)[$colData] : "";
     $dropdown_multi_datasource = $dropdown_multi["datasource"];
@@ -24,19 +24,19 @@ if ($celltype === 7) {
             $obj_database_tools->sql_exec_result_id($sql2del . $inDb_value[$dropdown_multi_valuekey]);
         }
     }
-    if ($value) { // check new settings
+    if (is_array($value)) { // check new settings
         $sql4check = $sql . " and " . $dropdown_multi_valuekey . " = ";
         foreach ($value as $toDo) {
             if ($obj_database_tools->chk_stmnt($sql4check . $toDo)) { // check if value already exists in database
                 $sql = "update " . $dropdown_multi_datasource . " set DEL = 0 where " . $dropdown_multi_primarykey . '=' . $pkvalue . ' and ' .     $dropdown_multi_valuekey  . '=' . $toDo;
             } else {
-                $sql = "insert into " .  $obj_database_tools->rmv_alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->rmv_alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->rmv_alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
+                $sql = "insert into " .  $obj_database_tools->alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
             }
             $obj_database_tools->sql_exec_result_id($sql);
         }
     }
 } else {
-    if ($celltype != 2) {
+    if ($celltype != 2 && $celltype != 6) {
         $value = "'" . $value . "'";
     }
     $sql = "update " . $datasource . " set " . $field . " = " . $value . " where " . $pkfield . " = " . $pkvalue;

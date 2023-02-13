@@ -4,5 +4,8 @@
         "create": "anlegen",
         "update": "speichern",
         "delete": "löschen"
+    },
+    "select2": {
+        "placeholder": "Auswahl"
     }
 }

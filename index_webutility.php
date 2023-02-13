@@ -24,27 +24,27 @@ use App\webutility;
 		$ary_webutility_config = array(
 			"crud" => array(
 				"create" => array(
-					"datasource" => "root_table root"
+					"activ" => true
 				),
 				"read" => array(
-					"datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT"
+					"activ" => true
 				),
 				"update" => array(
-					"datasource" => "root_table root", "dropdown_multi" => array(
+					"activ" => true, "dropdown_multi" => array(
 						$datREF_ROOT_ID => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 						)
 					)
 				),
 				"delete" => array(
-					"datasource" => "root_table root", "dropdown_multi" => array(
+					"activ" => true, "dropdown_multi" => array(
 						$datREF_ROOT_ID => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.REF_ROOT", "valuekey" => "ref.REF_DROPDOWN_MULTI"
 						)
 					)
 				),
-
 			),
+			"datasource" => "root_table root left join ref_root_ref_dropdown_multi_table ref on root.ID = ref.REF_ROOT",
 			"primarykey" => "root.ID",
 			"lang_iso_639_1" => "de"
 		);
