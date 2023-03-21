@@ -45,9 +45,18 @@ class database_tools
         }
     }
     public function escape(
-        $string = ""
+        $encode = ""
     ) {
-        return htmlentities($string, ENT_QUOTES, 'UTF-8');
+        if (!is_array($encode) && !empty($encode)) {
+            return htmlentities($encode, ENT_QUOTES, 'UTF-8');
+        } else if (is_array($encode) && !empty($encode)) {
+            $encode = array_map(function ($v) {
+                return $v ?? '';
+            }, $encode);
+            return array_map("htmlentities", $encode);
+        } else {
+            return false;
+        }
     }
     public function decode_escape(
         $decode = ""
