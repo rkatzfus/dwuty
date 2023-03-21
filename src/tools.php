@@ -4,6 +4,7 @@ namespace App;
 
 class tools
 {
+    private $debug;
     function __construct($debug = false)
     {
         $this->debug = $debug;

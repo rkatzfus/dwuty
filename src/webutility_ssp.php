@@ -4,13 +4,28 @@ namespace App;
 
 class webutility_ssp
 {
+    private $debug;
     private $draw;
-    private $recordsTotal;
-    private $recordsFiltered;
     private $intlength;
     private $intstart;
     private $strsqlOrder;
+    private $strGroupBy;
     private $data;
+
+    private $obj_database_tools;
+    private $obj_tools;
+
+    private $recordsTotal;
+    private $recordsFiltered;
+    private $strsqlSelectStart;
+    private $ary_sqlSelectInline;
+    private $strsqlSelect;
+    private $strSqlFrom;
+    private $strSqlWhere;
+    private $strSqlSearch;
+    private $strSqlSearchColumn;
+    private $arycolumns;
+    private $arycolumns_id;
 
     public function __construct(
         $debug = false

@@ -19,7 +19,30 @@ define("DATETIME", "9");
 
 class webutility
 {
+    private $obj_tools;
+    private $obj_database_tools;
+    private $webutility_ssp;
+    private $ajax_read_where;
+    private $tbl_ID;
+    private $datasource;
+    private $pkfield;
+    private $language;
+    private $language_dwuty;
+
+    private $create;
+    private $read;
+    private $update;
+    private $delete;
+
+    private $button_column;
+
+    private $ajax_update_dropdown_multi;
+    private $ajax_delete_dropdown_multi;
+
+
+
     private $columns = array();
+
     function __construct(
         $tabledata = array()
     ) {
@@ -399,8 +422,7 @@ class webutility
                                 }
                                 ?>
                             },
-                            <?= $additional_options; ?>
-                        });
+                            <?= $additional_options; ?>});
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
