@@ -18,15 +18,10 @@ class database_tools
     ) {
         $this->debug = $debug;
         if (empty($credentials)) {
-            $this->host = getenv('HOST_HTACCESS');
-            $this->database = getenv('MYSQL_DATABASE_HTACCESS');
-            $this->user = getenv('MYSQL_USER_HTACCESS');
-            $this->pass = getenv('MYSQL_PASSWORD_HTACCESS');
-
-            // $this->host = getenv('HOST');
-            // $this->user = getenv('MYSQL_USER');
-            // $this->pass = getenv('MYSQL_PASSWORD');
-            // $this->database = getenv('MYSQL_DATABASE');
+            $this->host = getenv('HOST');
+            $this->user = getenv('MYSQL_USER');
+            $this->pass = getenv('MYSQL_PASSWORD');
+            $this->database = getenv('MYSQL_DATABASE');
         } else {
             $this->host = $credentials["host"];
             $this->user = $credentials["user"];
