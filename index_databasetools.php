@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-require_once __DIR__ . "/vendor/autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
 
 use App\database_tools;
 ?>
