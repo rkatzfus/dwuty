@@ -1,9 +1,11 @@
 <?php
-require_once __DIR__ . "./../../../../autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use App\webutility_ssp;
+use App\database_tools;
 
 $obj_webutility_ssp = new webutility_ssp(false); // debug mode
+$obj_database_tools = new database_tools(false); // debug mode
 $pkfield = $_POST["pkfield"];
 $arySearchColumn = array();
 $strSqlSearchColumn = "";
@@ -37,7 +39,7 @@ foreach ($ary_Columnsdata as $value) {
 // set search
 $strSqlSearch = "";
 if (!empty($_POST["search"]["value"])) {
-    $searchString = $_POST["search"]["value"];
+    $searchString = $obj_database_tools->escape($_POST["search"]["value"]);
     foreach ($_POST["columns"] as $columns_value) {
         if (
             $columns_value["searchable"] == "true"

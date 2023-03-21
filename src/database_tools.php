@@ -4,16 +4,29 @@ namespace App;
 
 class database_tools
 {
+    private $debug;
+    private $host;
+    private $user;
+    private $pass;
+    private $database;
+    private $username;
+    private $mysqli_conn;
+
     function __construct(
         $debug = false,
         $credentials = array()
     ) {
         $this->debug = $debug;
         if (empty($credentials)) {
-            $this->host = getenv('HOST');
-            $this->user = getenv('MYSQL_USER');
-            $this->pass = getenv('MYSQL_PASSWORD');
-            $this->database = getenv('MYSQL_DATABASE');
+            $this->host = getenv('HOST_HTACCESS');
+            $this->database = getenv('MYSQL_DATABASE_HTACCESS');
+            $this->user = getenv('MYSQL_USER_HTACCESS');
+            $this->pass = getenv('MYSQL_PASSWORD_HTACCESS');
+
+            // $this->host = getenv('HOST');
+            // $this->user = getenv('MYSQL_USER');
+            // $this->pass = getenv('MYSQL_PASSWORD');
+            // $this->database = getenv('MYSQL_DATABASE');
         } else {
             $this->host = $credentials["host"];
             $this->user = $credentials["user"];
@@ -39,14 +52,28 @@ class database_tools
     public function escape(
         $string = ""
     ) {
-        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+        return htmlentities($string, ENT_QUOTES, 'UTF-8');
+    }
+    public function decode_escape(
+        $decode = ""
+    ) {
+        if (!is_array($decode) && !empty($decode)) {
+            return html_entity_decode($decode, ENT_QUOTES, 'UTF-8');
+        } else if (is_array($decode) && !empty($decode)) {
+            $decode = array_map(function ($v) {
+                return $v ?? '';
+            }, $decode);
+            return array_map("html_entity_decode", $decode);
+        } else {
+            return false;
+        }
     }
     public function sql_getfield(
         $sql = ""
     ) {
         $result = false;
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        $result = $this->chk_stmnt($sql) ? trim(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0]) ?? false : "";
+        $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0])) ?? false : "";
         if ($this->debug == true) {
             echo "<b>sql_getfield</b>";
             var_dump($result);
@@ -60,7 +87,7 @@ class database_tools
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
-                $result[] = $value;
+                $result[] = $this->decode_escape($value);
             }
             if ($this->debug == true) {
                 echo "<b>sql2array</b>";
@@ -79,7 +106,7 @@ class database_tools
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
-                $result[$value[$pk]] = $value;
+                $result[$value[$pk]] = $this->decode_escape($value);
             }
             if ($this->debug == true) {
                 echo "<b>sql2array_pk</b>";
@@ -99,7 +126,7 @@ class database_tools
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         if ($this->chk_stmnt($sql)) {
             foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
-                $result[$value_key[$pk]] = $value_key[$value];
+                $result[$value_key[$pk]] = $this->decode_escape($value_key[$value]);
             }
             if ($this->debug == true) {
                 echo "<b>sql2array_pk_value</b>";

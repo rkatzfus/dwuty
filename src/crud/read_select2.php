@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "./../../../../autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use App\tools;
 use App\webutility_ssp;
@@ -17,7 +17,7 @@ $obj_webutility_ssp->set_from($data["from"]);
 (isset($data["where"])) ? $obj_webutility_ssp->set_where($data["where"]) : "";
 $sql = $obj_webutility_ssp->set_data_sql();
 if ($search) {
-    $sql = "select * from (" . $sql . ") as source where text like '%" . $_POST["search"] . "%'";
+    $sql = "select * from (" . $sql . ") as source where text like '%" . $obj_database_tools->escape($_POST["search"]) . "%'";
 }
 $sql .= " order by text";
 echo $obj_tools->post_encode($obj_database_tools->sql2array($sql));

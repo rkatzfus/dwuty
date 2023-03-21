@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "./../../../../autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use App\tools;
 use App\database_tools;
@@ -14,9 +14,9 @@ if ($datasource && $data) {
         if ($data_value["columntype"] != 7) {
             $ary_column[] = $obj_database_tools->alias($data_value["sqlname"], "field");
             if (($data_value["columntype"] == 2)) {
-                $ary_value[] = $data_value["value"];
+                $ary_value[] = $obj_database_tools->escape($data_value["value"]);
             } else {
-                $ary_value[] = "'" . $data_value["value"] . "'";
+                $ary_value[] = "'" . $obj_database_tools->escape($data_value["value"]) . "'";
             }
         }
         if ($data_value["columntype"] == 7) {

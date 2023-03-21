@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "./../../../../autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use App\database_tools;
 
@@ -7,7 +7,7 @@ $obj_database_tools = new database_tools(false); // debug mode
 $pkfield = isset($_POST["pkfield"]) ? $_POST["pkfield"] : "";
 $pkvalue = isset($_POST["pkvalue"]) ? intval($_POST["pkvalue"]) : "";
 $field = isset($_POST["field"]) ? $_POST["field"] : "";
-$value = isset($_POST["value"]) ? $_POST["value"] : "NULL";
+$value = isset($_POST["value"]) ? $obj_database_tools->escape($_POST["value"]) : "NULL";
 $celltype = isset($_POST["celltype"]) ? intval($_POST["celltype"]) : "";
 $colData = isset($_POST["colData"]) ? $_POST["colData"] : "";
 $datasource = isset($_POST["datasource"]) ? $_POST["datasource"] : "";
