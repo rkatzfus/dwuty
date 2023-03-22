@@ -1,10 +1,11 @@
-/vendor/components/
-/vendor/composer/
-/vendor/datatables.net/
-/vendor/select2/
-/vendor/twbs/
-/vendor/autoload.php
+vendor/components/
+vendor/composer/
+vendor/datatables.net/
+vendor/select2/
+vendor/twbs/
+vendor/autoload.php
 
 
 .htaccess
 phpinfo.php
+composer.lock
