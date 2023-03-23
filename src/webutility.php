@@ -28,6 +28,7 @@ class webutility
     private $pkfield;
     private $language;
     private $language_dwuty;
+    private $crud_path;
 
     private $create;
     private $read;
@@ -55,6 +56,7 @@ class webutility
         $this->pkfield = $tabledata["primarykey"];
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
+        $this->crud_path = $this->get_crud_path();
         if (isset($tabledata["crud"])) {
             $this->create = false;
             $this->read = false;
@@ -167,9 +169,7 @@ class webutility
                 $(document).ready(function() {
                     function read_data_<?= $this->tbl_ID; ?>() {
                         var table = $("#<?= $this->tbl_ID; ?>").DataTable({
-                            language: {
-                                url: "/vendor/datatableswebutility/dwuty/src/datatables_i18n/<?= $this->language; ?>.json",
-                            },
+                            language: <?= file_get_contents(__DIR__ . "/datatables_i18n/" . $this->language . ".json"); ?>,
                             stateSave: true,
                             processing: true,
                             cache: false,
@@ -191,7 +191,7 @@ class webutility
                                 ?>
                             ],
                             ajax: {
-                                url: "/vendor/datatableswebutility/dwuty/src/crud/read.php",
+                                url: "<?= $this->crud_path; ?>read.php",
                                 type: "POST",
                                 dataType: "json",
                                 data: {
@@ -422,7 +422,8 @@ class webutility
                                 }
                                 ?>
                             },
-                            <?= $additional_options; ?>});
+                            <?= $additional_options; ?>
+                        });
                     }
                     read_data_<?= $this->tbl_ID; ?>();
                     <?php
@@ -734,7 +735,7 @@ class webutility
                                 data: JSON.stringify(objInsert)
                             };
                             $.ajax({
-                                url: "/vendor/datatableswebutility/dwuty/src/crud/create.php",
+                                url: "<?= $this->crud_path; ?>create.php",
                                 type: "POST",
                                 dataType: "json",
                                 data: insertdata,
@@ -748,7 +749,7 @@ class webutility
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("<?= $this->language_dwuty["deleteRecord"]; ?>")) {
                                 $.ajax({
-                                    url: "/vendor/datatableswebutility/dwuty/src/crud/delete.php",
+                                    url: "<?= $this->crud_path; ?>delete.php",
                                     type: "POST",
                                     dataType: "json",
                                     data: {
@@ -805,7 +806,7 @@ class webutility
                                         break;
                                 }
                                 $.ajax({
-                                    url: "/vendor/datatableswebutility/dwuty/src/crud/update.php",
+                                    url: "<?= $this->crud_path; ?>update.php",
                                     type: "POST",
                                     dataType: "json",
                                     data: {
@@ -879,7 +880,7 @@ class webutility
                         allowClear: true,
                         placeholder: "<?= $this->language_dwuty["select2"]["placeholder"]; ?>",
                         ajax: {
-                            url: "/vendor/datatableswebutility/dwuty/src/crud/read_select2.php",
+                            url: "<?= $this->crud_path; ?>read_select2.php",
                             type: "POST",
                             delay: 100,
                             dataType: "json",
@@ -1070,6 +1071,11 @@ class webutility
                 break;
         }
         return $result;
+    }
+    private function get_crud_path()
+    {
+        $path = '/' . basename(dirname(__FILE__)) . '/crud/';
+        return $path;
     }
 }
 ?>
