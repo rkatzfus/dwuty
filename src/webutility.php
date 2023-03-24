@@ -56,7 +56,7 @@ class webutility
         $this->pkfield = $tabledata["primarykey"];
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
-        $this->crud_path = $this->get_crud_path();
+        $this->crud_path = getenv('PATH_CRUD') ? getenv('PATH_CRUD') : '/vendor/datatableswebutility/dwuty/src/crud';
         if (isset($tabledata["crud"])) {
             $this->create = false;
             $this->read = false;
@@ -191,7 +191,7 @@ class webutility
                                 ?>
                             ],
                             ajax: {
-                                url: "<?= $this->crud_path; ?>read.php",
+                                url: "<?= $this->crud_path; ?>/read.php",
                                 type: "POST",
                                 dataType: "json",
                                 data: {
@@ -735,7 +735,7 @@ class webutility
                                 data: JSON.stringify(objInsert)
                             };
                             $.ajax({
-                                url: "<?= $this->crud_path; ?>create.php",
+                                url: "<?= $this->crud_path; ?>/create.php",
                                 type: "POST",
                                 dataType: "json",
                                 data: insertdata,
@@ -749,7 +749,7 @@ class webutility
                     ?> $(document).on("click", "#delete_<?= $this->tbl_ID; ?>", function() {
                             if (confirm("<?= $this->language_dwuty["deleteRecord"]; ?>")) {
                                 $.ajax({
-                                    url: "<?= $this->crud_path; ?>delete.php",
+                                    url: "<?= $this->crud_path; ?>/delete.php",
                                     type: "POST",
                                     dataType: "json",
                                     data: {
@@ -806,7 +806,7 @@ class webutility
                                         break;
                                 }
                                 $.ajax({
-                                    url: "<?= $this->crud_path; ?>update.php",
+                                    url: "<?= $this->crud_path; ?>/update.php",
                                     type: "POST",
                                     dataType: "json",
                                     data: {
@@ -880,7 +880,7 @@ class webutility
                         allowClear: true,
                         placeholder: "<?= $this->language_dwuty["select2"]["placeholder"]; ?>",
                         ajax: {
-                            url: "<?= $this->crud_path; ?>read_select2.php",
+                            url: "<?= $this->crud_path; ?>/read_select2.php",
                             type: "POST",
                             delay: 100,
                             dataType: "json",
@@ -1071,11 +1071,6 @@ class webutility
                 break;
         }
         return $result;
-    }
-    private function get_crud_path()
-    {
-        $path = '/' . basename(dirname(__FILE__)) . '/crud/';
-        return $path;
     }
 }
 ?>
