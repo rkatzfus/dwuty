@@ -22,9 +22,7 @@
         "ext-mysqli": "*",
         "twbs/bootstrap": "*",
         "select2/select2": "*",
-        "components/jquery": "*"
-    },
-    "require-dev": {
+        "components/jquery": "*",
         "datatables.net/datatables.net": "dev-master",
         "datatables.net/datatables.net-bs5": "dev-master",
         "datatables.net/datatables.net-fixedheader": "dev-master",
