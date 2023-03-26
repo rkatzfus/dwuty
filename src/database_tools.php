@@ -142,6 +142,25 @@ class database_tools
         }
         return $result;
     }
+    public function sql2array_group(
+        $sql = "",
+        $group = ""
+    ) {
+        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        if ($this->chk_stmnt($sql)) {
+            foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
+                $result[$value_key[$group]][] =  $this->decode_escape($value_key);
+            }
+            if ($this->debug == true) {
+                echo "<b>sql2array_pk_value</b>";
+                var_dump($result);
+                echo "<hr>";
+            }
+        } else {
+            $result = false;
+        }
+        return $result;
+    }
     public function sql_exec_result_id(
         $sql = ""
     ) {
