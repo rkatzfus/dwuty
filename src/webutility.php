@@ -48,10 +48,10 @@ class webutility
         $this->obj_tools = new tools(false); // debug Mode
         $this->obj_database_tools = new database_tools();
         $this->webutility_ssp = new webutility_ssp(false); // debug Mode
-        $this->ajax_read_where = "";
         $this->tbl_ID = $this->obj_tools->uniqueid();
         $this->datasource = $this->obj_tools->post_encode($tabledata["datasource"]);
         $this->pkfield = $tabledata["primarykey"];
+        $this->ajax_read_where = $this->obj_database_tools->alias($this->pkfield, "field", "get") . ".DEL <> 1";
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
         $this->crud_path = getenv('PATH_CRUD') ? getenv('PATH_CRUD') : '/vendor/datatableswebutility/dwuty/src/crud';
@@ -965,7 +965,7 @@ class webutility
     public function set_where(
         $strsqlwhere = ""
     ) {
-        $this->ajax_read_where = $strsqlwhere;
+        $this->ajax_read_where = !empty($strsqlwhere) ? $this->ajax_read_where . " and ($strsqlwhere)" : $this->ajax_read_where;
     }
     private function html_default(
         $typ = ""

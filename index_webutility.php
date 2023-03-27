@@ -46,8 +46,6 @@ use App\webutility;
 			"lang_iso_639_1" => "de"
 		);
 		$obj_webutility = new webutility($ary_webutility_config);
-		$strsqlWhere_xxxTESTxxx = "root.DEL <> 1";
-		$obj_webutility->set_where($strsqlWhere_xxxTESTxxx);
 		$arySetting_CHECKBOX = array(
 			"ORDERABLE" => false, "SEARCHABLE" => false
 		);
