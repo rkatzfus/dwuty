@@ -54,20 +54,20 @@ use App\webutility;
 		$arySetting_DROPDOWN = array(
 			"SELECT2" => array(
 				"columns" => array(
-					"id" => "dropdown.ID", "text" => "dropdown.TEXT"
-				), "from" => "dropdown_lookup_table dropdown", "where" => "dropdown.DEL<>1"
+					"id" => "ID", "text" => "TEXT"
+				), "datasource" => "dropdown_lookup_table"
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI = array(
 			"UNIQUE_ID" => $datREF_ROOT_ID,
 			"SELECT2" => array(
 				"columns" => array(
-					"id" => "ref.REF_ROOT", "text" => "ref.REF_DROPDOWN_MULTI"
-				), "from" => "ref_root_ref_dropdown_multi_table ref", "where" => "ref.DEL<>1"
+					"id" => "REF_ROOT", "text" => "REF_DROPDOWN_MULTI"
+				), "datasource" => "ref_root_ref_dropdown_multi_table"
 			), "SUBSELECT2" => array(
 				"columns" => array(
-					"id" => "dropdown_multi.ID", "text" => "dropdown_multi.TEXT"
-				), "from" => "dropdown_multi_lookup_table dropdown_multi", "where" => "dropdown_multi.DEL<>1"
+					"id" => "ID", "text" => "TEXT"
+				), "datasource" => "dropdown_multi_lookup_table"
 			)
 		);
 		$obj_webutility->new_column("root.TEXT", "column: TEXT", EDIT, TEXT);
