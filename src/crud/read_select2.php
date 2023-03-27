@@ -14,10 +14,10 @@ $aryColumns = $data["columns"];
 $obj_webutility_ssp->set_length(-1); // remove length & paging
 $obj_webutility_ssp->set_select($aryColumns);
 $obj_webutility_ssp->set_from($data["datasource"]);
-(isset($data["where"])) ? $obj_webutility_ssp->set_where($data["where"]) : "";
+$obj_webutility_ssp->set_where("DEL<>1");
 $sql = $obj_webutility_ssp->set_data_sql();
 if ($search) {
     $sql = "select * from (" . $sql . ") as source where text like '%" . $obj_database_tools->escape($_POST["search"]) . "%'";
 }
-$sql .= " order by text";
+$sql .= " order by id";
 echo $obj_tools->post_encode($obj_database_tools->sql2array($sql));
