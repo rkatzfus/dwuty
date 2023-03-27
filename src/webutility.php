@@ -925,23 +925,23 @@ class webutility
                                     $aryColumns = $arySetting["SELECT2"]["columns"];
                                     $this->webutility_ssp->set_length(-1); // remove length & paging
                                     $this->webutility_ssp->set_select($aryColumns);
-                                    $this->webutility_ssp->set_from($arySetting["SELECT2"]["from"]);
+                                    $this->webutility_ssp->set_from($arySetting["SELECT2"]["datasource"]);
                                     (isset($arySetting["SELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SELECT2"]["where"]) : $this->webutility_ssp->set_where();
                                     $sql = $this->webutility_ssp->set_data_sql();
                                     $ary_Select2Initial =  $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
                                     $this->columns[$column_key]["JSON"] = $this->obj_tools->post_encode($ary_Select2Initial);
                                     break;
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
-                                    $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["from"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
+                                    $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and " . $arySetting["SELECT2"]["where"] . ")";
                                     $this->columns[$column_key]["UNIQUE_ID"] = $arySetting["UNIQUE_ID"];
                                     $this->columns[$column_key]["SQLNAMETABLE"] = $SqlName;
                                     $this->columns[$column_key]["SELECT2_PKFIELD"] =  $arySetting["SELECT2"]["columns"]["id"];
                                     $this->columns[$column_key]["SELECT2_VALUEKEY"] = $arySetting["SELECT2"]["columns"]["text"];
-                                    $this->columns[$column_key]["SELECT2_DATASOURCE"] = $arySetting["SELECT2"]["from"];
+                                    $this->columns[$column_key]["SELECT2_DATASOURCE"] = $arySetting["SELECT2"]["datasource"];
                                     $aryColumns = $arySetting["SUBSELECT2"]["columns"];
                                     $this->webutility_ssp->set_length(-1); // remove length & paging
                                     $this->webutility_ssp->set_select($aryColumns);
-                                    $this->webutility_ssp->set_from($arySetting["SUBSELECT2"]["from"]);
+                                    $this->webutility_ssp->set_from($arySetting["SUBSELECT2"]["datasource"]);
                                     (isset($arySetting["SUBSELECT2"]["where"])) ? $this->webutility_ssp->set_where($arySetting["SUBSELECT2"]["where"]) : $this->webutility_ssp->set_where();
                                     $sql = $this->webutility_ssp->set_data_sql();
                                     $ary_Select2Initial = $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");

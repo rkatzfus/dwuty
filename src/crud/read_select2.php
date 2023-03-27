@@ -13,7 +13,7 @@ $search = (isset($_POST['search'])) ? true : false;
 $aryColumns = $data["columns"];
 $obj_webutility_ssp->set_length(-1); // remove length & paging
 $obj_webutility_ssp->set_select($aryColumns);
-$obj_webutility_ssp->set_from($data["from"]);
+$obj_webutility_ssp->set_from($data["datasource"]);
 (isset($data["where"])) ? $obj_webutility_ssp->set_where($data["where"]) : "";
 $sql = $obj_webutility_ssp->set_data_sql();
 if ($search) {
