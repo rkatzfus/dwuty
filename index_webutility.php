@@ -26,9 +26,6 @@ use App\webutility;
 				"create" => array(
 					"activ" => true
 				),
-				"read" => array(
-					"activ" => true
-				),
 				"update" => array(
 					"activ" => true, "dropdown_multi" => array(
 						$datREF_ROOT_ID => array(
@@ -94,7 +91,6 @@ use App\webutility;
 		"datatables_ext" => array(
 			"fixedHeader" => "true"
 		)
-
 	);
 	$obj_webutility->config($ary_config);
 	?>

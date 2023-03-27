@@ -40,8 +40,6 @@ class webutility
     private $ajax_update_dropdown_multi;
     private $ajax_delete_dropdown_multi;
 
-
-
     private $columns = array();
 
     function __construct(
@@ -59,7 +57,7 @@ class webutility
         $this->crud_path = getenv('PATH_CRUD') ? getenv('PATH_CRUD') : '/vendor/datatableswebutility/dwuty/src/crud';
         if (isset($tabledata["crud"])) {
             $this->create = false;
-            $this->read = false;
+            $this->read = true;
             $this->update = false;
             $this->delete = false;
             $this->button_column = false;
@@ -69,11 +67,6 @@ class webutility
                         if ($crud_value["activ"] == true) {
                             $this->create = true;
                             $this->button_column = true;
-                        }
-                        break;
-                    case "read":
-                        if ($crud_value["activ"] == true) {
-                            $this->read = true;
                         }
                         break;
                     case "update":
@@ -93,9 +86,6 @@ class webutility
                         throw new \Exception("ERROR occured!");
                         exit();
                 }
-            }
-            if ($this->read != true) {
-                throw new \Exception("nothing toDo :o)");
             }
         }
     }
