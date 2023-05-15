@@ -19,6 +19,10 @@ use App\webutility;
 <body>
 	<div class="container-fluid mt-1">
 		<?php
+
+		// database credatials
+		// tableheader & config zusammen -> Config über jquery in footer https://stackoverflow.com/questions/6005327/how-to-create-header-footer
+		// eine komplette config
 		$obj_tools = new tools(false); // debug Mode
 		$datREF_ROOT_ID = $obj_tools->uniqueid();
 		$ary_webutility_config = array(
