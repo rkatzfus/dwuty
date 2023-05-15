@@ -3,8 +3,6 @@ vendor/composer/
 vendor/datatables.net/
 vendor/select2/
 vendor/twbs/
-vendor/autoload.php
-
 
 .htaccess
-composer.lock
+
