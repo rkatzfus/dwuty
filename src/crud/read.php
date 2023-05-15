@@ -57,12 +57,12 @@ if (!empty($_POST["search"]["value"])) {
                         if ($select2_value["SQLNAME"] == $Columnsdata_value["SQLNAME"]) {
                             switch ($Columnsdata_value["TYP"]) {
                                 case 6:
-                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["from"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
+                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
                                     $ary_sqlSearch[] = $Columnsdata_value["SQLNAME"] . " in (" . $sql . ")";
                                     break;
                                 case 7:
-                                    $subsql = "select " . $Columnsdata_value["SUBSELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SUBSELECT2"]["from"] . " where DEL <> 1 and " . $Columnsdata_value["SUBSELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
-                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["from"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " in (" . $subsql . ")";
+                                    $subsql = "select " . $Columnsdata_value["SUBSELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SUBSELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SUBSELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
+                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " in (" . $subsql . ")";
                                     $ary_sqlSearch[] = $pkfield . " in (" . $sql . ")";
                                     break;
                             }

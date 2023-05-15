@@ -7,5 +7,4 @@ vendor/autoload.php
 
 
 .htaccess
-phpinfo.php
 composer.lock
