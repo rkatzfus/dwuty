@@ -1,5 +1,7 @@
 {
     "name": "datatableswebutility/dwuty",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "description": "tabletools ajax",
     "homepage": "https://datatableswebutility.net/",
     "authors": [
@@ -21,10 +23,10 @@
         "twbs/bootstrap": "*",
         "select2/select2": "*",
         "components/jquery": "*",
-        "datatables.net/datatables.net": "dev-master",
-        "datatables.net/datatables.net-bs5": "dev-master",
-        "datatables.net/datatables.net-fixedheader": "dev-master",
-        "datatables.net/datatables.net-fixedheader-bs5": "dev-master"
+        "datatables.net/datatables.net": "*@dev",
+        "datatables.net/datatables.net-bs5": "*@dev",
+        "datatables.net/datatables.net-fixedheader": "*@dev",
+        "datatables.net/datatables.net-fixedheader-bs5": "*@dev"
     },
     "autoload": {
         "psr-4": {
