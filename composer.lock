@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a46e870197bafcd138f134bd6003acf",
+    "content-hash": "e3309ee2a143b5691ffceb00aabdf859",
     "packages": [
         {
             "name": "components/jquery",
@@ -54,188 +54,6 @@
                 "wiki": "http://docs.jquery.com/"
             },
             "time": "2021-03-20T19:13:42+00:00"
-        },
-        {
-            "name": "datatables.net/datatables.net",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataTables/Dist-DataTables.git",
-                "reference": "a0c2a3bc24a99c698a81b455f4cb9d3251b23db9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/Dist-DataTables/zipball/a0c2a3bc24a99c698a81b455f4cb9d3251b23db9",
-                "reference": "a0c2a3bc24a99c698a81b455f4cb9d3251b23db9",
-                "shasum": ""
-            },
-            "require": {
-                "components/jquery": ">=1.7"
-            },
-            "default-branch": true,
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "SpryMedia",
-                    "homepage": "https://datatables.net"
-                }
-            ],
-            "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table. This is jQuery DataTables",
-            "homepage": "http://www.datatables.net/",
-            "keywords": [
-                "datatables",
-                "jquery",
-                "table"
-            ],
-            "support": {
-                "forum": "https://datatables.net/forums",
-                "source": "https://github.com/DataTables/Dist-DataTables"
-            },
-            "time": "2023-05-18T16:30:57+00:00"
-        },
-        {
-            "name": "datatables.net/datatables.net-bs5",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataTables/Dist-DataTables-Bootstrap5.git",
-                "reference": "0cde152ab3a6c7cbaaab76c30e10946289d03424"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/Dist-DataTables-Bootstrap5/zipball/0cde152ab3a6c7cbaaab76c30e10946289d03424",
-                "reference": "0cde152ab3a6c7cbaaab76c30e10946289d03424",
-                "shasum": ""
-            },
-            "require": {
-                "datatables.net/datatables.net": ">=1.12.1",
-                "twbs/bootstrap": "5.*"
-            },
-            "default-branch": true,
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "SpryMedia",
-                    "homepage": "https://datatables.net"
-                }
-            ],
-            "description": "DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, which will add advanced interaction controls to any HTML table. This is DataTables with styling for [Bootstrap5](https://getbootstrap.com/)",
-            "homepage": "http://www.datatables.net/",
-            "keywords": [
-                "bootstrap",
-                "bootstrap5",
-                "datatables",
-                "jquery",
-                "table"
-            ],
-            "support": {
-                "forum": "https://datatables.net/forums",
-                "issues": "https://github.com/DataTables/Dist-DataTables-Bootstrap5/issues",
-                "source": "https://github.com/DataTables/Dist-DataTables-Bootstrap5"
-            },
-            "time": "2023-05-18T16:32:05+00:00"
-        },
-        {
-            "name": "datatables.net/datatables.net-fixedheader",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataTables/Dist-DataTables-FixedHeader.git",
-                "reference": "5ba87e9161589b8ab01898bc8d8089b09c1b9028"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/Dist-DataTables-FixedHeader/zipball/5ba87e9161589b8ab01898bc8d8089b09c1b9028",
-                "reference": "5ba87e9161589b8ab01898bc8d8089b09c1b9028",
-                "shasum": ""
-            },
-            "require": {
-                "datatables.net/datatables.net": ">=1.12.1"
-            },
-            "default-branch": true,
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "SpryMedia",
-                    "homepage": "https://datatables.net"
-                }
-            ],
-            "description": "When displaying large amounts of data in a table, it can often be useful for the end user to have the column titles always visible. This is particularly true if using DataTables with pagination disabled, or the display length is set to a high value. The FixedHeader extension provides this ability. This is FixedHeader for DataTables",
-            "homepage": "http://www.datatables.net/",
-            "keywords": [
-                "Fixed Headers",
-                "datatables",
-                "fixedHeader",
-                "jquery",
-                "sticky",
-                "table"
-            ],
-            "support": {
-                "forum": "https://datatables.net/forums",
-                "source": "https://github.com/DataTables/Dist-DataTables-FixedHeader"
-            },
-            "time": "2023-03-14T09:45:05+00:00"
-        },
-        {
-            "name": "datatables.net/datatables.net-fixedheader-bs5",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DataTables/Dist-DataTables-FixedHeader-Bootstrap5.git",
-                "reference": "382462f0b35639c09e137f3cdf654cfdcc584c2e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DataTables/Dist-DataTables-FixedHeader-Bootstrap5/zipball/382462f0b35639c09e137f3cdf654cfdcc584c2e",
-                "reference": "382462f0b35639c09e137f3cdf654cfdcc584c2e",
-                "shasum": ""
-            },
-            "require": {
-                "datatables.net/datatables.net-bs5": ">=1.12.1",
-                "datatables.net/datatables.net-fixedheader": ">=3.2.4"
-            },
-            "default-branch": true,
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "SpryMedia",
-                    "homepage": "https://datatables.net"
-                }
-            ],
-            "description": "When displaying large amounts of data in a table, it can often be useful for the end user to have the column titles always visible. This is particularly true if using DataTables with pagination disabled, or the display length is set to a high value. The FixedHeader extension provides this ability. This is FixedHeader for DataTables with styling for [Bootstrap5](https://getbootstrap.com/)",
-            "homepage": "http://www.datatables.net/",
-            "keywords": [
-                "Fixed Headers",
-                "bootstrap",
-                "bootstrap5",
-                "datatables",
-                "fixedHeader",
-                "jquery",
-                "sticky",
-                "table"
-            ],
-            "support": {
-                "forum": "https://datatables.net/forums",
-                "issues": "https://github.com/DataTables/Dist-DataTables-FixedHeader-Bootstrap5/issues",
-                "source": "https://github.com/DataTables/Dist-DataTables-FixedHeader-Bootstrap5"
-            },
-            "time": "2023-03-14T09:45:58+00:00"
         },
         {
             "name": "select2/select2",
@@ -332,14 +150,9 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "datatables.net/datatables.net": 20,
-        "datatables.net/datatables.net-bs5": 20,
-        "datatables.net/datatables.net-fixedheader": 20,
-        "datatables.net/datatables.net-fixedheader-bs5": 20
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
