@@ -1,8 +1,3 @@
-vendor/components/
-vendor/composer/
-vendor/datatables.net/
-vendor/select2/
-vendor/twbs/
-
+vendor/
 .htaccess
 
