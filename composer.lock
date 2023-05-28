@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ec2b8b949d6233df95be33683bcc82b",
+    "content-hash": "7a46e870197bafcd138f134bd6003acf",
     "packages": [
         {
             "name": "components/jquery",
@@ -332,14 +332,14 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "datatables.net/datatables.net": 20,
         "datatables.net/datatables.net-bs5": 20,
         "datatables.net/datatables.net-fixedheader": 20,
         "datatables.net/datatables.net-fixedheader-bs5": 20
     },
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
