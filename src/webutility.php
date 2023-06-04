@@ -882,16 +882,14 @@ class webutility
                             dataType: "json",
                             theme: "bootstrap-5",
                             cache: false,
-                            data: {
-                                sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>),
-                                function(params) {
-                                    query = {
-                                        search: params.term,
-                                        type: "public",
-                                        select2: select2_data,
-                                    }
-                                    return query;
+                            data: function(params) {
+                                query = {
+                                    search: params.term,
+                                    type: "public",
+                                    select2: select2_data,
+                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
                                 }
+                                return query;
                             },
                             processResults: function(response) {
                                 return {
