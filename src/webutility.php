@@ -82,6 +82,8 @@ class webutility
                             $this->button_column = true;
                         }
                         break;
+                    default:
+                        break;
                 }
             }
         }
