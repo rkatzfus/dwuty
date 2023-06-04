@@ -2,6 +2,7 @@
 <html>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/.api_key.php";
 
 use App\tools;
 ?>
@@ -27,7 +28,7 @@ use App\tools;
         )
     );
     $obj_tools->post_encode($post_encode);
-    $obj_tools->post_encode($post_encode, array("pass" => "test"));
+    $obj_tools->post_encode($post_encode, array("pass" => getenv('API_KEY')));
     ?>
 </body>
 
