@@ -17,7 +17,6 @@ class tools
         $aryEnc = array()
     ) {
         $result = "false";
-        // $aryEnc = array("pass" => "sdfds");
         if (!empty($aryIncoming)) {
             if (empty($aryEnc)) {
                 $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
@@ -67,7 +66,7 @@ class tools
         $msg_encrypted_bundle = "$iv:$salt:$encrypted";
         return $msg_encrypted_bundle;
     }
-    private function decrypt(
+    public function decrypt(
         $msg_encrypted_bundle = "",
         $password = ""
     ) {

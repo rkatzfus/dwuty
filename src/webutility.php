@@ -188,11 +188,12 @@ class webutility
                                 type: "POST",
                                 dataType: "json",
                                 data: {
+                                    tableid: "<?= $this->tbl_ID; ?>",
                                     pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                     datasource: <?= $this->datasource; ?>,
                                     where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
                                     columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>),
-                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $this->tbl_ID)); ?>"
                                 }
                             },
                             rowId: "DT_RowId",
@@ -729,9 +730,10 @@ class webutility
                                 type: "POST",
                                 dataType: "json",
                                 data: {
+                                    tableid: "<?= $this->tbl_ID; ?>",
                                     datasource: <?= $this->datasource ?>,
                                     data: JSON.stringify(objInsert),
-                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $this->tbl_ID)); ?>"
                                 }
                             });
                             $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -747,11 +749,12 @@ class webutility
                                     type: "POST",
                                     dataType: "json",
                                     data: {
+                                        tableid: "<?= $this->tbl_ID; ?>",
                                         pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
                                         datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>,
-                                        sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                        sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $this->tbl_ID)); ?>"
                                     }
                                 });
                                 $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -805,6 +808,7 @@ class webutility
                                     type: "POST",
                                     dataType: "json",
                                     data: {
+                                        tableid: "<?= $this->tbl_ID; ?>",
                                         pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                         pkvalue: rowid,
                                         field: colName,
@@ -813,7 +817,7 @@ class webutility
                                         colData: colData,
                                         datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
-                                        sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                        sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $this->tbl_ID)); ?>"
                                     }
                                 });
 
@@ -887,7 +891,8 @@ class webutility
                                     search: params.term,
                                     type: "public",
                                     select2: select2_data,
-                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                    tableid: "<?= $this->tbl_ID; ?>",
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $this->tbl_ID)); ?>"
                                 }
                                 return query;
                             },

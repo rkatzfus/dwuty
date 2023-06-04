@@ -1,9 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
+use App\tools;
 use App\database_tools;
 
-$config = (json_decode($_POST["sec"], true));
+$obj_tools = new tools();
+$config = json_decode($obj_tools->decrypt($_POST["sec"], $_POST['tableid']), true);
 $obj_database_tools = new database_tools($config); // debug mode
 $pkfield = isset($_POST["pkfield"]) ? $_POST["pkfield"] : "";
 $pkvalue = isset($_POST["pkvalue"]) ? intval($_POST["pkvalue"]) : "";

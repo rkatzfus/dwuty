@@ -1,10 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
+use App\tools;
 use App\webutility_ssp;
 use App\database_tools;
 
-$config = (json_decode($_POST["sec"], true));
+$obj_tools = new tools();
+$config = json_decode($obj_tools->decrypt($_POST["sec"], $_POST['tableid']), true);
 $obj_webutility_ssp = new webutility_ssp($config);
 $obj_database_tools = new database_tools($config);
 $pkfield = $_POST["pkfield"];
