@@ -74,9 +74,9 @@ class database_tools
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0])) ?? false : "";
         if ($this->debug == true) {
+            echo "<hr>";
             echo "<b>DATABASE TOOLS: sql_getfield</b>";
             var_dump($result);
-            echo "<hr>";
         }
         return $result;
     }
@@ -89,9 +89,9 @@ class database_tools
                 $result[] = $this->decode_escape($value);
             }
             if ($this->debug == true) {
+                echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql2array</b>";
                 var_dump($result);
-                echo "<hr>";
             }
         } else {
             $result = false;
@@ -108,9 +108,9 @@ class database_tools
                 $result[$value[$pk]] = $this->decode_escape($value);
             }
             if ($this->debug == true) {
+                echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql2array_pk</b>";
                 var_dump($result);
-                echo "<hr>";
             }
         } else {
             $result = false;
@@ -128,9 +128,9 @@ class database_tools
                 $result[$value_key[$pk]] = $this->decode_escape($value_key[$value]);
             }
             if ($this->debug == true) {
+                echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql2array_pk_value</b>";
                 var_dump($result);
-                echo "<hr>";
             }
         } else {
             $result = false;
@@ -147,9 +147,9 @@ class database_tools
                 $result[$value_key[$group]][] =  $this->decode_escape($value_key);
             }
             if ($this->debug == true) {
+                echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql2array_pk_value</b>";
                 var_dump($result);
-                echo "<hr>";
             }
         } else {
             $result = false;
@@ -162,9 +162,9 @@ class database_tools
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
         if (isset($sql) && !empty($sql)) {
             if ($this->debug == true) {
+                echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
                 var_dump($sql);
-                echo "<hr>";
             } else {
                 mysqli_query($this->mysqli_conn, $sql);
                 $identity =  mysqli_insert_id($this->mysqli_conn);
