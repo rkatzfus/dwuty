@@ -5,9 +5,9 @@ namespace App;
 class tools
 {
     private $debug;
-    function __construct($debug = false)
+    function __construct($config = array())
     {
-        $this->debug = $debug;
+        $this->debug = !isset($config["debug"]["tools"]) ? false : $config["debug"]["tools"];
     }
     function __destruct()
     {
@@ -21,7 +21,7 @@ class tools
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function post_encode</b><br> ";
+            echo "<b>TOOLS: function post_encode</b><br> ";
             var_dump($result);
         } else {
             return $result;
@@ -29,7 +29,14 @@ class tools
     }
     public function uniqueid()
     {
-        return "a" . uniqid();
+        $return = "a" . uniqid();
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>TOOLS: function uniqueid</b><br> ";
+            var_dump($return);
+        } else {
+            return $return;
+        }
     }
     public function encrypt(
         $data = "",

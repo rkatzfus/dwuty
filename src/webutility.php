@@ -45,9 +45,12 @@ class webutility
     function __construct(
         $tabledata = array()
     ) {
-        $this->obj_tools = new tools(false); // debug Mode
-        $this->obj_database_tools = new database_tools();
-        $this->webutility_ssp = new webutility_ssp(false); // debug Mode
+        $ary_database = array(
+            "debug" => $tabledata["debug"], "database" => $tabledata["database"]
+        );
+        $this->obj_tools = new tools(array("debug" => $tabledata["debug"]));
+        $this->obj_database_tools = new database_tools($ary_database);
+        $this->webutility_ssp = new webutility_ssp($ary_database);
         $this->tbl_ID = $this->obj_tools->uniqueid();
         $this->datasource = $this->obj_tools->post_encode($tabledata["datasource"]);
         $this->pkfield = $tabledata["primarykey"];

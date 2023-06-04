@@ -19,10 +19,24 @@ use App\webutility;
 <body>
 	<div class="container-fluid mt-1">
 		<?php
-		$obj_tools = new tools(false); // debug Mode
+		$config_tools = array(
+			"debug" => array("tools" => false)
+		);
+		$obj_tools = new tools($config_tools);
 		$datREF_ROOT_ID = $obj_tools->uniqueid();
-		$ary_webutility_config = array(
-			"crud" => array(
+		$config_webutility = array(
+			"debug" => array(
+				"database_tools" => false,
+				"webutility_ssp" => false,
+				"tools" => false
+			), "database" => array(
+				"type" => "mysql", "credentials" => array(
+					"host" => getenv('HOST'),
+					"user" => getenv('MYSQL_USER'),
+					"pass" => getenv('MYSQL_PASSWORD'),
+					"database" => getenv('MYSQL_DATABASE'),
+				)
+			), "crud" => array(
 				"create" => array(
 					"activ" => true
 				),
@@ -45,7 +59,8 @@ use App\webutility;
 			"primarykey" => "root.ID",
 			"lang_iso_639_1" => "de"
 		);
-		$obj_webutility = new webutility($ary_webutility_config);
+
+		$obj_webutility = new webutility($config_webutility);
 		$arySetting_CHECKBOX = array(
 			"ORDERABLE" => false, "SEARCHABLE" => false
 		);
@@ -69,15 +84,15 @@ use App\webutility;
 			)
 		);
 		$obj_webutility->new_column("root.TEXT", "column: TEXT", EDIT, TEXT);
-		$obj_webutility->new_column("root.EMAIL", "column: EMAIL", EDIT, EMAIL);
-		$obj_webutility->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
-		$obj_webutility->new_column("root.LINK", "column: LINK", EDIT, LINK);
-		$obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
-		$obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
-		$obj_webutility->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
-		$obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
-		$obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
+		// $obj_webutility->new_column("root.EMAIL", "column: EMAIL", EDIT, EMAIL);
+		// $obj_webutility->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
+		// $obj_webutility->new_column("root.LINK", "column: LINK", EDIT, LINK);
+		// $obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
+		// $obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
+		// $obj_webutility->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
+		// $obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		// $obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
+		// $obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$obj_webutility->table_header();
 		?>
 	</div>

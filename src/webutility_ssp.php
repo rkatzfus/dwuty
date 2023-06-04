@@ -28,17 +28,20 @@ class webutility_ssp
     private $arycolumns_id;
 
     public function __construct(
-        $debug = false
+        $config = array()
     ) {
-        $this->debug = $debug;
+        $ary_database = array(
+            "debug" => $config["debug"], "database" => $config["database"]
+        );
+        $this->debug = !isset($config["debug"]["webutility_ssp"]) ? false : $config["debug"]["webutility_ssp"];
         $this->draw = 0;
         $this->intlength = 10;
         $this->intstart = 0;
         $this->strsqlOrder = "";
         $this->strGroupBy = "";
         $this->data = array();
-        $this->obj_database_tools = new database_tools();
-        $this->obj_tools = new tools();
+        $this->obj_database_tools = new database_tools($ary_database);
+        $this->obj_tools = new tools(array("debug" => $config["debug"]));
     }
     public function set_draw(
         $draw = 0
@@ -46,7 +49,7 @@ class webutility_ssp
         $this->draw = intval($draw);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_draw</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_draw</b><br>";
             echo $this->draw;
         }
     }
@@ -56,7 +59,7 @@ class webutility_ssp
         $this->intlength = intval($length);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_length</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_length</b><br>";
             echo $this->intlength;
         }
     }
@@ -66,7 +69,7 @@ class webutility_ssp
         $this->intstart = intval($intstart);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_start</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_start</b><br>";
             echo $this->intstart;
         }
     }
@@ -89,7 +92,7 @@ class webutility_ssp
         $this->strsqlOrder = " order by " . implode(", ", $sql_order);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_order</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_order</b><br>";
             echo $this->strsqlOrder;
         }
     }
@@ -100,7 +103,7 @@ class webutility_ssp
             $this->recordsTotal = intval($this->obj_database_tools->sql_getfield($sql));
             if ($this->debug == true) {
                 echo "<hr>";
-                echo "<b>function set_recordsTotal</b><br>";
+                echo "<b>WEBUTILITY_SSP: function set_recordsTotal</b><br>";
                 echo $this->recordsTotal;
                 echo "<br>" . $sql;
             }
@@ -113,7 +116,7 @@ class webutility_ssp
             $this->recordsFiltered = intval($this->obj_database_tools->sql_getfield($sql));
             if ($this->debug == true) {
                 echo "<hr>";
-                echo "<b>function set_recordsFiltered</b><br>";
+                echo "<b>WEBUTILITY_SSP: function set_recordsFiltered</b><br>";
                 echo $this->recordsFiltered;
                 echo "<br>" . $sql;
             }
@@ -141,11 +144,11 @@ class webutility_ssp
         } else {
             $this->debug = true;
             echo "<hr>";
-            echo "<b>an error has occured!</b>";
+            echo "<b>WEBUTILITY_SSP: an error has occured!</b>";
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_select</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_select</b><br>";
             echo $this->strsqlSelect;
             var_dump($ary_Select);
         }
@@ -156,7 +159,7 @@ class webutility_ssp
         $this->strSqlFrom = "from " . $strSqlFrom;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_from</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_from</b><br>";
             echo $this->strSqlFrom;
         }
     }
@@ -166,7 +169,7 @@ class webutility_ssp
         $this->strGroupBy = " group by  " . implode(",", $aryGroupBy);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_groupBy</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_groupBy</b><br>";
             echo $this->strGroupBy = " group by  " . implode(",", $aryGroupBy);
         }
     }
@@ -176,7 +179,7 @@ class webutility_ssp
         $this->strSqlWhere = $strSqlWhere;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_where</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_where</b><br>";
             echo $this->strSqlWhere;
         }
     }
@@ -186,7 +189,7 @@ class webutility_ssp
         $this->strSqlSearch = $strSqlSearch;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_search</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_search</b><br>";
             echo $this->strSqlSearch;
         }
     }
@@ -196,7 +199,7 @@ class webutility_ssp
         $this->strSqlSearchColumn = $strSqlSearchColumn;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_searchColumn</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_searchColumn</b><br>";
             echo $this->strSqlSearchColumn;
         }
     }
@@ -209,7 +212,7 @@ class webutility_ssp
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_columns</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_columns</b><br>";
             var_dump($this->arycolumns_id);
         }
     }
@@ -234,7 +237,7 @@ class webutility_ssp
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_data_sql (final sql)</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_data_sql (final sql)</b><br>";
             echo $sql;
         }
         return  $sql;
@@ -245,7 +248,7 @@ class webutility_ssp
         $this->data = ($data);
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function set_data</b><br>";
+            echo "<b>WEBUTILITY_SSP: function set_data</b><br>";
             echo $this->data;
         }
     }
@@ -259,7 +262,7 @@ class webutility_ssp
         $result["data"] = $this->data;
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>function read</b><br>";
+            echo "<b>WEBUTILITY_SSP: function read</b><br>";
         }
         echo $this->obj_tools->post_encode($result);
     }
