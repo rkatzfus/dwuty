@@ -19,14 +19,15 @@ use App\tools;
     $post_encode = array(
         "debug" => array("tools" => true), "database" => array(
             "type" => "mysql", "credentials" => array(
-                "host" => getenv('HOST'),
-                "user" => getenv('MYSQL_USER'),
-                "pass" => getenv('MYSQL_PASSWORD'),
-                "database" => getenv('MYSQL_DATABASE'),
+                "host" => "secret HOST",
+                "user" => "secret USER",
+                "pass" => "secret PASS",
+                "database" => "secret DATABASE"
             )
         )
     );
     $obj_tools->post_encode($post_encode);
+    $obj_tools->post_encode($post_encode, array("pass" => "test"));
     ?>
 </body>
 
