@@ -2,7 +2,7 @@
 
 namespace App;
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/.api_key.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/.environment.php";
 define("UNSELECT", "0");
 define("VIEW", "1");
 define("EDIT", "2");

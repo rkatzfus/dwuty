@@ -2,7 +2,7 @@
 <html>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/.api_key.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/.environment.php";
 
 use App\tools;
 ?>
