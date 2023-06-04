@@ -3,7 +3,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use App\database_tools;
 
-$obj_database_tools = new database_tools(false); // debug mode
+$config = (json_decode($_POST["sec"], true));
+$obj_database_tools = new database_tools($config);
 $pkfield = $_POST["pkfield"];
 $pkvalue = $_POST["pkvalue"];
 $ds = $_POST["datasource"];

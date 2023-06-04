@@ -4,26 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use App\webutility_ssp;
 use App\database_tools;
 
-
-//-----------------------------------------------
-$config = array(
-    "debug" => array(
-        "database_tools" => false,
-        "webutility_ssp" => false,
-        "tools" => false
-    ), "database" => array(
-        "type" => "mysql", "credentials" => array(
-            "host" => getenv('HOST'),
-            "user" => getenv('MYSQL_USER'),
-            "pass" => getenv('MYSQL_PASSWORD'),
-            "database" => getenv('MYSQL_DATABASE'),
-        )
-    )
-);
-//-----------------------------------------------
-
-
-
+$config = (json_decode($_POST["sec"], true));
 $obj_webutility_ssp = new webutility_ssp($config);
 $obj_database_tools = new database_tools($config);
 $pkfield = $_POST["pkfield"];

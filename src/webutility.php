@@ -19,6 +19,7 @@ define("DATETIME", "9");
 
 class webutility
 {
+    private $database;
     private $obj_tools;
     private $obj_database_tools;
     private $webutility_ssp;
@@ -45,12 +46,12 @@ class webutility
     function __construct(
         $tabledata = array()
     ) {
-        $ary_database = array(
+        $this->database = array(
             "debug" => $tabledata["debug"], "database" => $tabledata["database"]
         );
         $this->obj_tools = new tools(array("debug" => $tabledata["debug"]));
-        $this->obj_database_tools = new database_tools($ary_database);
-        $this->webutility_ssp = new webutility_ssp($ary_database);
+        $this->obj_database_tools = new database_tools($this->database);
+        $this->webutility_ssp = new webutility_ssp($this->database);
         $this->tbl_ID = $this->obj_tools->uniqueid();
         $this->datasource = $this->obj_tools->post_encode($tabledata["datasource"]);
         $this->pkfield = $tabledata["primarykey"];
@@ -190,7 +191,8 @@ class webutility
                                     pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                     datasource: <?= $this->datasource; ?>,
                                     where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
-                                    columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>)
+                                    columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>),
+                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
                                 }
                             },
                             rowId: "DT_RowId",
@@ -722,15 +724,15 @@ class webutility
                                         break;
                                 }
                             });
-                            insertdata = {
-                                datasource: <?= $this->datasource ?>,
-                                data: JSON.stringify(objInsert)
-                            };
                             $.ajax({
                                 url: "<?= $this->crud_path; ?>/create.php",
                                 type: "POST",
                                 dataType: "json",
-                                data: insertdata,
+                                data: {
+                                    datasource: <?= $this->datasource ?>,
+                                    data: JSON.stringify(objInsert),
+                                    sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
+                                }
                             });
                             $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
                             read_data_<?= $this->tbl_ID; ?>();
@@ -748,7 +750,8 @@ class webutility
                                         pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
                                         datasource: <?= $this->datasource; ?>,
-                                        dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>
+                                        dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>,
+                                        sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
                                     }
                                 });
                                 $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -810,6 +813,7 @@ class webutility
                                         colData: colData,
                                         datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
+                                        sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>)
                                     }
                                 });
 
@@ -878,13 +882,16 @@ class webutility
                             dataType: "json",
                             theme: "bootstrap-5",
                             cache: false,
-                            data: function(params) {
-                                query = {
-                                    search: params.term,
-                                    type: "public",
-                                    select2: select2_data,
+                            data: {
+                                sec: JSON.stringify(<?= $this->obj_tools->post_encode($this->database); ?>),
+                                function(params) {
+                                    query = {
+                                        search: params.term,
+                                        type: "public",
+                                        select2: select2_data,
+                                    }
+                                    return query;
                                 }
-                                return query;
                             },
                             processResults: function(response) {
                                 return {

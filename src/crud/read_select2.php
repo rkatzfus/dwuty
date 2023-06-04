@@ -5,9 +5,10 @@ use App\tools;
 use App\webutility_ssp;
 use App\database_tools;
 
-$obj_tools = new tools(false); // debug mode
-$obj_webutility_ssp = new webutility_ssp(false); // debug mode
-$obj_database_tools = new database_tools();
+$config = (json_decode($_POST["sec"], true));
+$obj_tools = new tools(array("debug" => $config["debug"]));
+$obj_webutility_ssp = new webutility_ssp($config);
+$obj_database_tools = new database_tools($config);
 $data = json_decode($_POST["select2"], true);
 $search = (isset($_POST['search'])) ? true : false;
 $aryColumns = $data["columns"];
