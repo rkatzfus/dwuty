@@ -90,9 +90,9 @@ use App\webutility;
 		$obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		// $obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
-		// $obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
-		// $obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
+		$obj_webutility->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility->new_column("root.DATE", "column: DATE", EDIT, DATE);
+		$obj_webutility->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		$obj_webutility->table_header();
 		?>
 	</div>
