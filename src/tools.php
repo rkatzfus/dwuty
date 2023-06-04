@@ -13,15 +13,26 @@ class tools
     {
     }
     public function post_encode(
-        $aryIncoming = array()
+        $aryIncoming = array(),
+        $aryEnc = array()
     ) {
         $result = "false";
+        // $aryEnc = array("pass" => "sdfds");
         if (!empty($aryIncoming)) {
-            $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+            if (empty($aryEnc)) {
+                $result = json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+            } else {
+                $result = $this->encrypt(json_encode($aryIncoming, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP), $aryEnc["pass"]);
+            }
         }
         if ($this->debug == true) {
             echo "<hr>";
-            echo "<b>TOOLS: function post_encode</b><br> ";
+            echo "<b>TOOLS: function post_encode</b><br>";
+            if (empty($aryEnc)) {
+                echo "<b>encryption: off<br>";
+            } else {
+                echo "<b>encryption: on, pass: " . $aryEnc["pass"];
+            }
             var_dump($result);
         } else {
             return $result;
@@ -38,7 +49,7 @@ class tools
             return $return;
         }
     }
-    public function encrypt(
+    private function encrypt(
         $data = "",
         $password = ""
     ) {
@@ -56,7 +67,7 @@ class tools
         $msg_encrypted_bundle = "$iv:$salt:$encrypted";
         return $msg_encrypted_bundle;
     }
-    public function decrypt(
+    private function decrypt(
         $msg_encrypted_bundle = "",
         $password = ""
     ) {
