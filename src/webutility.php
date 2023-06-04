@@ -82,9 +82,6 @@ class webutility
                             $this->button_column = true;
                         }
                         break;
-                    default:
-                        throw new \Exception("ERROR occured!");
-                        exit();
                 }
             }
         }
