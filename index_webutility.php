@@ -26,8 +26,8 @@ use App\webutility;
 		$datREF_ROOT_ID = $obj_tools->uniqueid();
 		$config_webutility = array(
 			"debug" => array(
-				"database_tools" => true,
-				"webutility_ssp" => true,
+				"database_tools" => false,
+				"webutility_ssp" => false,
 				"tools" => false
 			), "database" => array(
 				"type" => "mysql", "credentials" => array(
@@ -85,7 +85,7 @@ use App\webutility;
 		);
 		$obj_webutility->new_column("root.TEXT", "column: TEXT", EDIT, TEXT);
 		$obj_webutility->new_column("root.EMAIL", "column: EMAIL", EDIT, EMAIL);
-		// $obj_webutility->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
+		$obj_webutility->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
 		// $obj_webutility->new_column("root.LINK", "column: LINK", EDIT, LINK);
 		// $obj_webutility->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		// $obj_webutility->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
