@@ -11,7 +11,17 @@ use App\database_tools;
 
 <body>
     <?php
-    $obj_database_tools = new database_tools(true);
+    $database_tools = array(
+        "debug" => array("database_tools" => true), "database" => array(
+            "type" => "mysql", "credentials" => array(
+                "host" => getenv('HOST'),
+                "user" => getenv('MYSQL_USER'),
+                "pass" => getenv('MYSQL_PASSWORD'),
+                "database" => getenv('MYSQL_DATABASE'),
+            )
+        )
+    );
+    $obj_database_tools = new database_tools($database_tools);
     $sql = "select distinct count(*) from root_table;";
     $obj_database_tools->sql_getfield($sql);
     $sql = "select ID, DEL, TEXT, CHECKBOX from root_table;";

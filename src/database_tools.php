@@ -5,6 +5,7 @@ namespace App;
 class database_tools
 {
     private $debug;
+    private $dbtype;
     private $host;
     private $user;
     private $pass;
@@ -12,22 +13,16 @@ class database_tools
     private $username;
     private $mysqli_conn;
 
+
     function __construct(
-        $debug = false,
-        $credentials = array()
+        $config = array()
     ) {
-        $this->debug = $debug;
-        if (empty($credentials)) {
-            $this->host = getenv('HOST');
-            $this->user = getenv('MYSQL_USER');
-            $this->pass = getenv('MYSQL_PASSWORD');
-            $this->database = getenv('MYSQL_DATABASE');
-        } else {
-            $this->host = $credentials["host"];
-            $this->user = $credentials["user"];
-            $this->pass = $credentials["pass"];
-            $this->database = $credentials["database"];
-        }
+        $this->debug = !isset($config["debug"]["database_tools"]) ? false : $config["debug"]["database_tools"];
+        $this->dbtype = !isset($config["database"]["type"]) ? "mysql" : $config["database"]["type"]; // set default db type
+        $this->host = !isset($config["database"]["credentials"]["host"]) ? "unknown hostname" : $config["database"]["credentials"]["host"];
+        $this->user = !isset($config["database"]["credentials"]["user"]) ? "unknown database username" : $config["database"]["credentials"]["user"];
+        $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : $config["database"]["credentials"]["pass"];
+        $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : $config["database"]["credentials"]["database"];
         $this->username = get_current_user();
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
     }
