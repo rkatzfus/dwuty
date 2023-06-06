@@ -31,10 +31,10 @@ use App\webutility;
 				"tools" => false
 			), "database" => array(
 				"type" => "mysql", "credentials" => array(
-					"host" => getenv('HOST'),
-					"user" => getenv('MYSQL_USER'),
-					"pass" => getenv('MYSQL_PASSWORD'),
-					"database" => getenv('MYSQL_DATABASE'),
+					"host" => "MYSQL_HOST",
+					"user" => "MYSQL_USER",
+					"pass" => "MYSQL_PASSWORD",
+					"database" => "MYSQL_DATABASE",
 				)
 			), "crud" => array(
 				"create" => array(

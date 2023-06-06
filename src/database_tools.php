@@ -19,10 +19,10 @@ class database_tools
     ) {
         $this->debug = !isset($config["debug"]["database_tools"]) ? false : $config["debug"]["database_tools"];
         $this->dbtype = !isset($config["database"]["type"]) ? "mysql" : $config["database"]["type"]; // set default db type
-        $this->host = !isset($config["database"]["credentials"]["host"]) ? "unknown hostname" : $config["database"]["credentials"]["host"];
-        $this->user = !isset($config["database"]["credentials"]["user"]) ? "unknown database username" : $config["database"]["credentials"]["user"];
-        $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : $config["database"]["credentials"]["pass"];
-        $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : $config["database"]["credentials"]["database"];
+        $this->host = !isset($config["database"]["credentials"]["host"]) ? "unknown hostname" : getenv($config["database"]["credentials"]["host"]);
+        $this->user = !isset($config["database"]["credentials"]["user"]) ? "unknown database username" : getenv($config["database"]["credentials"]["user"]);
+        $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : getenv($config["database"]["credentials"]["pass"]);
+        $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : getenv($config["database"]["credentials"]["database"]);
         $this->username = get_current_user();
         (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
     }

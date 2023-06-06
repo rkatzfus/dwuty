@@ -20,10 +20,10 @@ use App\tools;
     $post_encode = array(
         "debug" => array("tools" => true), "database" => array(
             "type" => "mysql", "credentials" => array(
-                "host" => "secret HOST",
-                "user" => "secret USER",
-                "pass" => "secret PASS",
-                "database" => "secret DATABASE"
+                "host" => "env HOST",
+                "user" => "env USER",
+                "pass" => "env PASS",
+                "database" => "env DATABASE"
             )
         )
     );
