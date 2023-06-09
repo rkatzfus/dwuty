@@ -32,12 +32,24 @@ class database_tools
     }
     private function build_conn()
     {
-        $this->mysqli_conn = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
-        if ($this->mysqli_conn->connect_error) {
-            echo ("Connection failed: " . $this->mysqli_conn->connect_error);
+        try {
+            $this->mysqli_conn = new \PDO("mysql:host=$this->host;dbname=$this->database", $this->user, $this->pass);
+            // $this->mysqli_conn = new \PDO("mysql:host=$this->host;dbname=$database", $this->user, $this->pass);
+            // set the PDO error mode to exception
+            $this->mysqli_conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            echo "Connected successfully";
+        } catch (\PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
             $this->mysqli_conn = false;
             die();
         }
+
+        // $this->mysqli_conn = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
+        // if ($this->mysqli_conn->connect_error) {
+        //     echo ("Connection failed: " . $this->mysqli_conn->connect_error);
+        //     $this->mysqli_conn = false;
+        //     die();
+        // }
     }
     public function escape(
         $encode = ""
