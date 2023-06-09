@@ -762,13 +762,12 @@ class webutility
                     <?php
                     }
                     if ($this->update) {
-                    ?> $(document).on("blur", ".update_<?= $this->tbl_ID; ?>", function() {
+                    ?> $(document).on("focusout", ".update_<?= $this->tbl_ID; ?>", function() {
                             rowid = $(this).closest("tr").attr("id").replace("row_", "");
-                            td = $(this).closest("td");
                             if (rowid) {
-                                var table = $("#<?= $this->tbl_ID; ?>").DataTable();
+                                table = $("#<?= $this->tbl_ID; ?>").DataTable();
                                 columns = table.settings().init().columns;
-                                colIndex = table.cell(td).index().columnVisible;
+                                colIndex = table.cell($(this).closest("td")).index().columnVisible;
                                 colName = columns[colIndex].name;
                                 colData = columns[colIndex].data;
                                 colCelltype = parseInt(columns[colIndex].celltype);
@@ -801,23 +800,27 @@ class webutility
                                     default:
                                         break;
                                 }
-                                $.ajax({
-                                    url: "<?= $this->crud_path; ?>/update.php",
-                                    type: "POST",
-                                    dataType: "json",
-                                    data: {
-                                        pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
-                                        pkvalue: rowid,
-                                        field: colName,
-                                        value: value,
-                                        celltype: colCelltype,
-                                        colData: colData,
-                                        datasource: <?= $this->datasource; ?>,
-                                        dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
-                                        sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
-                                    }
-                                });
 
+                                if (typecheck(colCelltype, value)) {
+                                    $.ajax({
+                                        url: "<?= $this->crud_path; ?>/update.php",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: {
+                                            pkfield: <?= $this->obj_tools->post_encode($this->pkfield); ?>,
+                                            pkvalue: rowid,
+                                            field: colName,
+                                            value: value,
+                                            celltype: colCelltype,
+                                            colData: colData,
+                                            datasource: <?= $this->datasource; ?>,
+                                            dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
+                                            sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                        }
+                                    });
+                                } else {
+                                    alert("<?= $this->language_dwuty["dataRequirements"]; ?>");
+                                }
                             }
                         });
                     <?php
@@ -868,7 +871,7 @@ class webutility
 
                 function create_select2(
                     select2_name = "",
-                    select2_data = "",
+                    select2_data = ""
                 ) {
                     $(".SELECT2_" + select2_name).select2({
                         width: "100%",
@@ -899,6 +902,43 @@ class webutility
                             },
                         },
                     });
+                }
+
+                function typecheck(
+                    type = "",
+                    string2check = ""
+                ) {
+                    // check length on database
+                    if (string2check.length === 0) {
+                        check = true;
+                    } else {
+                        check = false;
+                    }
+                    switch (type) {
+                        case 0: // TEXT
+                        case 2: // CHECKBOX
+                        case 5: // COLOR
+                        case 6: // DROPDOWN
+                        case 7: // DROPDOWN_MULTI
+                        case 8: // DATE
+                        case 9: // DATETIME
+                            check = true;
+                            break;
+                        case 1: // EMAIL
+                            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+                            break;
+                        case 3: // LINK
+                            var validRegex = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (validRegex) {
+                        if (string2check.match(validRegex)) {
+                            check = true;
+                        }
+                    }
+                    return check;
                 }
             </script>
         </footer>

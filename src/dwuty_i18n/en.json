@@ -7,5 +7,6 @@
     },
     "select2": {
         "placeholder": "choose"
-    }
+    },
+    "dataRequirements": "Input doesnt match field requirements. Nothing saved to database."
 }
