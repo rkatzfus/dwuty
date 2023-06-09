@@ -7,5 +7,6 @@
     },
     "select2": {
         "placeholder": "Auswahl"
-    }
+    },
+    "dataRequirements": "Eingabe entspricht nicht den Feldvorgaben. Daten wurden nicht gespeichert."
 }
