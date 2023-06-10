@@ -11,7 +11,7 @@ class database_tools
     private $pass;
     private $database;
     private $username;
-    private $mysqli_conn;
+    private $dbh;
 
 
     function __construct(
@@ -24,30 +24,32 @@ class database_tools
         $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : getenv($config["database"]["credentials"]["pass"]);
         $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : getenv($config["database"]["credentials"]["database"]);
         $this->username = get_current_user();
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
     }
     function __destruct()
     {
-        $this->mysqli_conn->close();
+        $this->dbh = null;
     }
     private function build_conn()
     {
         try {
-            $this->mysqli_conn = new \PDO("mysql:host=$this->host;dbname=$this->database", $this->user, $this->pass);
-            // $this->mysqli_conn = new \PDO("mysql:host=$this->host;dbname=$database", $this->user, $this->pass);
+            $this->dbh = new \PDO("mysql:host=$this->host;dbname=$this->database", $this->user, $this->pass);
             // set the PDO error mode to exception
-            $this->mysqli_conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
+            $this->dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
-            $this->mysqli_conn = false;
-            die();
         }
 
-        // $this->mysqli_conn = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
-        // if ($this->mysqli_conn->connect_error) {
-        //     echo ("Connection failed: " . $this->mysqli_conn->connect_error);
-        //     $this->mysqli_conn = false;
+        // $sql = "select ID, DEL, `TEXT`, CHECKBOX, REF_DROPDOWN, LINK, LINK_BUTTON, `DATE`, `DATETIME`, COLOR, EMAIL from root_table";
+        // $sth =  $this->dbh->prepare($sql);
+        // $sth->execute();
+        // $result = $sth->fetchAll();
+        // var_dump($result);
+
+        // $this->dbh = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
+        // if ($this->dbh->connect_error) {
+        //     echo ("Connection failed: " . $this->dbh->connect_error);
+        //     $this->dbh = false;
         //     die();
         // }
     }
@@ -82,31 +84,57 @@ class database_tools
     public function sql_getfield(
         $sql = ""
     ) {
-        $result = false;
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->mysqli_conn, $sql)->fetch_row()[0])) ?? false : "";
-        if ($this->debug == true) {
-            echo "<hr>";
-            echo "<b>DATABASE TOOLS: sql_getfield</b>";
-            var_dump($result);
-        }
-        return $result;
+
+        // $sth =  $this->dbh->prepare($sql);
+        // $sth->execute();
+        // $result = $sth->fetchAll();
+        // var_dump($result);
+        // var_dump($sql);
+        // var_dump($this->dbh);
+
+        // $result2 = mysqli_query($this->dbh, $sql);
+
+
+        // $result = false;
+        // (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        // $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->dbh, $sql)->fetch_row()[0])) ?? false : "";
+        // if ($this->debug == true) {
+        //     echo "<hr>";
+        //     echo "<b>DATABASE TOOLS: sql_getfield</b>";
+        //     var_dump($result);
+        // }
+        // return $result;
     }
+    // public function sql_getfield(
+    //     $sql = ""
+    // ) {
+    //     $result = false;
+    //     (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+    //     $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->dbh, $sql)->fetch_row()[0])) ?? false : "";
+    //     if ($this->debug == true) {
+    //         echo "<hr>";
+    //         echo "<b>DATABASE TOOLS: sql_getfield</b>";
+    //         var_dump($result);
+    //     }
+    //     return $result;
+    // }
     public function sql2array(
         $sql = ""
     ) {
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        if ($this->chk_stmnt($sql)) {
-            foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
-                $result[] = $this->decode_escape($value);
-            }
-            if ($this->debug == true) {
-                echo "<hr>";
-                echo "<b>DATABASE TOOLS: sql2array</b>";
-                var_dump($result);
-            }
-        } else {
-            $result = false;
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        // if ($this->chk_stmnt($sql)) {
+        //     foreach ($this->dbh->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
+        //         $result[] = $this->decode_escape($value);
+        //     }
+        foreach ($sth->fetchAll(\PDO::FETCH_ASSOC) as $value) {
+            $result[] = $this->decode_escape($value);
+        }
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql2array</b>";
+            var_dump($result);
         }
         return $result;
     }
@@ -114,18 +142,16 @@ class database_tools
         $sql = "",
         $pk = ""
     ) {
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        if ($this->chk_stmnt($sql)) {
-            foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
-                $result[$value[$pk]] = $this->decode_escape($value);
-            }
-            if ($this->debug == true) {
-                echo "<hr>";
-                echo "<b>DATABASE TOOLS: sql2array_pk</b>";
-                var_dump($result);
-            }
-        } else {
-            $result = false;
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        foreach ($sth->fetchAll(\PDO::FETCH_ASSOC) as $value) {
+            $result[$value[$pk]] = $this->decode_escape($value);
+        }
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql2array_pk</b>";
+            var_dump($result);
         }
         return $result;
     }
@@ -134,18 +160,16 @@ class database_tools
         $pk = "",
         $value = ""
     ) {
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        if ($this->chk_stmnt($sql)) {
-            foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
-                $result[$value_key[$pk]] = $this->decode_escape($value_key[$value]);
-            }
-            if ($this->debug == true) {
-                echo "<hr>";
-                echo "<b>DATABASE TOOLS: sql2array_pk_value</b>";
-                var_dump($result);
-            }
-        } else {
-            $result = false;
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        foreach ($sth->fetchAll(\PDO::FETCH_ASSOC) as $value_key) {
+            $result[$value_key[$pk]] = $this->decode_escape($value_key[$value]);
+        }
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql2array_pk_value</b>";
+            var_dump($result);
         }
         return $result;
     }
@@ -153,33 +177,31 @@ class database_tools
         $sql = "",
         $group = ""
     ) {
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
-        if ($this->chk_stmnt($sql)) {
-            foreach ($this->mysqli_conn->query($sql)->fetch_all(MYSQLI_ASSOC) as $value_key) {
-                $result[$value_key[$group]][] =  $this->decode_escape($value_key);
-            }
-            if ($this->debug == true) {
-                echo "<hr>";
-                echo "<b>DATABASE TOOLS: sql2array_pk_value</b>";
-                var_dump($result);
-            }
-        } else {
-            $result = false;
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        foreach ($sth->fetchAll(\PDO::FETCH_ASSOC) as $value_key) {
+            $result[$value_key[$group]][] =  $this->decode_escape($value_key);
+        }
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql2array_group</b>";
+            var_dump($result);
         }
         return $result;
     }
     public function sql_exec_result_id(
         $sql = ""
     ) {
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         if (isset($sql) && !empty($sql)) {
             if ($this->debug == true) {
                 echo "<hr>";
                 echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
                 var_dump($sql);
             } else {
-                mysqli_query($this->mysqli_conn, $sql);
-                $identity =  mysqli_insert_id($this->mysqli_conn);
+                mysqli_query($this->dbh, $sql);
+                $identity =  mysqli_insert_id($this->dbh);
                 if ($identity) {
                     return $identity;
                 }
@@ -190,9 +212,9 @@ class database_tools
         $sql = ""
     ) {
         $result = false;
-        (!isset($this->mysqli_conn) || $this->mysqli_conn === false) ? $this->build_conn() : "";
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         if (isset($sql) && !empty($sql)) {
-            $result = (mysqli_num_rows(mysqli_query($this->mysqli_conn, $sql)) <> 0) ? true : false;
+            $result = (mysqli_num_rows(mysqli_query($this->dbh, $sql)) <> 0) ? true : false;
         }
         return $result;
     }
