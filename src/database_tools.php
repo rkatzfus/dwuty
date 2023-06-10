@@ -38,20 +38,9 @@ class database_tools
             $this->dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
+            $this->dbh = null;
+            die();
         }
-
-        // $sql = "select ID, DEL, `TEXT`, CHECKBOX, REF_DROPDOWN, LINK, LINK_BUTTON, `DATE`, `DATETIME`, COLOR, EMAIL from root_table";
-        // $sth =  $this->dbh->prepare($sql);
-        // $sth->execute();
-        // $result = $sth->fetchAll();
-        // var_dump($result);
-
-        // $this->dbh = new \mysqli($this->host,  $this->user, $this->pass, $this->database);
-        // if ($this->dbh->connect_error) {
-        //     echo ("Connection failed: " . $this->dbh->connect_error);
-        //     $this->dbh = false;
-        //     die();
-        // }
     }
     public function escape(
         $encode = ""
@@ -84,50 +73,23 @@ class database_tools
     public function sql_getfield(
         $sql = ""
     ) {
-
-        // $sth =  $this->dbh->prepare($sql);
-        // $sth->execute();
-        // $result = $sth->fetchAll();
-        // var_dump($result);
-        // var_dump($sql);
-        // var_dump($this->dbh);
-
-        // $result2 = mysqli_query($this->dbh, $sql);
-
-
-        // $result = false;
-        // (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
-        // $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->dbh, $sql)->fetch_row()[0])) ?? false : "";
-        // if ($this->debug == true) {
-        //     echo "<hr>";
-        //     echo "<b>DATABASE TOOLS: sql_getfield</b>";
-        //     var_dump($result);
-        // }
-        // return $result;
+        (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetch()[0];
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql_getfield</b>";
+            var_dump($result);
+        }
+        return $result;
     }
-    // public function sql_getfield(
-    //     $sql = ""
-    // ) {
-    //     $result = false;
-    //     (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
-    //     $result = $this->chk_stmnt($sql) ? trim($this->decode_escape(mysqli_query($this->dbh, $sql)->fetch_row()[0])) ?? false : "";
-    //     if ($this->debug == true) {
-    //         echo "<hr>";
-    //         echo "<b>DATABASE TOOLS: sql_getfield</b>";
-    //         var_dump($result);
-    //     }
-    //     return $result;
-    // }
     public function sql2array(
         $sql = ""
     ) {
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
         $sth->execute();
-        // if ($this->chk_stmnt($sql)) {
-        //     foreach ($this->dbh->query($sql)->fetch_all(MYSQLI_ASSOC) as $value) {
-        //         $result[] = $this->decode_escape($value);
-        //     }
         foreach ($sth->fetchAll(\PDO::FETCH_ASSOC) as $value) {
             $result[] = $this->decode_escape($value);
         }
@@ -194,28 +156,45 @@ class database_tools
         $sql = ""
     ) {
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
-        if (isset($sql) && !empty($sql)) {
-            if ($this->debug == true) {
-                echo "<hr>";
-                echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
-                var_dump($sql);
-            } else {
-                mysqli_query($this->dbh, $sql);
-                $identity =  mysqli_insert_id($this->dbh);
-                if ($identity) {
-                    return $identity;
-                }
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        if ($this->debug == true) {
+            echo "<hr>";
+            echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
+            var_dump($sql);
+        } else {
+            $identity =  $this->dbh->lastInsertId();
+            if ($identity) {
+                return $identity;
             }
         }
+
+        // ggf. testen
+        // https://stackoverflow.com/questions/10680943/pdo-get-the-last-id-inserted
+
+
+        // if (isset($sql) && !empty($sql)) {
+        //     if ($this->debug == true) {
+        //         echo "<hr>";
+        //         echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
+        //         var_dump($sql);
+        //     } else {
+        //         mysqli_query($this->dbh, $sql);
+        //         $identity =  mysqli_insert_id($this->dbh);
+        //         if ($identity) {
+        //             return $identity;
+        //         }
+        //     }
+        // }
     }
     public function chk_stmnt(
         $sql = ""
     ) {
-        $result = false;
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
-        if (isset($sql) && !empty($sql)) {
-            $result = (mysqli_num_rows(mysqli_query($this->dbh, $sql)) <> 0) ? true : false;
-        }
+        $sth =  $this->dbh->prepare($sql);
+        $sth->execute();
+        $number_of_rows = $sth->fetchColumn();
+        $result = $number_of_rows <> 0 ? true : false;
         return $result;
     }
     public function alias(
