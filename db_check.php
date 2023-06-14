@@ -3,10 +3,10 @@ echo "available PDO driver:";
 var_dump((PDO::getAvailableDrivers()));
 echo "<hr>";
 
-$serverName = "192.168.178.79";
+$serverName = "mssql-db";
 $database = "master";
 $uid = 'sa';
-$pwd = 'Your_password123';
+$pwd = getenv("MSSQL_PASSWORD");
 
 try {
     $conn = new PDO(
@@ -42,7 +42,7 @@ echo "<pre>";
 echo var_export($conn->getAttribute(PDO::ATTR_CLIENT_VERSION), true);
 echo "</pre>";
 
-$query = 'select * from ref_root_ref_dropdown_multi_table';
+$query = 'select * from root_table';
 $stmt = $conn->query($query);
 
 echo "<pre>";
