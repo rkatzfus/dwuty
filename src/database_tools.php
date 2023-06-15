@@ -12,7 +12,9 @@ class database_tools
     private $database;
     private $username;
     private $dbh;
-
+    private $server_host = "";
+    private $database_dbname = "";
+    private $TrustServerCertificate;
 
     function __construct(
         $config = array()
@@ -23,6 +25,7 @@ class database_tools
         $this->user = !isset($config["database"]["credentials"]["user"]) ? "unknown database username" : getenv($config["database"]["credentials"]["user"]);
         $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : getenv($config["database"]["credentials"]["pass"]);
         $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : getenv($config["database"]["credentials"]["database"]);
+        $this->TrustServerCertificate = !isset($config["database"]["TrustServerCertificate"]) ? false : $config["database"]["TrustServerCertificate"]; // set default = false
         $this->username = get_current_user();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
     }
@@ -32,8 +35,22 @@ class database_tools
     }
     private function build_conn()
     {
+        switch ($this->dbtype) {
+            case "mysql":
+                $server_host = "host";
+                $database_dbname = "dbname";
+                break;
+            case "sqlsrv":
+                $server_host = "server";
+                $database_dbname = "Database";
+                break;
+            default:
+                $server_host = "host";
+                $database_dbname = "dbname";
+                break;
+        }
         try {
-            $this->dbh = new \PDO("mysql:host=$this->host;dbname=$this->database", $this->user, $this->pass);
+            $this->dbh = new \PDO("$this->dbtype:$server_host=$this->host;$database_dbname=$this->database;TrustServerCertificate=$this->TrustServerCertificate", $this->user, $this->pass);
             // set the PDO error mode to exception
             $this->dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {

@@ -11,6 +11,7 @@ use App\database_tools;
 
 <body>
     <?php
+    echo "<h1>PDO mysql</h1>";
     $config_database_tools = array(
         "debug" => array("database_tools" => true), "database" => array(
             "type" => "mysql", "credentials" => array(
@@ -19,6 +20,29 @@ use App\database_tools;
                 "pass" => "MYSQL_PASSWORD",
                 "database" => "MYSQL_DATABASE",
             )
+        )
+    );
+    $obj_database_tools = new database_tools($config_database_tools);
+    $sql = "select distinct count(*) from root_table;";
+    $obj_database_tools->sql_getfield($sql);
+    $sql = "select ID, DEL, TEXT, CHECKBOX from root_table;";
+    $obj_database_tools->sql2array($sql);
+    $obj_database_tools->sql2array_pk($sql, "TEXT");
+    $obj_database_tools->sql2array_group($sql, "CHECKBOX");
+    $sql = "select ID, TEXT from dropdown_lookup_table;";
+    $obj_database_tools->sql2array_pk_value($sql, "ID", "TEXT");
+    $sql = "update root_table set del = 1 where ID = 1";
+    $obj_database_tools->sql_exec_result_id($sql);
+
+    echo "<h1>PDO sqlsrv</h1>";
+    $config_database_tools = array(
+        "debug" => array("database_tools" => true), "database" => array(
+            "type" => "sqlsrv", "credentials" => array(
+                "host" => "MSSQL_HOST",
+                "user" => "MSSQL_USER",
+                "pass" => "MSSQL_PASSWORD",
+                "database" => "MSSQL_DATABASE",
+            ), "TrustServerCertificate" => true
         )
     );
     $obj_database_tools = new database_tools($config_database_tools);

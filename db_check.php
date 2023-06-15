@@ -3,14 +3,14 @@ echo "available PDO driver:";
 var_dump((PDO::getAvailableDrivers()));
 echo "<hr>";
 
-$serverName = "mssql-db";
-$database = "master";
-$uid = 'sa';
+$serverName = getenv("MSSQL_HOST");
+$database = getenv("MSSQL_DATABASE");
+$uid = getenv("MSSQL_USER");
 $pwd = getenv("MSSQL_PASSWORD");
 
 try {
     $conn = new PDO(
-        "sqlsrv:server=$serverName;Database=$database;TrustServerCertificate = true",
+        "sqlsrv:server=$serverName;Database=$database;TrustServerCertificate=true",
         $uid,
         $pwd,
         array(
