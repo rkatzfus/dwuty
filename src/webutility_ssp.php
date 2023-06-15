@@ -73,12 +73,23 @@ class webutility_ssp
             echo $this->intstart;
         }
     }
-    private function length_and_paging()
+    private function length_and_paging($type = "")
     {
         if ($this->intlength == -1) {
             return "";
         } else {
-            return " limit " . $this->intstart . ", " . $this->intlength;
+            switch ($type) {
+                case 'mysql':
+                    return " limit " . $this->intstart . ", " . $this->intlength;
+                    break;
+                case 'sqlsrv':
+                    return " offset " . $this->intstart . " rows fetch next " . $this->intlength . " rows only";
+                    break;
+
+                default:
+                    return " limit " . $this->intstart . ", " . $this->intlength;
+                    break;
+            }
         }
     }
     public function set_order(
@@ -216,14 +227,14 @@ class webutility_ssp
             var_dump($this->arycolumns_id);
         }
     }
-    public function set_data_sql()
+    public function set_data_sql($type = "mysql")
     {
         $ary_sql[] = $this->strsqlSelect;
         $ary_sql[] = $this->strSqlFrom;
         !empty($this->build_where()) ? $ary_sql[] = "where " . implode(" ", $this->build_where()) : "";
         $ary_sql[] = $this->strGroupBy;
         $ary_sql[] = $this->strsqlOrder;
-        $ary_sql[] = $this->length_and_paging();
+        $ary_sql[] = $this->length_and_paging($type);
         $sql = implode(" ", $ary_sql);
         $result = ($this->obj_database_tools->chk_stmnt($sql) == true) ? $this->obj_database_tools->sql2array($sql) : "";
         if ($result != false && isset($this->arycolumns)) {
