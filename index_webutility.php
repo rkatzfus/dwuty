@@ -107,8 +107,20 @@ use App\webutility;
 				), "datasource" => "dropdown_lookup_table"
 			)
 		);
-		$arySetting_REF_DROPDOWN_MULTI = array(
+		$arySetting_REF_DROPDOWN_MULTI_mysql = array(
 			"UNIQUE_ID" => $datREF_ROOT_ID_mysql,
+			"SELECT2" => array(
+				"columns" => array(
+					"id" => "REF_ROOT", "text" => "REF_DROPDOWN_MULTI"
+				), "datasource" => "ref_root_ref_dropdown_multi_table"
+			), "SUBSELECT2" => array(
+				"columns" => array(
+					"id" => "ID", "text" => "TEXT"
+				), "datasource" => "dropdown_multi_lookup_table"
+			)
+		);
+		$arySetting_REF_DROPDOWN_MULTI_mssql = array(
+			"UNIQUE_ID" => $datREF_ROOT_ID_mssql,
 			"SELECT2" => array(
 				"columns" => array(
 					"id" => "REF_ROOT", "text" => "REF_DROPDOWN_MULTI"
@@ -126,7 +138,7 @@ use App\webutility;
 		$obj_webutility_mysql->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility_mysql->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility_mysql->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility_mysql->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility_mysql->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_mysql);
 		$obj_webutility_mysql->new_column("root.DATE", "column: DATE", EDIT, DATE);
 		$obj_webutility_mysql->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		echo "<h1>PDO mysql</h1><hr>";
@@ -140,7 +152,7 @@ use App\webutility;
 		$obj_webutility_mssql->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility_mssql->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
 		$obj_webutility_mssql->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		$obj_webutility_mssql->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI);
+		$obj_webutility_mssql->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_mssql);
 		$obj_webutility_mssql->new_column("root.DATE", "column: DATE", EDIT, DATE);
 		$obj_webutility_mssql->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
 		echo "<h1>PDO mssql</h1><hr>";

@@ -645,9 +645,9 @@ class webutility
                                     case 2: // CHECKBOX
                                         value = $(":checkbox", this)[0].checked;
                                         if (value) {
-                                            value = "true";
+                                            value = 1;
                                         } else {
-                                            value = "false";
+                                            value = 0;
                                         }
                                         objInsert[dataid] = {
                                             "columntype": columntype,
@@ -982,13 +982,13 @@ class webutility
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     switch ($this->database["database"]["type"]) {
                                         case "mysql":
-                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(" . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
+                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
                                             break;
                                         case "sqlsrv":
                                             $this->columns[$column_key]["SQLNAME"] = "(select string_agg(" . $arySetting["SELECT2"]["columns"]["text"] . ", ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
                                             break;
                                         default:
-                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(" . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
+                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
                                             break;
                                     }
                                     $this->columns[$column_key]["UNIQUE_ID"] = $arySetting["UNIQUE_ID"];

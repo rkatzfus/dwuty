@@ -104,6 +104,7 @@ class database_tools
     public function sql2array(
         $sql = ""
     ) {
+        $result = array();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
         $sth->execute();
@@ -121,6 +122,7 @@ class database_tools
         $sql = "",
         $pk = ""
     ) {
+        $result = array();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
         $sth->execute();
@@ -139,6 +141,7 @@ class database_tools
         $pk = "",
         $value = ""
     ) {
+        $result = array();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
         $sth->execute();
@@ -156,6 +159,7 @@ class database_tools
         $sql = "",
         $group = ""
     ) {
+        $result = array();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
         $sth->execute();
