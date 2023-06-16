@@ -17,7 +17,7 @@ $obj_webutility_ssp->set_length(-1); // remove length & paging
 $obj_webutility_ssp->set_select($aryColumns);
 $obj_webutility_ssp->set_from($data["datasource"]);
 $obj_webutility_ssp->set_where("DEL<>1");
-$sql = $obj_webutility_ssp->set_data_sql();
+$sql = $obj_webutility_ssp->set_data_sql($config["database"]["type"]);
 if ($search) {
     $sql = "select * from (" . $sql . ") as source where text like '%" . $obj_database_tools->escape($_POST["search"]) . "%'";
 }

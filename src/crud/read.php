@@ -93,5 +93,5 @@ $obj_webutility_ssp->set_where($_POST["where"]);
 $obj_webutility_ssp->set_search($strSqlSearch);
 $obj_webutility_ssp->set_searchColumn($strSqlSearchColumn);
 $obj_webutility_ssp->set_start($_POST["start"]);
-$obj_webutility_ssp->set_data_sql();
+$obj_webutility_ssp->set_data_sql($config["database"]["type"]);
 $obj_webutility_ssp->read();
