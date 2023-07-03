@@ -32,10 +32,10 @@ use App\webutility;
 				"tools" => false
 			), "database" => array(
 				"type" => "mysql", "credentials" => array(
-					"host" => "MYSQL_HOST",
-					"user" => "MYSQL_USER",
-					"pass" => "MYSQL_PASSWORD",
-					"database" => "MYSQL_DATABASE",
+					"host" => "mysql_HOST",
+					"database" => "mysql_DATABASE",
+					"user" => "mysql_USER",
+					"pass" => "mysql_PASSWORD"
 				)
 			), "crud" => array(
 				"create" => array(
@@ -67,10 +67,10 @@ use App\webutility;
 				"tools" => false
 			), "database" => array(
 				"type" => "sqlsrv", "credentials" => array(
-					"host" => "MSSQL_HOST",
-					"user" => "MSSQL_USER",
-					"pass" => "MSSQL_PASSWORD",
-					"database" => "MSSQL_DATABASE",
+					"host" => "sqlsrv_HOST",
+					"database" => "sqlsrv_DATABASE",
+					"user" => "sqlsrv_USER",
+					"pass" => "sqlsrv_PASSWORD"
 				), "TrustServerCertificate" => true
 			), "crud" => array(
 				"create" => array(

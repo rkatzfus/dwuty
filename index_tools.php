@@ -21,9 +21,9 @@ use App\tools;
         "debug" => array("tools" => true), "database" => array(
             "type" => "mysql", "credentials" => array(
                 "host" => "HOST",
+                "database" => "DATABASE",
                 "user" => "USER",
-                "pass" => "PASS",
-                "database" => "DATABASE"
+                "pass" => "PASS"
             )
         )
     );

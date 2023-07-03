@@ -10,7 +10,7 @@ $pwd = getenv("POSTGRESQL_PASSWORD");
 
 try {
     $conn = new PDO(
-        "pgsql:host=$serverName;port=5432;dbname=$database;",
+        "pgsql:host=$serverName;dbname=$database;",
         $uid,
         $pwd,
         array(
