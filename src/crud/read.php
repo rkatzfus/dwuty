@@ -15,7 +15,7 @@ $arySearchColumn = array();
 $strSqlSearchColumn = "";
 $aryColumns[] =
     array(
-        "db" => $pkfield, "dt" => "DT_RowId", "celltype" => "primary_key"
+        "db" => $pkfield, "dt" => "dt_rowid", "celltype" => "primary_key"
     );
 foreach ($_POST["columns"] as $key => $value) {
     if (!empty($value["name"])) {
