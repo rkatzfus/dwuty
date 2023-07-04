@@ -139,7 +139,7 @@ use App\webutility;
 		$arySetting_DROPDOWN = array(
 			"SELECT2" => array(
 				"columns" => array(
-					"id" => "ID", "text" => "ID_TEXT"
+					"id" => "id", "text" => "id_text"
 				), "datasource" => "dropdown_lookup_table"
 			)
 		);
@@ -171,11 +171,11 @@ use App\webutility;
 			"UNIQUE_ID" => $datREF_ROOT_ID_mssql,
 			"SELECT2" => array(
 				"columns" => array(
-					"id" => "REF_ROOT", "text" => "REF_DROPDOWN_MULTI"
+					"id" => "ref_root", "text" => "ref_dropdown_multi"
 				), "datasource" => "ref_root_ref_dropdown_multi_table"
 			), "SUBSELECT2" => array(
 				"columns" => array(
-					"id" => "ID", "text" => "ID_TEXT"
+					"id" => "id", "text" => "id_text"
 				), "datasource" => "dropdown_multi_lookup_table"
 			)
 		);
@@ -208,15 +208,15 @@ use App\webutility;
 
 		$obj_webutility_pgsql = new webutility($config_webutility_pgsql);
 		$obj_webutility_pgsql->new_column("root.text_field", "column: TEXT", EDIT, TEXT);
-		// $obj_webutility_pgsql->new_column("root.EMAIL", "column: EMAIL", EDIT, EMAIL);
-		// $obj_webutility_pgsql->new_column("root.CHECKBOX", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
-		// $obj_webutility_pgsql->new_column("root.LINK", "column: LINK", EDIT, LINK);
-		// $obj_webutility_pgsql->new_column("root.LINK_BUTTON", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
-		// $obj_webutility_pgsql->new_column("root.COLOR", "column: COLOR", EDIT, COLOR);
-		// $obj_webutility_pgsql->new_column("root.REF_DROPDOWN", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		// $obj_webutility_pgsql->new_column("root.REF_DROPDOWN_MULTI", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_pgsql);
-		// $obj_webutility_pgsql->new_column("root.DATE", "column: DATE", EDIT, DATE);
-		// $obj_webutility_pgsql->new_column("root.DATETIME", "column: DATETIME", EDIT, DATETIME);
+		$obj_webutility_pgsql->new_column("root.email", "column: EMAIL", EDIT, EMAIL);
+		$obj_webutility_pgsql->new_column("root.checkbox", "column: CHECKBOX", EDIT, CHECKBOX, $arySetting_CHECKBOX);
+		$obj_webutility_pgsql->new_column("root.link", "column: LINK", EDIT, LINK);
+		$obj_webutility_pgsql->new_column("root.link_button", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
+		$obj_webutility_pgsql->new_column("root.color", "column: COLOR", EDIT, COLOR);
+		$obj_webutility_pgsql->new_column("root.ref_dropdown", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
+		// $obj_webutility_pgsql->new_column("root.ref_dropdown_multi", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_pgsql);
+		$obj_webutility_pgsql->new_column("root.date_field", "column: DATE", EDIT, DATE);
+		$obj_webutility_pgsql->new_column("root.datetime_field", "column: DATETIME", EDIT, DATETIME);
 		echo "<h1>PDO pgsql</h1><hr>";
 		$obj_webutility_pgsql->table_header();
 		?>

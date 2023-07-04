@@ -10,6 +10,14 @@ $obj_tools = new tools();
 $config = json_decode($obj_tools->decrypt($_POST["sec"], getenv('API_KEY')), true);
 $obj_webutility_ssp = new webutility_ssp($config);
 $obj_database_tools = new database_tools($config);
+switch ($config["database"]["type"]) {
+    case "pgsql":
+        $del = "'1'";
+        break;
+    default:
+        $del = "1";
+        break;
+}
 $pkfield = $_POST["pkfield"];
 $arySearchColumn = array();
 $strSqlSearchColumn = "";
@@ -61,12 +69,12 @@ if (!empty($_POST["search"]["value"])) {
                         if ($select2_value["SQLNAME"] == $Columnsdata_value["SQLNAME"]) {
                             switch ($Columnsdata_value["TYP"]) {
                                 case 6:
-                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
+                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where del <> " . $del . " and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
                                     $ary_sqlSearch[] = $Columnsdata_value["SQLNAME"] . " in (" . $sql . ")";
                                     break;
                                 case 7:
-                                    $subsql = "select " . $Columnsdata_value["SUBSELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SUBSELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SUBSELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
-                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where DEL <> 1 and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " in (" . $subsql . ")";
+                                    $subsql = "select " . $Columnsdata_value["SUBSELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SUBSELECT2"]["datasource"] . " where del <> " . $del . " and " . $Columnsdata_value["SUBSELECT2"]["columns"]["text"] . " like '%" . $searchString . "%'";
+                                    $sql = "select " . $Columnsdata_value["SELECT2"]["columns"]["id"] . " from " . $Columnsdata_value["SELECT2"]["datasource"] . " where del <> " . $del . " and " . $Columnsdata_value["SELECT2"]["columns"]["text"] . " in (" . $subsql . ")";
                                     $ary_sqlSearch[] = $pkfield . " in (" . $sql . ")";
                                     break;
                             }

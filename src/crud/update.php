@@ -23,7 +23,7 @@ if ($celltype === 7) {
     $sql = "select " . $dropdown_multi_valuekey . " as '" . $dropdown_multi_valuekey . "' from " . $dropdown_multi_datasource . " where " . $dropdown_multi_primarykey . " = " . $pkvalue;
     $inDb = $obj_database_tools->sql2array_pk($sql, $dropdown_multi_valuekey);
     if ($inDb) { // clear all
-        $sql2del = "update " .  $obj_database_tools->alias($dropdown_multi_datasource, "table") . " set DEL = 1 where " . $obj_database_tools->alias($dropdown_multi_primarykey) . " = " . $pkvalue . " and " . $obj_database_tools->alias($dropdown_multi_valuekey, "field") . " = ";
+        $sql2del = "update " .  $obj_database_tools->alias($dropdown_multi_datasource, "table") . " set del = 1 where " . $obj_database_tools->alias($dropdown_multi_primarykey) . " = " . $pkvalue . " and " . $obj_database_tools->alias($dropdown_multi_valuekey, "field") . " = ";
         foreach ($inDb as $inDb_key => $inDb_value) {
             $obj_database_tools->sql_exec_result_id($sql2del . $inDb_value[$dropdown_multi_valuekey]);
         }
@@ -32,7 +32,7 @@ if ($celltype === 7) {
         $sql4check = $sql . " and " . $dropdown_multi_valuekey . " = ";
         foreach ($value as $toDo) {
             if ($obj_database_tools->chk_stmnt($sql4check . $toDo)) { // check if value already exists in database
-                $sql = "update " . $obj_database_tools->alias($dropdown_multi_datasource, "table")  . " set DEL = 0 where " .  $obj_database_tools->alias($dropdown_multi_primarykey) . '=' . $pkvalue . ' and ' . $obj_database_tools->alias($dropdown_multi_valuekey, "field")  . '=' . $toDo;
+                $sql = "update " . $obj_database_tools->alias($dropdown_multi_datasource, "table")  . " set del = 0 where " .  $obj_database_tools->alias($dropdown_multi_primarykey) . '=' . $pkvalue . ' and ' . $obj_database_tools->alias($dropdown_multi_valuekey, "field")  . '=' . $toDo;
             } else {
                 $sql = "insert into " .  $obj_database_tools->alias($dropdown_multi_datasource, "table") . " (" . $obj_database_tools->alias($dropdown_multi_primarykey, "field") . ", " . $obj_database_tools->alias($dropdown_multi_valuekey, "field")  . ") values (" . $pkvalue . ", " . $toDo . ")";
             }

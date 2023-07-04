@@ -28,6 +28,7 @@ class webutility
     private $tbl_ID;
     private $datasource;
     private $pkfield;
+    private $castdel;
     private $language;
     private $language_dwuty;
     private $crud_path;
@@ -58,13 +59,13 @@ class webutility
         $this->pkfield = $tabledata["primarykey"];
         switch ($tabledata["database"]["type"]) {
             case "pgsql":
-                $del = "'1'";
+                $this->castdel = "'1'";
                 break;
             default:
-                $del = "1";
+                $this->castdel = "1";
                 break;
         }
-        $this->ajax_read_where = $this->obj_database_tools->alias($this->pkfield, "field", "get") . ".DEL <> " . $del;
+        $this->ajax_read_where = $this->obj_database_tools->alias($this->pkfield, "field", "get") . ".DEL <> " . $this->castdel;
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
         $this->crud_path = getenv('PATH_CRUD') ? getenv('PATH_CRUD') : '/vendor/datatableswebutility/dwuty/src/crud';
@@ -982,7 +983,7 @@ class webutility
                                     $this->webutility_ssp->set_length(-1); // remove length & paging
                                     $this->webutility_ssp->set_select($aryColumns);
                                     $this->webutility_ssp->set_from($arySetting["SELECT2"]["datasource"]);
-                                    $this->webutility_ssp->set_where("DEL<>1");
+                                    $this->webutility_ssp->set_where("del <> " . $this->castdel);
                                     $sql = $this->webutility_ssp->set_data_sql($this->database["database"]["type"]);
                                     $ary_Select2Initial =  $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
                                     $this->columns[$column_key]["JSON"] = $this->obj_tools->post_encode($ary_Select2Initial);
@@ -990,13 +991,13 @@ class webutility
                                 case 7: // DT_EDIT_DROPDOWN_MULTI_v2
                                     switch ($this->database["database"]["type"]) {
                                         case "mysql":
-                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
+                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
                                             break;
                                         case "sqlsrv":
-                                            $this->columns[$column_key]["SQLNAME"] = "(select string_agg(" . $arySetting["SELECT2"]["columns"]["text"] . ", ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
+                                            $this->columns[$column_key]["SQLNAME"] = "(select string_agg(" . $arySetting["SELECT2"]["columns"]["text"] . ", ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
                                             break;
                                         default:
-                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and DEL<>1)";
+                                            $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
                                             break;
                                     }
                                     $this->columns[$column_key]["UNIQUE_ID"] = $arySetting["UNIQUE_ID"];
@@ -1008,7 +1009,7 @@ class webutility
                                     $this->webutility_ssp->set_length(-1); // remove length & paging
                                     $this->webutility_ssp->set_select($aryColumns);
                                     $this->webutility_ssp->set_from($arySetting["SUBSELECT2"]["datasource"]);
-                                    $this->webutility_ssp->set_where("DEL<>1");
+                                    $this->webutility_ssp->set_where("del <> " . $this->castdel);
                                     $sql = $this->webutility_ssp->set_data_sql($this->database["database"]["type"]);
                                     $ary_Select2Initial = $this->obj_database_tools->sql2array_pk_value($sql, "id", "text");
                                     $this->columns[$column_key]["JSON"] = $this->obj_tools->post_encode($ary_Select2Initial);
