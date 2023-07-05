@@ -214,7 +214,7 @@ use App\webutility;
 		$obj_webutility_pgsql->new_column("root.link_button", "column: LINK_BUTTON", EDIT, LINK_BUTTON);
 		$obj_webutility_pgsql->new_column("root.color", "column: COLOR", EDIT, COLOR);
 		$obj_webutility_pgsql->new_column("root.ref_dropdown", "column: DROPDOWN", EDIT, DROPDOWN, $arySetting_DROPDOWN);
-		// $obj_webutility_pgsql->new_column("root.ref_dropdown_multi", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_pgsql);
+		$obj_webutility_pgsql->new_column("root.ref_dropdown_multi", "column: DROPDOWN_MULTI", EDIT, DROPDOWN_MULTI, $arySetting_REF_DROPDOWN_MULTI_pgsql);
 		$obj_webutility_pgsql->new_column("root.date_field", "column: DATE", EDIT, DATE);
 		$obj_webutility_pgsql->new_column("root.datetime_field", "column: DATETIME", EDIT, DATETIME);
 		echo "<h1>PDO pgsql</h1><hr>";

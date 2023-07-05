@@ -996,6 +996,9 @@ class webutility
                                         case "sqlsrv":
                                             $this->columns[$column_key]["SQLNAME"] = "(select string_agg(" . $arySetting["SELECT2"]["columns"]["text"] . ", ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
                                             break;
+                                        case "pgsql":
+                                            $this->columns[$column_key]["SQLNAME"] = "(select array_to_string(array_agg(distinct " . $arySetting["SELECT2"]["columns"]["text"] . "), ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
+                                            break;
                                         default:
                                             $this->columns[$column_key]["SQLNAME"] = "(select group_concat(distinct " . $arySetting["SELECT2"]["columns"]["text"] . " separator ',') from " . $arySetting["SELECT2"]["datasource"] . " where " . $arySetting["SELECT2"]["columns"]["id"] . " = " . $this->pkfield . " and del <> " . $this->castdel . ")";
                                             break;
