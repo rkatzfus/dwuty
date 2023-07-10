@@ -8,26 +8,26 @@ drop table if exists root_table;
 
 create table dropdown_lookup_table (
     id int4 generated always as identity,
-    del bit(1) not null,
+    del bit default '0' not null,
     id_text varchar(30) null
 );
 
 create table dropdown_multi_lookup_table (
     id int4 generated always as identity,
-    del bit(1) not null,
+    del bit default '0' not null,
     id_text varchar(30) null
 );
 
 create table ref_root_ref_dropdown_multi_table (
     id int4 generated always as identity,
-    del bit(1) not null,
+    del bit default '0' not null,
     ref_root int4 not null,
     ref_dropdown_multi int4 not null
 );
 
 create table root_table (
     id int4 generated always as identity,
-    del bit(1) not null,
+    del bit default '0' not null,
     text_field varchar(30) null,
     checkbox bit(1) not null,
     ref_dropdown int4 null,
