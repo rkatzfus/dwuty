@@ -85,6 +85,9 @@ class webutility_ssp
                 case 'sqlsrv':
                     return " offset " . $this->intstart . " rows fetch next " . $this->intlength . " rows only";
                     break;
+                case 'pgsql':
+                    return " offset " . $this->intstart . " limit " . $this->intlength;
+                    break;
 
                 default:
                     return " limit " . $this->intstart . ", " . $this->intlength;
@@ -138,10 +141,10 @@ class webutility_ssp
     ) {
         $this->strsqlSelectStart = "select ";
         $this->ary_sqlSelectInline = array();
-        if (array_search('DT_RowId', array_column($ary_Select, 'dt')) !== false) {
+        if (array_search('dt_rowid', array_column($ary_Select, 'dt')) !== false) {
             foreach ($ary_Select as $Select_value) {
-                if ($Select_value['dt'] == 'DT_RowId') {
-                    $this->strsqlSelectStart .= "concat('row_', " . $Select_value['db'] . ") as DT_RowId";
+                if ($Select_value['dt'] == 'dt_rowid') {
+                    $this->strsqlSelectStart .= "concat('row_', " . $Select_value['db'] . ") as dt_rowid";
                 } else {
                     $this->ary_sqlSelectInline[] = $Select_value['db'] . " as " . $Select_value['dt'];
                 }
@@ -290,9 +293,9 @@ class webutility_ssp
     ) {
         if ($filter) {
             $where = !empty($this->build_where()) ? $ary_sql[] = "where " . implode(" ", $this->build_where()) : "";
-            return "select count(distinct " . $this->arycolumns_id["DT_RowId"] . ")" . $this->strSqlFrom . " " . $where;
+            return "select count(distinct " . $this->arycolumns_id["dt_rowid"] . ")" . $this->strSqlFrom . " " . $where;
         } else {
-            return "select count(distinct " . $this->arycolumns_id["DT_RowId"] . ")" . $this->strSqlFrom;
+            return "select count(distinct " . $this->arycolumns_id["dt_rowid"] . ")" . $this->strSqlFrom;
         }
     }
 }

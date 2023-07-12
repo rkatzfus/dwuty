@@ -25,7 +25,7 @@ class database_tools
         $this->user = !isset($config["database"]["credentials"]["user"]) ? "unknown database username" : getenv($config["database"]["credentials"]["user"]);
         $this->pass = !isset($config["database"]["credentials"]["pass"]) ? "unknown database password" : getenv($config["database"]["credentials"]["pass"]);
         $this->database = !isset($config["database"]["credentials"]["database"]) ? "unknown database" : getenv($config["database"]["credentials"]["database"]);
-        $this->TrustServerCertificate = !isset($config["database"]["TrustServerCertificate"]) ? false : $config["database"]["TrustServerCertificate"]; // set default = false
+        $this->TrustServerCertificate = !isset($config["database"]["TrustServerCertificate"]) ? "" : "TrustServerCertificate=" . $config["database"]["TrustServerCertificate"];
         $this->username = get_current_user();
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
     }
@@ -44,13 +44,17 @@ class database_tools
                 $server_host = "server";
                 $database_dbname = "Database";
                 break;
+            case "pgsql":
+                $server_host = "host";
+                $database_dbname = "dbname";
+                break;
             default:
                 $server_host = "host";
                 $database_dbname = "dbname";
                 break;
         }
         try {
-            $this->dbh = new \PDO("$this->dbtype:$server_host=$this->host;$database_dbname=$this->database;TrustServerCertificate=$this->TrustServerCertificate", $this->user, $this->pass);
+            $this->dbh = new \PDO("$this->dbtype:$server_host=$this->host;$database_dbname=$this->database;$this->TrustServerCertificate", $this->user, $this->pass);
             // set the PDO error mode to exception
             $this->dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
@@ -174,7 +178,8 @@ class database_tools
         return $result;
     }
     public function sql_exec_result_id(
-        $sql = ""
+        $sql = "",
+        $id = array("id" => false)
     ) {
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
@@ -184,29 +189,19 @@ class database_tools
             echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
             var_dump($sql);
         } else {
-            $identity =  $this->dbh->lastInsertId();
-            if ($identity) {
+
+            if ($id["id"] === true) {
+                switch ($id["config"]["database"]["type"]) {
+                    case 'pgsql':
+                        $identity =  $this->dbh->lastInsertId($id["config"]["table"] . "_id_seq");
+                        break;
+                    default:
+                        $identity =  $this->dbh->lastInsertId();
+                        break;
+                }
                 return $identity;
             }
         }
-
-        // ggf. testen
-        // https://stackoverflow.com/questions/10680943/pdo-get-the-last-id-inserted
-
-
-        // if (isset($sql) && !empty($sql)) {
-        //     if ($this->debug == true) {
-        //         echo "<hr>";
-        //         echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
-        //         var_dump($sql);
-        //     } else {
-        //         mysqli_query($this->dbh, $sql);
-        //         $identity =  mysqli_insert_id($this->dbh);
-        //         if ($identity) {
-        //             return $identity;
-        //         }
-        //     }
-        // }
     }
     public function chk_stmnt(
         $sql = ""
@@ -251,5 +246,34 @@ class database_tools
                 break;
         }
         return $result;
+    }
+    public function db_mapping()
+    {
+        switch ($this->dbtype) {
+            case "pgsql":
+                $aryMap = array(
+                    "del" => array(
+                        "true" => "'1'",
+                        "false" => "'0'"
+                    ), "tf" => array(
+                        "true" => "'1'",
+                        "false" => "'0'"
+                    )
+                );
+                break;
+
+            default:
+                $aryMap = array(
+                    "del" => array(
+                        "true" => "1",
+                        "false" => "0"
+                    ), "tf" => array(
+                        "true" => "1",
+                        "false" => "0"
+                    )
+                );
+                break;
+        }
+        return $aryMap;
     }
 }
