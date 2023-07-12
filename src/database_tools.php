@@ -191,7 +191,6 @@ class database_tools
         } else {
 
             if ($id["id"] === true) {
-                var_dump($id);
                 switch ($id["config"]["database"]["type"]) {
                     case 'pgsql':
                         $identity =  $this->dbh->lastInsertId($id["config"]["table"] . "_id_seq");
