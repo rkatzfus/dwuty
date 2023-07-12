@@ -114,14 +114,14 @@ use App\webutility;
 				),
 				"update" => array(
 					"activ" => true, "dropdown_multi" => array(
-						$datREF_ROOT_ID_mysql => array(
+						$datREF_ROOT_ID_pgsql => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.ref_root", "valuekey" => "ref.ref_dropdown_multi"
 						)
 					)
 				),
 				"delete" => array(
 					"activ" => true, "dropdown_multi" => array(
-						$datREF_ROOT_ID_mysql => array(
+						$datREF_ROOT_ID_pgsql => array(
 							"datasource" => "ref_root_ref_dropdown_multi_table ref", "primarykey" => "ref.ref_root", "valuekey" => "ref.ref_dropdown_multi"
 						)
 					)
@@ -168,7 +168,7 @@ use App\webutility;
 			)
 		);
 		$arySetting_REF_DROPDOWN_MULTI_pgsql = array(
-			"UNIQUE_ID" => $datREF_ROOT_ID_mssql,
+			"UNIQUE_ID" => $datREF_ROOT_ID_pgsql,
 			"SELECT2" => array(
 				"columns" => array(
 					"id" => "ref_root", "text" => "ref_dropdown_multi"

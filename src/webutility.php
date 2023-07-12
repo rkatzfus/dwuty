@@ -654,9 +654,9 @@ class webutility
                                     case 2: // CHECKBOX
                                         value = $(":checkbox", this)[0].checked;
                                         if (value) {
-                                            value = 1;
+                                            value = 'true';
                                         } else {
-                                            value = 0;
+                                            value = 'false';
                                         }
                                         objInsert[dataid] = {
                                             "columntype": columntype,

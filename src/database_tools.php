@@ -188,29 +188,20 @@ class database_tools
             echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
             var_dump($sql);
         } else {
-            $identity =  $this->dbh->lastInsertId();
+            switch ($this->dbtype) {
+                case "pgsql":
+                    $identity = "blub";
+                    break;
+
+                default:
+                    $identity =  $this->dbh->lastInsertId();
+                    break;
+            }
+
             if ($identity) {
                 return $identity;
             }
         }
-
-        // ggf. testen
-        // https://stackoverflow.com/questions/10680943/pdo-get-the-last-id-inserted
-
-
-        // if (isset($sql) && !empty($sql)) {
-        //     if ($this->debug == true) {
-        //         echo "<hr>";
-        //         echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
-        //         var_dump($sql);
-        //     } else {
-        //         mysqli_query($this->dbh, $sql);
-        //         $identity =  mysqli_insert_id($this->dbh);
-        //         if ($identity) {
-        //             return $identity;
-        //         }
-        //     }
-        // }
     }
     public function chk_stmnt(
         $sql = ""
@@ -255,5 +246,34 @@ class database_tools
                 break;
         }
         return $result;
+    }
+    public function db_mapping()
+    {
+        switch ($this->dbtype) {
+            case "pgsql":
+                $aryMap = array(
+                    "del" => array(
+                        "true" => "'1'",
+                        "false" => "'0'"
+                    ), "tf" => array(
+                        "true" => "'1'",
+                        "false" => "'0'"
+                    )
+                );
+                break;
+
+            default:
+                $aryMap = array(
+                    "del" => array(
+                        "true" => "1",
+                        "false" => "0"
+                    ), "tf" => array(
+                        "true" => "1",
+                        "false" => "0"
+                    )
+                );
+                break;
+        }
+        return $aryMap;
     }
 }
