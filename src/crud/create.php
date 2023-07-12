@@ -27,7 +27,8 @@ if ($datasource && $data) {
         }
     }
     $sql = "insert into " . $obj_database_tools->alias($datasource, "table") . " (" . implode(",", $ary_column) . ") values (" . implode(",", $ary_value) . ");";
-    $identity = $obj_database_tools->sql_exec_result_id($sql);
+    $aryIdent = array("id" => true, "config" => array("database" => array("type" => $config["database"]["type"]), "table" => $obj_database_tools->alias($datasource, "table")));
+    $identity = $obj_database_tools->sql_exec_result_id($sql, $aryIdent);
     if (!empty($ary_dropdownmulti)) {
         foreach ($ary_dropdownmulti as $value) {
             foreach ($value["value"] as $v_key => $v_value) {

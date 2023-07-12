@@ -178,7 +178,8 @@ class database_tools
         return $result;
     }
     public function sql_exec_result_id(
-        $sql = ""
+        $sql = "",
+        $id = array("id" => false)
     ) {
         (!isset($this->dbh) || $this->dbh === false) ? $this->build_conn() : "";
         $sth =  $this->dbh->prepare($sql);
@@ -188,17 +189,17 @@ class database_tools
             echo "<b>DATABASE TOOLS: sql_exec_result_id</b>";
             var_dump($sql);
         } else {
-            switch ($this->dbtype) {
-                case "pgsql":
-                    $identity = "blub";
-                    break;
 
-                default:
-                    $identity =  $this->dbh->lastInsertId();
-                    break;
-            }
-
-            if ($identity) {
+            if ($id["id"] === true) {
+                var_dump($id);
+                switch ($id["config"]["database"]["type"]) {
+                    case 'pgsql':
+                        $identity =  $this->dbh->lastInsertId($id["config"]["table"] . "_id_seq");
+                        break;
+                    default:
+                        $identity =  $this->dbh->lastInsertId();
+                        break;
+                }
                 return $identity;
             }
         }
