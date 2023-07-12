@@ -59,4 +59,4 @@ foreach ($pdo_drv as $key_pdo_drv => $value_pdo_drv) {
         echo "<hr><hr>";
     }
 }
-phpinfo();
+// phpinfo();
