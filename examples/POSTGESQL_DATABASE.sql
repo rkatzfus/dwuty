@@ -1,32 +1,32 @@
-drop table if exists dropdown_lookup_table;
+DROP TABLE IF EXISTS dropdown_lookup_table;
 
-drop table if exists dropdown_multi_lookup_table;
+DROP TABLE IF EXISTS dropdown_multi_lookup_table;
 
-drop table if exists ref_root_ref_dropdown_multi_table;
+DROP TABLE IF EXISTS ref_root_ref_dropdown_multi_table;
 
-drop table if exists root_table;
+DROP TABLE IF EXISTS root_table;
 
-create table dropdown_lookup_table (
+CREATE TABLE dropdown_lookup_table (
     id int4 generated always as identity,
     del bit default '0' not null,
     id_text varchar(30) null
 );
 
-create table dropdown_multi_lookup_table (
-    id int4 generated always as identity,
+CREATE TABLE dropdown_multi_lookup_table (
+    id int4 GENERATED ALWAYS AS IDENTITY,
     del bit default '0' not null,
     id_text varchar(30) null
 );
 
-create table ref_root_ref_dropdown_multi_table (
-    id int4 generated always as identity,
+CREATE TABLE ref_root_ref_dropdown_multi_table (
+    id int4 GENERATED ALWAYS AS IDENTITY,
     del bit default '0' not null,
     ref_root int4 not null,
     ref_dropdown_multi int4 not null
 );
 
-create table root_table (
-    id int4 generated always as identity,
+CREATE TABLE root_table (
+    id int4 GENERATED ALWAYS AS IDENTITY,
     del bit default '0' not null,
     text_field varchar(30) null,
     checkbox bit(1) not null,
@@ -39,9 +39,9 @@ create table root_table (
     email varchar(70) NULL
 );
 
-insert into
+INSERT INTO
     dropdown_lookup_table (del, id_text)
-values
+VALUES
     ('0', 'ONE'),
     ('0', 'TWO'),
     ('0', 'THREE'),
@@ -52,9 +52,9 @@ values
     ('0', 'EIGHT'),
     ('0', 'NINE');
 
-insert into
+INSERT INTO
     dropdown_multi_lookup_table (del, id_text)
-values
+VALUES
     ('0', 'z&eacute;ro'),
     ('0', 'un'),
     ('0', 'deux'),
@@ -77,9 +77,9 @@ values
     ('0', 'dix-neuf'),
     ('0', 'vingt');
 
-insert into
+INSERT INTO
     ref_root_ref_dropdown_multi_table (del, ref_root, ref_dropdown_multi)
-values
+VALUES
     ('0', 1, 1),
     ('0', 1, 2),
     ('0', 1, 3),
@@ -101,7 +101,7 @@ values
     ('0', 7, 19),
     ('0', 7, 20);
 
-insert into
+INSERT INTO
     root_table (
         del,
         text_field,
@@ -114,7 +114,7 @@ insert into
         color,
         email
     )
-values
+VALUES
     (
         '0',
         'ALPHA',

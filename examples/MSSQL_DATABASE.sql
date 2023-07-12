@@ -1,104 +1,104 @@
-drop table if exists dropdown_lookup_table;
+DROP TABLE IF EXISTS dropdown_lookup_table;
 
-drop table if exists dropdown_multi_lookup_table;
+DROP TABLE IF EXISTS dropdown_multi_lookup_table;
 
-drop table if exists ref_root_ref_dropdown_multi_table;
+DROP TABLE IF EXISTS ref_root_ref_dropdown_multi_table;
 
-drop table if exists root_table;
+DROP TABLE IF EXISTS root_table;
 
-create table [dropdown_lookup_table](
-	[ID] [bigint] identity(1, 1) not null,
-	[DEL] [bit] not null,
-	[ID_TEXT] [varchar](30) null,
-	constraint [PK_dropdown_lookup_table] primary key clustered ([ID] asc) with (
+CREATE TABLE [dropdown_lookup_table](
+	[id] [bigint] identity(1, 1) not null,
+	[del] [bit] not null,
+	[id_text] [varchar](30) null,
+	CONSTRAINT [PK_dropdown_lookup_table] PRIMARY KEY CLUSTERED ([id] asc) WITH (
 		PAD_INDEX = off,
 		STATISTICS_NORECOMPUTE = off,
 		IGNORE_DUP_KEY = off,
 		ALLOW_ROW_LOCKS = on,
 		ALLOW_PAGE_LOCKS = on,
 		OPTIMIZE_FOR_SEQUENTIAL_KEY = off
-	) on [PRIMARY]
-) on [PRIMARY];
+	) ON [PRIMARY]
+) ON [PRIMARY];
 
-alter table
+ALTER TABLE
 	[dropdown_lookup_table]
-add
-	constraint [DF_dropdown_lookup_table_DEL] default ((0)) for [DEL];
+ADD
+	CONSTRAINT [DF_dropdown_lookup_table_DEL] default ((0)) for [del];
 
-create table [dropdown_multi_lookup_table](
-	[ID] [bigint] identity(1, 1) not null,
-	[DEL] [bit] not null,
-	[ID_TEXT] [varchar](30) null,
-	constraint [PK_dropdown_multi_lookup_table] primary key clustered ([ID] asc) with (
+CREATE TABLE [dropdown_multi_lookup_table](
+	[id] [bigint] identity(1, 1) not null,
+	[del] [bit] not null,
+	[id_text] [varchar](30) null,
+	CONSTRAINT [PK_dropdown_multi_lookup_table] PRIMARY KEY CLUSTERED ([id] asc) WITH (
 		PAD_INDEX = off,
 		STATISTICS_NORECOMPUTE = off,
 		IGNORE_DUP_KEY = off,
 		ALLOW_ROW_LOCKS = on,
 		ALLOW_PAGE_LOCKS = on,
 		OPTIMIZE_FOR_SEQUENTIAL_KEY = off
-	) on [PRIMARY]
-) on [PRIMARY];
+	) ON [PRIMARY]
+) ON [PRIMARY];
 
-alter table
+ALTER TABLE
 	[dropdown_multi_lookup_table]
-add
-	constraint [DF_dropdown_multi_lookup_table_DEL] default ((0)) for [DEL];
+ADD
+	CONSTRAINT [DF_dropdown_multi_lookup_table_DEL] default ((0)) for [del];
 
-create table [ref_root_ref_dropdown_multi_table](
-	[ID] [bigint] identity(1, 1) not null,
-	[DEL] [bit] not null,
-	[REF_ROOT] [bigint] not null,
-	[REF_DROPDOWN_MULTI] [bigint] not null,
-	constraint [PK_ref_root_ref_dropdown_multi_table] primary key clustered ([ID] asc) with (
+CREATE TABLE [ref_root_ref_dropdown_multi_table](
+	[id] [bigint] identity(1, 1) not null,
+	[del] [bit] not null,
+	[ref_root] [bigint] not null,
+	[ref_dropdown_multi] [bigint] not null,
+	CONSTRAINT [PK_ref_root_ref_dropdown_multi_table] PRIMARY KEY CLUSTERED ([id] asc) WITH (
 		PAD_INDEX = off,
 		STATISTICS_NORECOMPUTE = off,
 		IGNORE_DUP_KEY = off,
 		ALLOW_ROW_LOCKS = on,
 		ALLOW_PAGE_LOCKS = on,
 		OPTIMIZE_FOR_SEQUENTIAL_KEY = off
-	) on [PRIMARY]
-) on [PRIMARY];
+	) ON [PRIMARY]
+) ON [PRIMARY];
 
-alter table
+ALTER TABLE
 	[ref_root_ref_dropdown_multi_table]
-add
-	constraint [DF_ref_root_ref_dropdown_multi_table_DEL] default ((0)) for [DEL];
+ADD
+	CONSTRAINT [DF_ref_root_ref_dropdown_multi_table_DEL] default ((0)) for [del];
 
-create table [root_table](
-	[ID] [bigint] identity(1, 1) not null,
-	[DEL] [bit] not null,
-	[TEXT_FIELD] [varchar](30) null,
-	[CHECKBOX] [bit] not null,
-	[REF_DROPDOWN] [bigint] null,
-	[LINK] [varchar](2083) null,
-	[LINK_BUTTON] [varchar](2083) null,
-	[DATE_FIELD] [date] null,
-	[DATETIME_FIELD] [datetime] null,
-	[COLOR] [varchar](7) null,
-	[EMAIL] [varchar](70) null,
-	constraint [PK_root_table] primary key clustered ([ID] asc) with (
+CREATE TABLE [root_table](
+	[id] [bigint] identity(1, 1) not null,
+	[del] [bit] not null,
+	[text_field] [varchar](30) null,
+	[checkbox] [bit] not null,
+	[ref_dropdown] [bigint] null,
+	[link] [varchar](2083) null,
+	[link_button] [varchar](2083) null,
+	[date_field] [date] null,
+	[datetime_field] [datetime] null,
+	[color] [varchar](7) null,
+	[email] [varchar](70) null,
+	CONSTRAINT [PK_root_table] PRIMARY KEY CLUSTERED ([id] asc) WITH (
 		PAD_INDEX = off,
 		STATISTICS_NORECOMPUTE = off,
 		IGNORE_DUP_KEY = off,
 		ALLOW_ROW_LOCKS = on,
 		ALLOW_PAGE_LOCKS = on,
 		OPTIMIZE_FOR_SEQUENTIAL_KEY = off
-	) on [PRIMARY]
-) on [PRIMARY];
+	) ON [PRIMARY]
+) ON [PRIMARY];
 
-alter table
+ALTER TABLE
 	[root_table]
-add
-	constraint [DF_root_table_DEL] default ((0)) for [DEL];
+ADD
+	CONSTRAINT [DF_root_table_DEL] default ((0)) for [del];
 
-alter table
+ALTER TABLE
 	[root_table]
-add
-	constraint [DF_root_table_CHECKBOX] default ((0)) for [CHECKBOX];
+ADD
+	CONSTRAINT [DF_root_table_CHECKBOX] default ((0)) for [checkbox];
 
-insert into
-	dropdown_lookup_table (DEL, ID_TEXT)
-values
+INSERT INTO
+	dropdown_lookup_table (del, id_text)
+VALUES
 	(0, 'ONE'),
 	(0, 'TWO'),
 	(0, 'THREE'),
@@ -109,9 +109,9 @@ values
 	(0, 'EIGHT'),
 	(0, 'NINE');
 
-insert into
-	dropdown_multi_lookup_table (DEL, ID_TEXT)
-values
+INSERT INTO
+	dropdown_multi_lookup_table (del, id_text)
+VALUES
 	(0, 'z&eacute;ro'),
 	(0, 'un'),
 	(0, 'deux'),
@@ -134,9 +134,9 @@ values
 	(0, 'dix-neuf'),
 	(0, 'vingt');
 
-insert into
-	ref_root_ref_dropdown_multi_table (DEL, REF_ROOT, REF_DROPDOWN_MULTI)
-values
+INSERT INTO
+	ref_root_ref_dropdown_multi_table (del, ref_root, ref_dropdown_multi)
+VALUES
 	(0, 1, 1),
 	(0, 1, 2),
 	(0, 1, 3),
@@ -158,20 +158,20 @@ values
 	(0, 7, 19),
 	(0, 7, 20);
 
-insert into
+INSERT INTO
 	root_table (
-		DEL,
-		TEXT_FIELD,
-		CHECKBOX,
-		REF_DROPDOWN,
-		LINK,
-		LINK_BUTTON,
-		DATE_FIELD,
-		DATETIME_FIELD,
-		COLOR,
-		EMAIL
+		del,
+		text_field,
+		checkbox,
+		ref_dropdown,
+		link,
+		link_button,
+		date_field,
+		datetime_field,
+		color,
+		email
 	)
-values
+VALUES
 	(
 		0,
 		'ALPHA',

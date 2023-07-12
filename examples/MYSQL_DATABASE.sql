@@ -1,51 +1,51 @@
-drop table if exists dropdown_lookup_table;
+DROP TABLE IF EXISTS dropdown_lookup_table;
 
-drop table if exists dropdown_multi_lookup_table;
+DROP TABLE IF EXISTS dropdown_multi_lookup_table;
 
-drop table if exists ref_root_ref_dropdown_multi_table;
+DROP TABLE IF EXISTS ref_root_ref_dropdown_multi_table;
 
-drop table if exists root_table;
+DROP TABLE IF EXISTS root_table;
 
-create table dropdown_lookup_table (
-  ID mediumint not null auto_increment,
-  DEL bit(1) not null default 0,
-  ID_TEXT char(30) default null,
-  primary key (ID)
+CREATE TABLE dropdown_lookup_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  id_text char(30) default null,
+  PRIMARY KEY (id)
 );
 
-create table dropdown_multi_lookup_table (
-  ID mediumint not null auto_increment,
-  DEL bit(1) not null default 0,
-  ID_TEXT char(30) default null,
-  primary key (ID)
+CREATE TABLE dropdown_multi_lookup_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  id_text char(30) default null,
+  PRIMARY KEY (id)
 );
 
-create table ref_root_ref_dropdown_multi_table (
-  ID mediumint not null auto_increment,
-  DEL bit(1) not null default 0,
-  REF_ROOT mediumint not null,
-  REF_DROPDOWN_MULTI mediumint not null,
-  primary key (ID)
+CREATE TABLE ref_root_ref_dropdown_multi_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  ref_root mediumint not null,
+  ref_dropdown_multi mediumint not null,
+  PRIMARY KEY (id)
 );
 
-create table root_table (
-  ID mediumint not null auto_increment,
-  DEL bit(1) not null default 0,
-  TEXT_FIELD char(30) default null,
-  CHECKBOX bit(1) not null default 0,
-  REF_DROPDOWN mediumint default null,
-  LINK varchar(2083) default null,
-  LINK_BUTTON varchar(2083) default null,
-  DATE_FIELD date default null,
-  DATETIME_FIELD datetime default null,
-  COLOR varchar(7) not null default '#ffffff',
-  EMAIL varchar(70) default null,
-  primary key (ID)
+CREATE TABLE root_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  text_field char(30) default null,
+  checkbox bit(1) not null default 0,
+  ref_dropdown mediumint default null,
+  link varchar(2083) default null,
+  link_button varchar(2083) default null,
+  date_field date default null,
+  datetime_field datetime default null,
+  color varchar(7) not null default '#ffffff',
+  email varchar(70) default null,
+  PRIMARY KEY (id)
 );
 
-insert into
-  dropdown_lookup_table (DEL, ID_TEXT)
-values
+INSERT INTO
+  dropdown_lookup_table (del, id_text)
+VALUES
   (0, 'ONE'),
   (0, 'TWO'),
   (0, 'THREE'),
@@ -56,9 +56,9 @@ values
   (0, 'EIGHT'),
   (0, 'NINE');
 
-insert into
-  dropdown_multi_lookup_table (DEL, ID_TEXT)
-values
+INSERT INTO
+  dropdown_multi_lookup_table (del, id_text)
+VALUES
   (0, 'z&eacute;ro'),
   (0, 'un'),
   (0, 'deux'),
@@ -81,9 +81,9 @@ values
   (0, 'dix-neuf'),
   (0, 'vingt');
 
-insert into
-  ref_root_ref_dropdown_multi_table (DEL, REF_ROOT, REF_DROPDOWN_MULTI)
-values
+INSERT INTO
+  ref_root_ref_dropdown_multi_table (del, ref_root, ref_dropdown_multi)
+VALUES
   (0, 1, 1),
   (0, 1, 2),
   (0, 1, 3),
@@ -105,20 +105,20 @@ values
   (0, 7, 19),
   (0, 7, 20);
 
-insert into
+INSERT INTO
   root_table (
-    DEL,
-    TEXT_FIELD,
-    CHECKBOX,
-    REF_DROPDOWN,
-    LINK,
-    LINK_BUTTON,
-    DATE_FIELD,
-    DATETIME_FIELD,
-    COLOR,
-    EMAIL
+    del,
+    text_field,
+    checkbox,
+    ref_dropdown,
+    link,
+    link_button,
+    date_field,
+    datetime_field,
+    color,
+    email
   )
-values
+VALUES
   (
     0,
     'ALPHA',
