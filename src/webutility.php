@@ -2,7 +2,6 @@
 
 namespace App;
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/.environment.php";
 define("UNSELECT", "0");
 define("VIEW", "1");
 define("EDIT", "2");
@@ -68,7 +67,7 @@ class webutility
         $this->ajax_read_where = $this->obj_database_tools->alias($this->pkfield, "field", "get") . ".DEL <> " . $this->castdel;
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
         $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
-        $this->crud_path = getenv('PATH_CRUD') ? getenv('PATH_CRUD') : '/vendor/datatableswebutility/dwuty/src/crud';
+        $this->crud_path = $_ENV['PATH_CRUD'] ? $_ENV['PATH_CRUD'] : '/vendor/datatableswebutility/dwuty/src/crud';
         if (isset($tabledata["crud"])) {
             $this->create = false;
             $this->read = true;
@@ -202,7 +201,7 @@ class webutility
                                     datasource: <?= $this->datasource; ?>,
                                     where: <?= $this->obj_tools->post_encode($this->ajax_read_where); ?>,
                                     columnsdata: JSON.stringify(<?= $this->obj_tools->post_encode($columnsdata); ?>),
-                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $_ENV['API_KEY'])); ?>"
                                 }
                             },
                             rowId: "dt_rowid",
@@ -741,7 +740,7 @@ class webutility
                                 data: {
                                     datasource: <?= $this->datasource ?>,
                                     data: JSON.stringify(objInsert),
-                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $_ENV['API_KEY'])); ?>"
                                 }
                             });
                             $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -761,7 +760,7 @@ class webutility
                                         pkvalue: $(this).closest("tr").attr("id").replace("row_", ""),
                                         datasource: <?= $this->datasource; ?>,
                                         dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_delete_dropdown_multi); ?>,
-                                        sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                        sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $_ENV['API_KEY'])); ?>"
                                     }
                                 });
                                 $("#<?= $this->tbl_ID; ?>").DataTable().destroy();
@@ -824,7 +823,7 @@ class webutility
                                             colData: colData,
                                             datasource: <?= $this->datasource; ?>,
                                             dropdown_multi: <?= $this->obj_tools->post_encode($this->ajax_update_dropdown_multi); ?>,
-                                            sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                            sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $_ENV['API_KEY'])); ?>"
                                         }
                                     });
                                 } else {
@@ -900,7 +899,7 @@ class webutility
                                     search: params.term,
                                     type: "public",
                                     select2: select2_data,
-                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => getenv('API_KEY'))); ?>"
+                                    sec: "<?= $this->obj_tools->post_encode($this->database, array("pass" => $_ENV['API_KEY'])); ?>"
                                 }
                                 return query;
                             },

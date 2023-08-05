@@ -1,12 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . "/.environment.php";
+Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'])->load();
 
 use App\tools;
 use App\database_tools;
 
 $obj_tools = new tools();
-$config = json_decode($obj_tools->decrypt($_POST["sec"], getenv('API_KEY')), true);
+$config = json_decode($obj_tools->decrypt($_POST["sec"], $_ENV['API_KEY']), true);
 $obj_database_tools = new database_tools($config);
 $dbmapping = $obj_database_tools->db_mapping($config);
 $datasource = isset($_POST["datasource"]) ? $_POST["datasource"] : "";
