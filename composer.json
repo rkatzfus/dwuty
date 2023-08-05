@@ -26,7 +26,8 @@
         "datatables.net/datatables.net": "dev-master",
         "datatables.net/datatables.net-bs5": "dev-master",
         "datatables.net/datatables.net-fixedheader": "dev-master",
-        "datatables.net/datatables.net-fixedheader-bs5": "dev-master"
+        "datatables.net/datatables.net-fixedheader-bs5": "dev-master",
+        "vlucas/phpdotenv": "^5.5"
     },
     "autoload": {
         "psr-4": {

@@ -1,13 +1,16 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 $pdo_drv = PDO::getAvailableDrivers();
 echo "<b>available PDO driver:</b>";
 var_dump($pdo_drv);
 echo "<hr><hr>";
 foreach ($pdo_drv as $key_pdo_drv => $value_pdo_drv) {
-    $serverName = getenv($value_pdo_drv . "_HOST");
-    $database = getenv($value_pdo_drv . "_DATABASE");
-    $uid = getenv($value_pdo_drv . "_USER");
-    $pwd = getenv($value_pdo_drv . "_PASSWORD");
+    $serverName = $_ENV[$value_pdo_drv . "_HOST"] ?? null;
+    $database = $_ENV[$value_pdo_drv . "_DATABASE"] ?? null;
+    $uid = $_ENV[$value_pdo_drv . "_USER"] ?? null;
+    $pwd = $_ENV[$value_pdo_drv . "_PASSWORD"] ?? null;
     if (!empty($serverName) && !empty($database) && !empty($uid) && !empty($pwd)) {
         switch ($value_pdo_drv) {
             case "mysql":
