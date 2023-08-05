@@ -2,7 +2,7 @@
 <html>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/.environment.php";
+Dotenv\Dotenv::createImmutable(__DIR__)->load();
 
 use App\tools;
 ?>
@@ -28,7 +28,7 @@ use App\tools;
         )
     );
     $obj_tools->post_encode($post_encode);
-    $obj_tools->post_encode($post_encode, array("pass" => getenv('API_KEY')));
+    $obj_tools->post_encode($post_encode, array("pass" => $_ENV['API_KEY']));
     ?>
 </body>
 
