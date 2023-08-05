@@ -2,6 +2,7 @@
 <html>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php";
+Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'])->load();
 
 use App\tools;
 use App\webutility;
