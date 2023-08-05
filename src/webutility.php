@@ -66,8 +66,8 @@ class webutility
         }
         $this->ajax_read_where = $this->obj_database_tools->alias($this->pkfield, "field", "get") . ".DEL <> " . $this->castdel;
         $this->language = isset($tabledata["lang_iso_639_1"]) ? $tabledata["lang_iso_639_1"] : "de"; // set default
-        $this->language_dwuty = json_decode(file_get_contents(__DIR__ . "/dwuty_i18n/" . $this->language . ".json"), true);
-        $this->crud_path = $_ENV['PATH_CRUD'] ? $_ENV['PATH_CRUD'] : '/vendor/datatableswebutility/dwuty/src/crud';
+        $this->language_dwuty = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/dwuty_i18n/" . $this->language . ".json"), true);
+        $this->crud_path = isset($_ENV['PATH_CRUD']) ? $_ENV['PATH_CRUD'] : '/vendor/datatableswebutility/dwuty/src/crud';
         if (isset($tabledata["crud"])) {
             $this->create = false;
             $this->read = true;
@@ -171,7 +171,7 @@ class webutility
                 $(document).ready(function() {
                     function read_data_<?= $this->tbl_ID; ?>() {
                         var table = $("#<?= $this->tbl_ID; ?>").DataTable({
-                            language: <?= file_get_contents(__DIR__ . "/datatables_i18n/" . $this->language . ".json"); ?>,
+                            language: <?= file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/datatables_i18n/" . $this->language . ".json"); ?>,
                             stateSave: true,
                             processing: true,
                             cache: false,
