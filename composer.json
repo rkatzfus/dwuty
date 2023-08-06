@@ -19,7 +19,6 @@
     "license": "MIT",
     "require": {
         "php": ">=8.1",
-        "ext-mysqli": "*",
         "twbs/bootstrap": "*",
         "select2/select2": "*",
         "components/jquery": "*",
