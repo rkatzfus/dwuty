@@ -93,3 +93,80 @@
 | DROPDOWN_MULTI | dropdown - multiple choice | ![col_drp_mul](https://datatableswebutility.net/img/docs/col_drp_mul.jpg)     |
 | DATE           | datepicker                 | ![col_date](https://datatableswebutility.net/img/docs/col_date.jpg)           |
 | DATETIME       | date-time picker           | ![col_date_time](https://datatableswebutility.net/img/docs/col_date_time.jpg) |
+
+# tablestructure
+
+## table structre (MySQL)
+
+|     | columnname | datatype | not null | default | additional information      | required/ optional | remarks                         |
+| :-: | ---------- | -------- | -------- | ------- | --------------------------- | ------------------ | ------------------------------- |
+|  1  | id         | integer  | true     |         | primary key, auto increment | required           | row ID reqired for datatables   |
+|  2  | del        | bit      | true     | 0       |                             | required           | logical delete                  |
+|  3  | ref_XXX    | integer  | true     |         |                             | optional           | lookup ID for Dropdown Field(s) |
+|  4  | content    | ...      | ...      | ...     | ...                         | ...                | field content                   |
+
+example table structure:
+
+```SQL
+CREATE TABLE root_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  ref_dropdown mediumint default null,
+  content char(30) default null,
+  primary key (id)
+);
+```
+
+example table content:
+
+```SQL
+INSERT INTO root_table (del, ref_dropdown, content) VALUES
+ (0,1,'ALPHA'),
+ (0,2,'BRAVO'),
+ (0,3,'CHARLIE'),
+ (0,4,'DELTA'),
+ (0,5,'ECHO'),
+ (0,6,'FOXTROT'),
+ (0,7,'GOLF'),
+ (0,8,'HOTEL'),
+ (0,9,'INDIA'),
+ (0,8,'JULIETT');
+```
+
+---
+
+## Lookup table structure for dropdown field(s)
+
+|     | columnname | datatype | not null | default | additional information      | required/ optional | remarks          |
+| :-: | ---------- | -------- | -------- | ------- | --------------------------- | ------------------ | ---------------- |
+|  1  | id         | integer  | true     |         | primary key, auto increment | required           | ID (ref_XXX)     |
+|  2  | del        | bit      | true     | 0       |                             | required           | logical delete   |
+|  3  | id_text    | char(30) | true     |         |                             | required           | dropdown content |
+
+example Lookup table structure:
+
+```SQL
+CREATE TABLE dropdown_lookup_table (
+  id mediumint not null auto_increment,
+  del bit(1) not null default 0,
+  id_text char(30) default null,
+  primnary key (id)
+);
+```
+
+example Lookup table content:
+
+```SQL
+INSERT INTO dropdown_lookup_table (del, id_text) VALUES
+ (0,'ONE'),
+ (0,'TWO'),
+ (0,'THREE'),
+ (0,'FOUR'),
+ (0,'FIVE'),
+ (0,'SIX'),
+ (0,'SEVEN'),
+ (0,'EIGHT'),
+ (0,'NINE');
+```
+
+---
