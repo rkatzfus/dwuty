@@ -1,3 +1,5 @@
+# example php file
+
 ![header](https://datatableswebutility.net/img/docs/header.jpg)
 
 1. - load libraries
@@ -69,3 +71,25 @@
    - **column_no**: column index, starts with 0
    - **direction**: asc/desc
 2. [datatables Extensions](https://datatables.net/extensions/index) - first install [Composer datatables Extension](https://packagist.org/packages/datatables.net/datatables.net?query=datatables.net%20extensions) and link CSS in the html header, top **(2)**
+
+# column- / datatypes
+
+| columntype | effect                      |
+| ---------- | --------------------------- |
+| VIEW       | read-only content           |
+| EDIT       | editable/ deletable content |
+
+---
+
+| datatyp        | effect                     |                                                                               |
+| -------------- | -------------------------- | ----------------------------------------------------------------------------- |
+| TEXT           | string                     | ![col_text](https://datatableswebutility.net/img/docs/col_text.jpg)           |
+| EMAIL          | email                      | ![col_mail](https://datatableswebutility.net/img/docs/col_mail.jpg)           |
+| CHECKBOX       | checkbox                   | ![col_check](https://datatableswebutility.net/img/docs/col_check.jpg)         |
+| LINK           | url link                   | ![col_link](https://datatableswebutility.net/img/docs/col_link.jpg)           |
+| LINK_BUTTON    | url link button            | ![col_link_btn](https://datatableswebutility.net/img/docs/col_link_btn.jpg)   |
+| COLOR          | colorpicker                | ![col_col](https://datatableswebutility.net/img/docs/col_col.jpg)             |
+| DROPDOWN       | dropdown - single choice   | ![col_drp](https://datatableswebutility.net/img/docs/col_drp.jpg)             |
+| DROPDOWN_MULTI | dropdown - multiple choice | ![col_drp_mul](https://datatableswebutility.net/img/docs/col_drp_mul.jpg)     |
+| DATE           | datepicker                 | ![col_date](https://datatableswebutility.net/img/docs/col_date.jpg)           |
+| DATETIME       | date-time picker           | ![col_date_time](https://datatableswebutility.net/img/docs/col_date_time.jpg) |
