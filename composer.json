@@ -1,7 +1,5 @@
 {
     "name": "datatableswebutility/dwuty",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "description": "tabletools ajax",
     "homepage": "https://datatableswebutility.net/",
     "authors": [
