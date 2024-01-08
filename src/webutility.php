@@ -160,7 +160,6 @@ class webutility
         }
     ?>
         <footer>
-            <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net/js/jquery.dataTables.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
