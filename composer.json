@@ -1,6 +1,9 @@
 {
     "name": "datatableswebutility/dwuty",
-    "description": "tabletools ajax",
+    "description": "dwuty offers an easy way to generate editable tables on your website.",
+    "support": {
+        "forum": "https://forum.datatableswebutility.net/public/"
+    },
     "homepage": "https://datatableswebutility.net/",
     "authors": [
         {
@@ -17,6 +20,11 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "keywords": [
+        "php",
+        "table",
+        "ajax"
+    ],
     "require": {
         "php": ">=8.1",
         "twbs/bootstrap": "*",
