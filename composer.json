@@ -9,7 +9,9 @@
         "mssql",
         "mysql",
         "pgsql",
+        "postgresql",
         "pdo",
+        "sql",
         "sqlserver",
         "sqlsrv"
     ],
