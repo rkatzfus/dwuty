@@ -32,13 +32,11 @@
         }
     ],
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=8.1",
-        "twbs/bootstrap": "*",
-        "select2/select2": "*",
-        "components/jquery": "*",
+        "twbs/bootstrap": "^5.3",
+        "select2/select2": "^4.0",
+        "components/jquery": "^3.7",
         "datatables.net/datatables.net": "dev-master",
         "datatables.net/datatables.net-bs5": "dev-master",
         "datatables.net/datatables.net-fixedheader": "dev-master",
