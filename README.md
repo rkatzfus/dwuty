@@ -35,17 +35,17 @@ composer require datatableswebutility/dwuty
 Make sure, that you include the composer [autoloader](https://getcomposer.org/doc/01-basic-usage.md#autoloading)
 somewhere in your codebase.
 
-create `.env` file for the environment
+create `.env` file for the environment and update the database credentials
 
 > .env
 
 ```r
 API_KEY="*******"
 
-HOST="*******"
-DATABASE="*******"
-USER="*******"
-PASSWORD="*******"
+HOST_ENV="*******"
+DATABASE_ENV="*******"
+USER_ENV="*******"
+PASSWORD_ENV="*******"
 ```
 
 setup `.htaccess` to hide the `.env`
@@ -83,10 +83,10 @@ $config_webutility = array(
     , "database" => array(
         "type" => "mysql"
         , "credentials" => array(
-            "host" => "HOST"
-            , "database" => "DATABASE"
-            , "user" => "USER"
-            , "pass" => "PASSWORD"
+            "host" => "HOST_ENV"
+            , "database" => "DATABASE_ENV"
+            , "user" => "USER_ENV"
+            , "pass" => "PASSWORD_ENV"
         )
     )
     , "crud" => array(
