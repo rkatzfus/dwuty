@@ -1,6 +1,18 @@
 {
     "name": "datatableswebutility/dwuty",
     "description": "dwuty offers an easy way to generate editable tables on your website.",
+    "keywords": [
+        "php",
+        "table",
+        "editor",
+        "database",
+        "mssql",
+        "mysql",
+        "pgsql",
+        "pdo",
+        "sqlserver",
+        "sqlsrv"
+    ],
     "support": {
         "forum": "https://forum.datatableswebutility.net/public/"
     },
@@ -20,11 +32,6 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "keywords": [
-        "table",
-        "editor",
-        "database"
-    ],
     "require": {
         "php": ">=8.1",
         "twbs/bootstrap": "*",
