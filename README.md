@@ -15,7 +15,7 @@ The data can be stored in 3 different types of databases via the php [pdo interf
 
 ## Installation
 
-It's important to setup `"minimum-stability": "dev"` and `"prefer-stable": true` in your composer.json
+It's important to add `"minimum-stability": "dev"` and `"prefer-stable": true` in your composer.json
 
 > composer.json
 

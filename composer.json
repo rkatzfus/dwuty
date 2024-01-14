@@ -23,7 +23,11 @@
     "keywords": [
         "php",
         "table",
-        "ajax"
+        "editor",
+        "database",
+        "ms sql",
+        "mysql",
+        "postgresql"
     ],
     "require": {
         "php": ">=8.1",
