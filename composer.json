@@ -25,7 +25,7 @@
         "table",
         "editor",
         "database",
-        "ms sql",
+        "mssql",
         "mysql",
         "postgresql"
     ],
