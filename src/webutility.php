@@ -160,7 +160,7 @@ class webutility
         }
     ?>
         <footer>
-            <script src="/vendor/datatables.net/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="/vendor/datatables.net/datatables.net/js/dataTables.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
             <script src="/vendor/datatables.net/datatables.net-fixedheader-bs5/js/fixedHeader.bootstrap5.min.js"></script>
